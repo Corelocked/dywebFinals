@@ -1,61 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel-Blog-Website
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A straightforward blog page written in PHP/Laravel.
 
-## About Laravel
+![main](https://github.com/Mati822456/Laravel-Blog-Website/assets/103435077/0968c8ef-77cd-4e7f-ba4b-76e1a8e4388d)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   [General Info](#general-info)
+-   [Technologies](#technologies)
+-   [Setup](#setup)
+-   [Features](#features)
+-   [Acknowledgements](#acknowledgements)
+-   [Contact](#contact)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## General Info
 
-## Learning Laravel
+The website was built with PHP, MySQL, and Laravel. It allows you to go through every post that is on the main page. You can add comments. You have complete control while logged in as an administrator, including the ability to create, edit, and delete posts, users, and comments, as well as manage roles. There are two positions available: administrator and writer. Default permissions for Writer are: adding or editing owned posts; deleting comments in your posts. Furthermore, you can save posts, continue writing later, and then publish them. Also, you are able to send emails to users after updating their accounts.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Furthermore, the website is fully responsive.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+I tried to add the best protection I could to this website. I'm referring to prohibitions against deleting other people's posts besides the "Admin" account, deleting roles owned by others or the "Admin" role, deleting yourself, and even editing another person's account.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![post](https://github.com/Mati822456/Laravel-Blog-Website/assets/103435077/e332038e-05bf-4818-b32d-968a45692d84)
 
-## Laravel Sponsors
+## Technologies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   Laravel 9.45.1
+-   Blade
+-   PHP 8.1.7
+-   MySQL 8.0.29
+-   HTML 5
+-   CSS 3
+-   JavaScript
+-   SweetAlert 2
+-   FontAwesome 6.5.1
 
-### Premium Partners
+## Setup
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+To run this project you will need to install PHP, MySQL, [Composer](https://getcomposer.org/download/), [NPM](https://www.npmjs.com/package/npm) on your local machine.
 
-## Contributing
+If you have everything, you can run these commands:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+# Clone this respository
+> git clone https://github.com/Mati822456/Laravel-Blog-Website.git
 
-## Code of Conduct
+# Go into the folder
+> cd Laravel-Blog-Website
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Install dependencies from lock file
+> composer install
 
-## Security Vulnerabilities
+# Install packages from package.json
+> npm install
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Compile assets
+> npm run build
+```
 
-## License
+`Create or copy the .env file and configure it. e.g., db_username, db_password, db_database`
+</br>
+`You will need to configure SMTP in order to send emails.`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+# Generate APP_KEY
+> php artisan key:generate
+
+# Run migrations if you have created database
+> php artisan migrate
+
+# Run seeder to create Permissions, Admin and Writer users and 10 random posts
+> php artisan db:seed
+
+# Start server
+> php artisan serve
+
+# Access using
+http://localhost:8000
+```
+
+Now you can login using created accounts:
+
+```
+Role: Admin
+Email: admin@db.com
+Password: admin1234
+
+Role: Writer
+Email: writer@db.com
+Password: writer1234
+```
+
+![dashboard](https://github.com/Mati822456/Laravel-Blog-Website/assets/103435077/ab2cbc89-b149-4770-9f90-46fa6287fd8b)
+![dashboard_posts](https://github.com/Mati822456/Laravel-Blog-Website/assets/103435077/4c295832-b21c-4f64-bc7f-8da7e73ed3de)
+![posts_create](https://github.com/Mati822456/Laravel-Blog-Website/assets/103435077/579c241a-48ee-48fc-8654-f366a3a5f490)
+
+## Features
+
+| Name                             | Status               | Date added |
+|----------------------------------|----------------------|------------|
+| Version control of each post     | &#9745; Finished     | 2023-05-10 |
+| Tiles on the home page           | &#9745; Finished     | 2023-12-03 |
+| Improve post creation/editing UI | &#9745; Finished     | 2023-12-06 |
+| Categories                       | &#9745; Finished     | 2023-12-09 |
+| Reading time                     | &#9745; Finished     | 2023-12-21 |
+| Pinned post                      | &#9745; Finished     | 2024-01-01 |
+| Better tiles in history          | &#9745; Finished     | 2024-01-04 |
+| Changelog for posts              | &#9745; Finished     | 2024-01-04 |
+| History post comparison          | &#9745; Finished     | 2024-01-10 |
+| Remove jQuery                    | &#9745; Finished     | 2024-01-11 |
+| Dark mode                        | &#9745; Finished     | 2024-01-15 |
+| More filtering                   | &#9745; Finished     | 2024-01-18 |
+| Auto-save editing post           | &#9745; Finished     | 2024-01-23 |
+| Observer on main page            | &#9745; Finished     | 2024-01-28 |
+| Super-permissions                | &#9745; Finished     | 2024-02-05 |
+| Image Browser                    | &#9745; Finished     | 2024-02-09 |
+| Enhance image selection          | &#9745; Finished     | 2024-02-10 |
+| Notifications                    | &#9745; Finished     | 2024-02-12 |
+
+## Acknowledgements
+
+Thanks <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by kmg design - Flaticon</a> for the user profile icon</br>
+Thanks <a href="https://www.flaticon.com/free-icons/email" title="email icons">Email icons created by Freepik - Flaticon</a> for the envelope icon on the contact page</br>
+Thanks <a href="https://www.flaticon.com/free-icons/blog" title="blog icons">Blog icons created by zero_wing - Flaticon</a> for the blog icon as favicon</br>
+
+## Contact
+
+Feel free to contact me via email mateusz.zaborski1@gmail.com. :D
