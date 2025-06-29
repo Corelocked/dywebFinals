@@ -12,12 +12,7 @@ class Post extends Model
     use HasFactory;
     protected $fillable = [
         'title',
-        'slug',
         'content',
-        'publication_date',
-        'status',
-        'featured_image_url',
-        'views_count'
     ];
     public function user(): BelongsTo
     {
