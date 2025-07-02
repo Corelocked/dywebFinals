@@ -4,20 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'category_name',
-        'slug',
-        'description',
-    ];
+    protected $fillable = ['name', 'backgroundColor', 'textColor'];
 
-    public function posts(): BelongsToMany
+    public function posts()
     {
-        return $this->belongsToMany(Post::class, 'post_category');
+        return $this->hasMany(Post::class);
     }
 }
