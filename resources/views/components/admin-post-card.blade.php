@@ -13,7 +13,10 @@
         <p class="title">{{ $post->title }}</p>
         <div class="user">
             <img src="{{ asset($post->user->image_path) }}" alt="user">
-            <p><span class="name">{{ $post->user->firstname . ' ' . $post->user->lastname }}</span><br><span class="date"> {{ \Carbon\Carbon::parse($post->created_at)->translatedFormat('d F, Y') }}</span></p>
+            <p>
+                <span class="name">{{ $post->user->firstname . ' ' . $post->user->lastname }}</span><br>
+                <span class="date"> {{ \Carbon\Carbon::parse($post->created_at)->format('d F, Y') }}</span>
+            </p>
         </div>
 {{--        <p class="date">{{ $post->updated_at->format('d.m.Y') }} by {{ $post->user->firstname . ' ' . $post->user->lastname }}</p>--}}
     </div>
