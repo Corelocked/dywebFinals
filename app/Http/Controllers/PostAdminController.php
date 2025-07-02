@@ -211,8 +211,10 @@ class PostAdminController extends Controller
             ]);
         }
 
+        // Always pass categories, even if post is not set
         return view('post.create', [
             'categories' => $categories,
+            'post' => null, // explicitly set post to null
         ]);
     }
 
@@ -246,22 +248,28 @@ class PostAdminController extends Controller
 
                 $validation += ['image_path' => 'required|string'];
             } else {
-                $validation += ['image' => 'required|string'];
+                $validation += ['image' => 'nullable|string'];
             }
         } else {
-            $validation += ['image' => 'required|string'];
+            $validation += ['image' => 'nullable|string'];
         }
 
         $request->validate(
             $validation
         );
 
+        // Set a default image if none is provided
+        $imagePath = $request->image ?? $request->image_path;
+        if (empty($imagePath)) {
+            $imagePath = asset('images/default-post.jpg'); // Make sure this image exists in public/images/
+        }
+
         $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'excerpt' => $request->excerpt,
             'body' => $request->body,
-            'image_path' => $request->image ?? $request->image_path,
+            'image_path' => $imagePath,
             'slug' => Str::slug($request->title),
             'is_published' => $request->is_published == 'on',
             'category_id' => $request->category_id,
@@ -435,7 +443,7 @@ class PostAdminController extends Controller
                         'title' => $request->title,
                         'excerpt' => $request->excerpt,
                         'body' => $request->body,
-                        'image_path' => $input['image_path'] ?? $post->image_path,
+                        'image_path' => $input['image_path'] ?? $post->image_path ?? asset('images/default-post.jpg'),
                         'slug' => Str::slug($request->title),
                         'is_published' => $request->is_published == 'on',
                         'additional_info' => 2,

@@ -26,28 +26,30 @@ class CreateModUserSeeder extends Seeder
         $role = Role::create(['name' => 'Moderator']);
 
         $permissions = [
-            '5' => 5,
-            '6' => 6,
-            '7' => 7,
-            '8' => 8,
-            '9' => 9,
-            '10' => 10,
-            '11' => 11,
-            '12' => 12,
-            '13' => 13,
-            '14' => 14,
-            '15' => 15,
-            '16' => 16,
-            '17' => 17,
-            '18' => 18,
-            '19' => 19,
-            '20' => 20,
-            '21' => 21,
-            '22' => 22,
+            'post-list',
+            'post-create',
+            'post-edit',
+            'post-delete',
+            'post-highlight',
+            'post-super-list',
+            'category-list',
+            'category-create',
+            'category-edit',
+            'category-delete',
+            'user-list',
+            'user-create',
+            'user-edit',
+            'user-delete',
+            'comment-list',
+            'comment-edit',
+            'comment-delete',
+            'comment-super-list',
+            'image-list',
+            'image-delete',
         ];
 
         $role->syncPermissions($permissions);
 
-        $user->assignRole([$role->id]);
+        $user->assignRole('Moderator');
     }
 }

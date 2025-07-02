@@ -89,3 +89,12 @@ window.addEventListener('beforeunload', function (event) {
         window.savePost(true);
     }
 });
+
+quill.on('text-change', function() {
+    document.getElementById('hiddenArea').value = quill.root.innerHTML;
+});
+
+function submitForm() {
+    document.getElementById('hiddenArea').value = quill.root.innerHTML;
+    document.getElementById('form').submit();
+}

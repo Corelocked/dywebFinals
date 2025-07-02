@@ -14,7 +14,14 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Main Routes
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/', function () {
+    if (auth()->check()) {
+        // Show the blog homepage for logged-in users
+        return app(\App\Http\Controllers\PostController::class)->index(request());
+    }
+    // Redirect guests to login
+    return redirect()->route('login');
+})->name('home');
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
@@ -24,6 +31,10 @@ Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/postlogin', [AuthController::class, 'login'])->name('postlogin');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Registration Routes
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 
 // ADMIN DASHBOARD
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
@@ -48,9 +59,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     // READ TIME
     Route::post('/calculate-read-time', [PostAdminController::class, 'calculate'])->name('post.readTime');
-
-    // UPLOAD IMAGE (THROUGH THE QUILL) ROUTE
-    // Route::post('/image-upload-post', [PostImageController::class, 'store'])->name('image.store');
 
     // COMMENTS
     Route::resource('comments', CommentController::class, ['except' => 'store']);

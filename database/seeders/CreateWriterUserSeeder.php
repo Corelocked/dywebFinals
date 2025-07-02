@@ -26,16 +26,16 @@ class CreateWriterUserSeeder extends Seeder
         $role = Role::create(['name' => 'Writer']);
 
         $permissions = [
-            '5' => 5,
-            '6' => 6,
-            '7' => 7,
-            '8' => 8,
-            '19' => 19,
-            '21' => 21,
+            'post-list',
+            'post-create',
+            'post-edit',
+            'post-delete',
+            'comment-edit',
+            'image-list',
         ];
 
         $role->syncPermissions($permissions);
 
-        $user->assignRole([$role->id]);
+        $user->assignRole('Writer');
     }
 }

@@ -27,7 +27,7 @@
                     </div>
                     <div class="info">
                         <p class="info_title_length">Maximum 255 characters. <span class='current_title_length'>{{ isset($post) ? Str::length($post->title) : 5 }}/255</span></p>
-                        <input type="text" name="title" class="title" autocomplete="off" value="{{ isset($post) ? ($post->title ?? 'Title') : 'Title' }}">
+                        <input type="text" name="title" value="{{ old('title', $post->title ?? '') }}" class="title" autocomplete="off" placeholder="Title">
                         <div class="reading-info">
                             <p class="reading-text">Reading time: </p>
                             <i class="fa-solid fa-clock"></i>
@@ -39,14 +39,11 @@
                 </div>
             </div>
             <div class="post_body">
-                <div id="editor">
-
-                </div>
-
-                <textarea name="body" style="display: none" id="hiddenArea">{!! isset($post) ? $post->body : '' !!}</textarea>
+                <textarea name="body" id="hiddenArea" style="display:none;">{{ old('body', $post->body ?? '') }}</textarea>
+                <div id="editor"></div>
 
                 <div class="actions">
-                    <a><i class="fa-solid fa-arrow-left"></i> Back to home page</a>
+                    <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Back</a>
                     <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -89,4 +86,23 @@
         </form>
         <x-select-image />
     </div>
+
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        quill.on('text-change', function() {
+            document.getElementById('hiddenArea').value = quill.root.innerHTML;
+        });
+
+        @if(isset($post) && $post->body)
+            quill.root.innerHTML = `{!! addslashes($post->body) !!}`;
+        @endif
+
+        function submitForm() {
+            document.getElementById('hiddenArea').value = quill.root.innerHTML;
+            document.getElementById('form').submit();
+        }
+    </script>
 </x-admin-layout>

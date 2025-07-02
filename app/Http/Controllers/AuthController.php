@@ -21,11 +21,12 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            return redirect('/');
+        if (auth()->attempt($credentials)) {
+            // Redirect to blog homepage after successful login
+            return redirect()->route('home');
         }
 
-        return redirect('/login')->with('message', 'The data does not match!');
+        return redirect()->route('login')->with('message', 'Invalid credentials');
     }
 
     public function logout(Request $request)
@@ -37,5 +38,34 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|confirmed|min:8',
+        ]);
+
+        $user = \App\Models\User::create([
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'image_path' => 'https://ui-avatars.com/api/?name=' . urlencode($request->firstname . ' ' . $request->lastname) . '&background=random',
+        ]);
+
+        $user->assignRole('Writer');
+
+        auth()->login($user);
+
+        return redirect('/')->with('success', 'Account created successfully!');
     }
 }

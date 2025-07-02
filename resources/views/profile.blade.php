@@ -14,7 +14,7 @@
                     </ul>
                     @endif
                     <div class="profile_file">
-                        <img src="{{ asset(Auth::User()->image_path) }}" id="output" alt="profile">
+                        <img src="{{ Auth::user()->image_path }}" id="output" alt="Profile Picture">
                         <span class="change" onClick="document.getElementById('profile_update_form_profile_image').click()"><i class="fa-solid fa-image"></i></span>
                     </div>
                     <input type="file" name="image" id="profile_update_form_profile_image"  accept="image/*" onchange="loadFile(event)" style="display: none;">

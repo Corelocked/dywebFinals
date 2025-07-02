@@ -102,4 +102,50 @@ class PostController extends Controller
             return response()->json('Not Acceptable', 406);
         }
     }
+
+    /**
+     * Store a newly created post in storage.
+     */
+    public function store(Request $request)
+    {
+        dd($request->all()); // <-- Add this as the first line
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+        ]);
+
+        $post = Post::create([
+            'title' => $request->title,
+            'body' => $request->body, // use 'body' here
+            // other fields...
+            'user_id' => auth()->id(),
+            'is_published' => false, // or true, depending on your logic
+        ]);
+
+        return redirect()->route('posts.show', $post->slug)
+            ->with('success', 'Post created successfully.');
+    }
+
+    /**
+     * Update the specified post in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            // Add other fields and rules as needed
+        ]);
+
+        $post = Post::findOrFail($id);
+        $post->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            // Add other fields as needed
+        ]);
+
+        return redirect()->route('posts.show', $post->slug)
+            ->with('success', 'Post updated successfully.');
+    }
 }
