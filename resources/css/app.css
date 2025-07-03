@@ -21,7 +21,7 @@ html[data-theme='light'] {
 }
 html[data-theme='dark'] {
     --background-color: #18191A;
-    --bar-color: #242526;
+    --bar-color: #000000;
     --text-color: #CCC;
     --shadow-color: #1B1C1D;
     --primary-color-light: #CCCCCC;

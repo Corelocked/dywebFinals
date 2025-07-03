@@ -9,6 +9,8 @@ class HighlightPost extends Model
 {
     use HasFactory;
 
+    protected $table = 'highlight_posts';
+
     protected $fillable = [
         'post_id',
     ];
