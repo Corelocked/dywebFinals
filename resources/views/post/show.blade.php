@@ -52,8 +52,13 @@
             <div class="add__comment">
                 <form action="{{ route('comments.store') }}" method="POST">
                     @csrf
-                    <label>First and/or Last Name</label>
-                    <input type="text" name="name" autocomplete="off" value="{{ Auth::User() ? Auth::User()->firstname . ' ' . Auth::User()->lastname : '' }}">
+                    @auth
+                        <label>Name</label>
+                        <input type="text" name="name" value="{{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}" readonly>
+                    @else
+                        <label>Name</label>
+                        <input type="text" name="name" value="Anonymous User" readonly>
+                    @endauth
                     <label>Text</label>
                     <textarea name="body"></textarea>
                     <input type="submit" value="Add">

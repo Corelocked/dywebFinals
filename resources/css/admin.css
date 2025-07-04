@@ -1234,26 +1234,22 @@ input[type="submit"],
     height: 20px;
     width: 20px;
     background-color: #eee;
-}
-
-.role_container .permissions .container:hover input ~ .checkmark {
-    background-color: #ccc;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 .role_container .permissions .container input:checked ~ .checkmark {
     background-color: #2196f3;
+    border-color: #2196f3;
 }
-
 .role_container .permissions .checkmark:after {
     content: "";
     position: absolute;
     display: none;
 }
-
 .role_container .permissions .container input:checked ~ .checkmark:after {
     display: block;
 }
-
 .role_container .permissions .container .checkmark:after {
     left: 6px;
     top: 2px;
@@ -1261,8 +1257,6 @@ input[type="submit"],
     height: 10px;
     border: solid white;
     border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
 #password_gen {
@@ -2787,495 +2781,60 @@ form ul li {
     font-size: 14px;
 }
 
-::-webkit-scrollbar {
-    width: 0.5em;
-    height: 0.5em;
+/* Add to your app.css or a relevant stylesheet */
+.role-create-container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 32px;
 }
-::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-.pagination {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    margin: 15px 0;
-    flex-wrap: wrap;
-}
-.pagination li {
-    padding: 5px;
-    font-size: 18px;
-    list-style: none;
-}
-.pagination li a {
-    text-decoration: none;
-    color: var(--text-color);
-}
-.pagination li.active {
+.form-title {
+    margin-bottom: 24px;
+    font-size: 1.5em;
     font-weight: 600;
 }
-.pagination li:not(:nth-of-type(1)):not(:nth-last-child(1)) {
-    -webkit-box-shadow: 0px 0px 25px 0px var(--shadow-color);
-    -moz-box-shadow: 0px 0px 25px 0px var(--shadow-color);
-    box-shadow: 0px 0px 25px 0px var(--shadow-color);
-    margin: 0 3px;
-    border-radius: 3px;
+.form-group {
+    margin-bottom: 20px;
 }
-
-.swal2-container {
-    font-family: "Poppins", sans-serif;
-}
-.change-theme {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 20px;
-    border-radius: 50%;
-    background: var(--bar-color);
-    color: var(--text-color);
-    box-shadow: 4px 4px 17px 0px var(--shadow-color);
-    cursor: pointer;
-    z-index: 10;
-}
-.change-theme i {
+.form-label {
+    font-weight: 600;
     display: block;
-    font-size: 20px;
-    margin: auto;
-    transition: .1s ease color;
-    text-align: center;
-    width: 20px;
+    margin-bottom: 6px;
 }
-.change-theme:hover i {
-    color: #eb4d4b;
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
-
-@media only screen and (max-width: 1080px) {
-    .post__create .post_body .image_post,
-    .post__create .post_body img,
-    .ql-snow .ql-editor img,
-    .post__preview .post_body .image_post,
-    .post__preview .post_body img {
-        width: 100%;
-        min-width: 0;
-    }
-    aside.post__preview {
-        width: calc(100% - 420px);
-    }
-    .loading {
-        width: calc(100% - 415px);
-    }
-    .compact-history-list {
-        width: 400px;
-    }
+.form-error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 4px;
 }
-@media only screen and (max-width: 1000px) {
-    .image_modal {
-        flex-direction: column;
-        overflow: auto;
-    }
-    .image_modal .thumbnail {
-        width: 100%;
-        max-height: 70%;
-        margin: 0;
-        border-radius: 0;
-    }
-    .image_modal .file_info {
-        width: calc(100% - 40px);
-        min-height: 30%;
-        height: auto;
-    }
-    .image_modal .file_info .used {
-        overflow: auto;
-        margin-bottom: 0;
-    }
-    .image_modal .file_info .directory {
-        font-size: 16px;
-    }
-    .image_modal .file_info .filename {
-        font-size: 26px;
-    }
-    .image_modal .file_info .size,
-    .image_modal .file_info .usage_count {
-        font-size: 18px;
-    }
-    .image_modal .file_info .button {
-        font-size: 14px;
-        padding: 6px;
-    }
-    .image_modal .file_info .used .post .info .title,
-    .image_modal .file_info .used .user .info .title {
-        font-size: 16px;
-    }
-    .image_modal .file_info .used .post .info .location,
-    .image_modal .file_info .used .post .info .type,
-    .image_modal .file_info .used .user .info .location,
-    .image_modal .file_info .used .user .info .type {
-        font-size: 14px;
-    }
-    .image_modal .file_info {
-        margin-bottom: 20px;
-    }
+.permissions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
 }
-@media only screen and (min-width: 900px) {
-    .filter .filtr_body {
-        display: block;
-        height: auto !important;
-    }
+.permission-checkbox {
+    flex: 1 1 45%;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
-@media only screen and (min-width: 840px) {
-    .compact-history-list #history_list {
-        height: auto !important;
-        visibility: visible !important;
-    }
-}
-@media only screen and (max-width: 840px) {
-    .post__history {
-        flex-direction: column;
-        overflow: visible;
-    }
-    .compact-history-list {
-        width: 100%;
-        overflow: visible;
-        height: auto;
-        margin-bottom: 10px;
-    }
-    aside.post__preview {
-        width: 100%;
-        overflow: visible;
-        height: auto;
-    }
-    .loading {
-        width: 100%;
-        position: fixed;
-    }
-    .compact-history-list .extend-history {
-        display: block;
-    }
-    .post__compare {
-        width: 100% !important;
-    }
-    #second_post {
-        top: 0;
-        position: absolute;
-        overflow: auto;
-    }
-}
-@media only screen and (max-width: 900px) {
-    .divided_minimal .comments,
-    .divided_minimal .posts {
-        display: flex;
-        flex-direction: column;
-        margin-top: 5px;
-    }
-    .filter {
-        float: none;
-        width: 100%;
-        height: auto;
-        padding: 0;
-    }
-    .divided_minimal .comments-list,
-    .divided_minimal .posts .posts-list {
-        width: 100%;
-    }
-    .filter .filtr_collapse i {
-        display: block;
-    }
-    .divided_minimal {
-        float: none;
-        width: calc(100% - 20px);
-        margin: 94px 10px 10px 10px;
-        -webkit-box-shadow: 0px 15px 40px 6px var(--shadow-color);
-        -moz-box-shadow: 0px 15px 40px 6px var(--shadow-color);
-        box-shadow: 0px 15px 40px 6px var(--shadow-color);
-    }
-    table {
-        border: 0;
-    }
-
-    table caption {
-        font-size: 1.3em;
-    }
-
-    table thead {
-        border: none;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-    }
-
-    table tr {
-        display: block;
-        margin-bottom: 0.625em;
-        border: 1px solid var(--line-color);
-    }
-
-    table td {
-        display: block;
-        font-size: 0.8em;
-        text-align: right;
-    }
-
-    table td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    table td:last-child {
-        border-bottom: 0;
-    }
-    .category_list .preview {
-        text-align: center;
-    }
-    .divided_minimal .comments .comment .body__comment .post {
-        flex-direction: column;
-    }
-    .category_list,
-    .users_list,
-    .roles_list,
-    .image_list {
-        width: 100%;
-    }
-    .image_list {
-        justify-content: center;
-    }
-}
-@media only screen and (max-width: 570px) {
-    .dashboard #dashboard__image {
-        width: 384px;
-        height: 216px;
-    }
-    form#create_user,
-    form#edit_comment,
-    .role,
-    form#create_category,
-    form#edit_category {
-        min-width: 0;
-        width: 100%;
-    }
-    #password_gen {
-        flex-direction: column;
-    }
-    #password_gen input,
-    #password_gen .button {
-        width: 100%;
-    }
-    .edit_post_actions {
-        width: calc(100% - 160px);
-    }
-    .edit_post_actions .text {
-        display: none;
-    }
-    .edit_post_actions .icon {
-        display: block;
-    }
-    .dashboard .actions_home .connected {
-        flex-direction: column;
-    }
-    .dashboard .actions_home .button {
-        padding: 15px;
-    }
-    .dashboard .actions_home .button p {
-        font-size: 15px;
-    }
-    .dashboard .actions_home {
-        width: 95%;
-    }
-    .post__create .select-image {
-        flex-direction: column;
-    }
-    .post__create .select-image .option {
-        margin: 10px 0;
-    }
-}
-@media only screen and (max-width: 650px) {
-    .post__create {
-        width: 100%;
-        float: none;
-        position: relative;
-    }
-    .exit_preview {
-        display: block;
-    }
-    .dashboard .actions_home .button {
-        min-width: auto;
-    }
-    .history-list .history_card {
-        flex-direction: column;
-    }
-    .history-list .history_card img {
-        width: 100%;
-        height: 200px;
-        border-radius: 10px 10px 0 0;
-        margin: 0;
-    }
-}
-@media only screen and (max-width: 610px) {
-    .dashboard .actions_home .button {
-        padding: 10px;
-    }
-    .divided_minimal .posts .posts-list .post {
-        flex-direction: column;
-    }
-    .divided_minimal .posts .post .body {
-        width: calc(100% - 10px);
-        text-align: center;
-        align-items: center;
-    }
-    .divided_minimal .posts img {
-        margin: 20px 0 0 0;
-    }
-    .divided_minimal .posts .post .actions {
-        width: calc(100% - 10px);
-    }
-    .divided_minimal .posts .post .actions form,
-    .divided_minimal .posts .post .actions .delete,
-    .divided_minimal .posts .post .actions .highlight,
-    .divided_minimal .posts .post a,
-    .divided_minimal .comments .comment .actions{
-        width: 100%;
-    }
-    .divided_minimal .posts .posts-list,
-    .divided_minimal .comments-list{
-        padding: 0 10px 10px;
-    }
-    .divided_minimal {
-        padding: 20px 5px;
-    }
-    .divided_minimal .comments .comment {
-        flex-direction: column;
-    }
-    .divided_minimal .comments .comment .body__comment {
-        width: 100%;
-        margin: 10px;
-    }
-    form#create_role {
-        min-width: 0;
-        width: 100%;
-        padding: 60px 15px;
-    }
-    .filter .filtr_collapse,
-    .filter .filtr_body {
-        margin-left: 10px;
-    }
-    .divided_minimal .posts .post .body .user {
-        width: fit-content;
-        justify-content: center;
-    }
-    .divided_minimal .posts .post .body .user p {
-        text-align: left;
-    }
-}
-@media only screen and (max-width: 430px) {
-    .modal-profile,
-    .modal-notifications {
-        width: 100%;
-        max-width: 100%;
-        border-radius: 0;
-        border: none;
-    }
-}
-@media only screen and (max-width: 425px) {
-    .dashboard #dashboard__image {
-        height: 216px;
-        width: 216px;
-        margin-top: 0;
-        margin-bottom: 10px;
-    }
-    .dashboard .welcome {
-        font-size: 36px;
-    }
-    .dashboard .actions_home {
-        margin-bottom: 0;
-    }
-    header {
-        padding: 12px 20px;
-    }
-    header a {
-        font-size: 15px;
-    }
-    header .profile img {
-        width: 32px;
-        height: 32px;
-    }
-    .dashboard,
-    .users,
-    .roles,
-    .categories,
-    .images,
-    .divided_minimal {
-        margin: 66px 10px 10px 10px;
-        min-height: calc(100vh - 50px - 30px);
-    }
-    .dashboard.main {
-        padding: 20px 0;
-    }
-    .filter {
-        margin-top: 5px;
-        top: 56px;
-    }
-    .post__create,
-    .post__history,
-    .history-list {
-        margin: 66px 0 10px 0;
-    }
-    .post__history,
-    .history-list {
-        min-height: calc(100vh - 56px - 20px);
-        width: 100%;
-    }
-    form#create_user,
-    form#edit_comment,
-    .role,
-    form#create_category,
-    form#edit_category {
-        padding: 60px 15px;
-    }
-    .post__create form .published p,
-    .post__preview .post_options .published p,
-    #create_user .body_form .mail p {
-        font-size: 12px;
-        width: 70%;
-        text-align: center;
-    }
-    .edit_post_actions .preview_mode,
-    .edit_post_actions .history,
-    .edit_post_actions .submit {
-        padding: 2px 8px;
-        margin: 2px;
-    }
-    .ql-toolbar.ql-snow {
-        top: 56px;
-    }
-    header .profile .notifications_count {
-        font-size: 10px;
-        width: 16px;
-        height: 16px;
-    }
-}
-@media only screen and (max-width: 390px) {
-    .dashboard .welcome {
-        font-size: 30px;
-    }
-    .divided_minimal .posts .posts-list .post.tile,
-    .divided_minimal .posts .post.tile img,
-    .divided_minimal .comments .comment.tile{
-        width: 100%;
-    }
-
-}
-@media only screen and (max-width: 500px) {
-    #create_user .body_form .mail p {
-        width: 80%;
-        text-align: center;
-    }
+.button.primary-btn {
+    width: 100%;
+    padding: 10px;
+    background: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
 }
