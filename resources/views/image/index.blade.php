@@ -4,7 +4,7 @@
         @vite(['resources/js/image.js'])
     @endsection
 
-    <x-header-navbar route="{{ route('dashboard') }}"/>
+    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="images">
         <div class="filter">
