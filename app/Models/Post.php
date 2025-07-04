@@ -38,8 +38,25 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    // Many-to-many relationship for users who highlighted this post
+    public function highlightedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'highlight_posts', 'post_id', 'user_id');
+    }
+
+    // Existing relationship for direct access to highlight_post records
     public function highlightPosts()
     {
         return $this->hasMany(HighlightPost::class);
+    }
+
+    public function getIsHighlightedAttribute()
+    {
+        // If the property is set (from select), use it
+        if (array_key_exists('is_highlighted', $this->attributes)) {
+            return (bool) $this->attributes['is_highlighted'];
+        }
+        // Otherwise, check the relationship
+        return $this->highlightPosts()->exists();
     }
 }

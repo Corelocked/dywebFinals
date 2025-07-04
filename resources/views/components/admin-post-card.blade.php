@@ -1,5 +1,4 @@
-
-    <div class="post">
+<div class="post">
         <img src="{{ asset($post->image_path) }}" alt="{{ $post->title }}">
         <div class="body">
             <div class="top-info">
@@ -21,6 +20,32 @@
             </div>
         </div>
         <div class="actions">
+            @if(Auth::user()->hasRole('Admin'))
+                @if($post->is_highlighted)
+                    {{-- Unmark button --}}
+                    <form action="{{ route('post.highlight') }}" method="POST" id="highlight_{{ $post->id }}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $post->id }}">
+                    </form>
+                    <button type="button" onClick="document.getElementById('highlight_{{ $post->id }}').submit();" class="highlight deselect">
+                        Unmark <i class="fa-solid fa-star"></i>
+                    </button>
+                @else
+                    {{-- Highlight button --}}
+                    <form action="{{ route('post.highlight') }}" method="POST" id="highlight_{{ $post->id }}">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $post->id }}">
+                    </form>
+                    <button type="button"
+                        onClick="document.getElementById('highlight_{{ $post->id }}').submit();"
+                        class="highlight"
+                        @if(isset($countHighlighted) && $countHighlighted >= 5) disabled title="Maximum 5 highlighted posts allowed" @endif>
+                        Highlight <i class="fa-solid fa-star"></i>
+                    </button>
+                @endif
+            @endif
+
+            {{-- Go to button --}}
             <a href="{{ route('post.show', $post->slug) }}" class="read_more">Go to <i class="fa-solid fa-angles-right"></i></a>
             @can('post-edit')
                 <a href="{{ route('posts.edit', $post->id) }}" class="edit">Edit <i class="fa-solid fa-pen-to-square"></i></a>
@@ -30,24 +55,7 @@
                     @method('DELETE')
                     @csrf
                 </form>
-                <button onClick="confirmDelete({{ $post->id }}, 'post')" class="delete">Delete <i class="fa-solid fa-trash"></i></button>
-            @endcan
-            @can('post-highlight')
-                @if($post->is_highlighted)
-                    <form action="{{ route('post.highlight') }}" method="POST" id="highlight_{{ $post->id }}">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $post->id }}">
-                    </form>
-                    <button onClick="document.getElementById('highlight_{{ $post->id }}').submit();" class="highlight deselect">Unmark <i class="fa-solid fa-star"></i></button>
-                @else
-                    @if($countHighlighted < 3)
-                        <form action="{{ route('post.highlight') }}" method="POST" id="highlight_{{ $post->id }}">
-                            @csrf
-                            <input type="hidden" name="id" value="{{ $post->id }}">
-                        </form>
-                        <button onClick="document.getElementById('highlight_{{ $post->id }}').submit();" class="highlight">Highlight <i class="fa-solid fa-star"></i></button>
-                    @endif
-                @endif
+                <button type="button" onClick="confirmDelete({{ $post->id }}, 'post')" class="delete">Delete <i class="fa-solid fa-trash"></i></button>
             @endcan
         </div>
     </div>

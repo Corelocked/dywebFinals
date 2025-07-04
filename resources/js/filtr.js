@@ -1,5 +1,3 @@
-toggleHeight();
-
 function toggleHeight() {
     let e = document.querySelector('.filtr_body');
     let button_collapse = document.querySelector(".button_collapse");
@@ -330,3 +328,7 @@ window.selectDuplicates = function (value) {
         duplicateValue.classList.replace('fa-square-check', 'fa-square');
     }
 }
+
+document.querySelectorAll('.filtr_body').forEach(el => {
+    el.style.display = 'block'; // Always open on page load
+});

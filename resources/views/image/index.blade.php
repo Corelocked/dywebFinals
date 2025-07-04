@@ -4,7 +4,7 @@
         @vite(['resources/js/image.js'])
     @endsection
 
-    <x-header-navbar route="{{ route('dashboard') }}"/>
+    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="images">
         <div class="filter">
@@ -12,7 +12,7 @@
                 <p class="head">Images</p>
                 <i class="fa-solid fa-caret-up button_collapse"></i>
             </div>
-            <div class="filtr_body">
+            <div class="filtr_body" style="display: block;">
                 <div class="sort">
                     <p class="name">Sorting</p>
                     <div class="buttons sort_buttons">
