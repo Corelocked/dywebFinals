@@ -15,15 +15,17 @@ class CreateModUserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create([
-            'firstname' => 'Mod',
-            'lastname' => 'Moderator',
-            'email' => 'mod@db.com',
-            'image_path' => '/images/avatars/user.png',
-            'password' => bcrypt('mod1234'),
-        ]);
+        $user = User::updateOrCreate(
+            ['email' => 'mod@db.com'],
+            [
+                'firstname' => 'Mod',
+                'lastname' => 'Moderator',
+                'image_path' => '/images/avatars/user.png',
+                'password' => bcrypt('mod1234'),
+            ]
+        );
 
-        $role = Role::create(['name' => 'Moderator']);
+        $role = Role::firstOrCreate(['name' => 'Moderator'], ['guard_name' => 'web']);
 
         $permissions = [
             'post-list',

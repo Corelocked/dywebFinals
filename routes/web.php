@@ -14,14 +14,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Main Routes
-Route::get('/', function () {
-    if (auth()->check()) {
-        // Show the blog homepage for logged-in users
-        return app(\App\Http\Controllers\PostController::class)->index(request());
-    }
-    // Redirect guests to login
-    return redirect()->route('login');
-})->name('home');
+Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');

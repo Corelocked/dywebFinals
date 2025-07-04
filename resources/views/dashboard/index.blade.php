@@ -4,15 +4,32 @@
     <div class="dashboard main">
         <img src="{{ asset('images/moon.jpg') }}" id="dashboard__image" alt="dashboard">
         <p class="welcome">
-            @if (Auth::user()->roles[0]->name === 'Admin')
-                Welcome to the Admin Panel!
-            {{-- @elseif (Auth::user()->roles[0]->name === 'Writer')
-                Welcome to the Writer Panel! --}}
+            @auth
+                @if (Auth::user()->roles[0]->name === 'Admin')
+                    Welcome to the Admin Panel!
+                @elseif (Auth::user()->roles[0]->name === 'Writer')
+                    Welcome to the Writer Panel!
+                @else
+                    Welcome to the Panel!
+                @endif
             @else
-                Welcome to the Panel!
-            @endif
+                Welcome, Guest!
+            @endauth
         </p>
-        <p class="name_profile">{{ Auth::User()->firstname . ' ' . Auth::User()->lastname }}</p>
+        <p class="name_profile">
+            @auth
+                {{ Auth::user()->firstname . ' ' . Auth::user()->lastname }}
+            @else
+                Guest
+            @endauth
+        </p>
+        <p class="role_profile">
+            @auth
+                {{ Auth::user()->roles[0]->name ?? 'User' }}
+            @else
+                Guest
+            @endauth
+        </p>
         <div class="actions_home">
             <div class="connected">
                 @can('post-create')
