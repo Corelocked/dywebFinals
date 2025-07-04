@@ -35,22 +35,4 @@ class HistoryPost extends Model
 
 }
 
-// When creating a HistoryPost
-$imagePath = $input['image_path'] ?? $post->image_path ?? asset('images/default-post.jpg');
 
-HistoryPost::create([
-    'post_id' => $post->id, // or another valid post ID
-    'title' => $post->title,
-    'excerpt' => $post->excerpt,
-    'body' => $post->body,
-    'image_path' => $imagePath,
-    'slug' => $post->slug,
-    'is_published' => $post->is_published,
-    'additional_info' => $post->additional_info,
-    'category_id' => $post->category_id,
-    'read_time' => $post->read_time,
-    'change_user_id' => $userId ?? null,
-    'changelog' => $changelog ?? null,
-    'created_at' => now(),
-    'updated_at' => now(),
-]);

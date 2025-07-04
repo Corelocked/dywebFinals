@@ -171,16 +171,28 @@ window.show = function (id = null, history_id, compare = false) {
 const firstPost = document.getElementById('first_post');
 const secondPost = document.getElementById('second_post');
 
-window.compare = function (event, id) {
+window.compare = function (event, historyId) {
     event.stopPropagation();
-    const windowWidth = window.innerWidth;
-    if (windowWidth > 840) {
-    } else {
-        firstPost.style.display = "none";
-        document.querySelector(".switch-compare").style.display = 'block';
-    }
-    show(null, id, true);
-};
+    // Show the second_post aside
+    document.getElementById('second_post').style.display = 'block';
+
+    // Fetch the history post data (AJAX)
+    fetch('/dashboard/posts/history/' + POST_ID + '/' + historyId)
+        .then(response => response.json())
+        .then(data => {
+            // Fill in the #second_post fields
+            document.querySelector('#second_post .preview_title').innerText = data.title;
+            document.querySelector('#second_post .category').innerText = data.category ? data.category.name : '';
+            document.querySelector('#second_post .category').style.background = data.category ? data.category.backgroundColor + 'CC' : '';
+            document.querySelector('#second_post .category').style.color = data.category ? data.category.textColor : '';
+            document.querySelector('#second_post .reading-time').innerText = data.read_time + ' min';
+            document.querySelector('#second_post .output').src = data.image_path;
+            document.querySelector('#second_post .date').innerText = data.updated_at + ' by ' + data.user.firstname + ' ' + data.user.lastname;
+            document.querySelector('#second_post .post_body').innerHTML = data.body;
+            document.querySelector('#second_post .excerpt').innerText = data.excerpt;
+            document.querySelector('#second_post input[name="is_published"]').checked = !!data.is_published;
+        });
+}
 
 window.leaveCompare = function () {
     document.querySelector("#second_post").style.display = "none";

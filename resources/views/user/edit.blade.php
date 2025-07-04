@@ -45,7 +45,7 @@
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <input type="submit" value="Edytuj">
+                <input type="submit" value="Edit">
             </div>
         </form>
     </div>

@@ -114,21 +114,23 @@ class PostHistoryController extends Controller
             return redirect()->route('posts.edit', ['post' => $postid]);
         }
 
+        $imagePath = $input['image_path'] ?? $post->image_path ?? 'images/default-post.jpg';
+
         HistoryPost::create([
             'post_id' => $post->id,
             'title' => $post->title,
             'excerpt' => $post->excerpt,
             'body' => $post->body,
-            'image_path' => $post->image_path,
+            'image_path' => $imagePath,
             'slug' => $post->slug,
             'is_published' => $post->is_published,
             'additional_info' => $post->additional_info,
             'category_id' => $post->category_id,
             'read_time' => $post->read_time,
-            'change_user_id' => $post->change_user_id,
-            'changelog' => $post->changelog,
-            'created_at' => $post->updated_at,
-            'updated_at' => $post->updated_at,
+            'change_user_id' => $userId ?? null,
+            'changelog' => $changelog ?? null,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         $post->update([

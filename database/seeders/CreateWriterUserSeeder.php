@@ -18,8 +18,8 @@ class CreateWriterUserSeeder extends Seeder
         $user = User::updateOrCreate(
             ['email' => 'writer@db.com'],
             [
-                'firstname' => 'Cedric Joshua',
-                'lastname' => 'Palapuz',
+                'firstname' => 'Writer',
+                'lastname' => 'Writer',
                 'image_path' => '/images/avatars/user.png',
                 'password' => bcrypt('writer1234'),
             ]
