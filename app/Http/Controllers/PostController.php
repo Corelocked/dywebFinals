@@ -22,9 +22,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('category')
-            ->where('is_published', true)
             ->select('posts.*', DB::raw('(SELECT COUNT(*) FROM highlight_posts WHERE post_id = posts.id) > 0 AS is_highlighted'))
-            ->limit(20)
             ->orderBy('id', 'desc')->get();
 
         $highlighted_posts = HighlightPost::whereHas('post', function ($query) {
