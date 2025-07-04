@@ -22,8 +22,8 @@
                 <div class="top">
                     <div class="image">
                         <img src="{{ isset($post) ? ($post->image_path ? asset($post->image_path) : asset('images/picture3.jpg')) : asset('images/picture3.jpg') }}" id="output" alt="image">
-                        <input id="image" type="hidden" name="image">
-                        <div class="change_image"><i class="fa-solid fa-image"></i> Change</div>
+                        <input id="image" type="file" name="image" style="display:none;">
+                        <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
                     </div>
                     <div class="info">
                         <p class="info_title_length">Maximum 255 characters. <span class='current_title_length'>{{ isset($post) ? Str::length($post->title) : 5 }}/255</span></p>
@@ -76,7 +76,7 @@
                         <div class="category" style="background: {{ $category->backgroundColor }}CC; color: {{ $category->textColor }}" onclick="changeToCategory(event, {{ $category->id }})" data-id="{{ $category->id }}">{{ $category->name }}</div>
                     @endforeach
                 </div>
-                <input type="hidden" name="category_id" value="{{ isset($post) ? ($post->category ? $post->category->id : 0) : 0 }}"/>
+                <input type="hidden" name="category_id" id="category_id" value="{{ isset($post) ? ($post->category ? $post->category->id : '') : '' }}"/>
                 <input type="hidden" name="id_saved_post" value="{{ isset($post) ? ($post->id ? $post->id : 0) : 0 }}">
                 <div class="create_post_actions">
                     <input type="button" onClick="submitForm();" value="Publish">
@@ -104,5 +104,38 @@
             document.getElementById('hiddenArea').value = quill.root.innerHTML;
             document.getElementById('form').submit();
         }
+
+        // --- CATEGORY DEFAULT IMAGE LOGIC ---
+        // Map category IDs to default images
+        const categoryImages = {
+            @foreach($categories as $category)
+                @php
+                    $map = [
+                        'Health and Fitness' => 'images/categories/default-health.jpg',
+                        'Business and Finance' => 'images/categories/default-business.jpg',
+                    ];
+                    if (isset($map[$category->name])) {
+                        $img = asset($map[$category->name]);
+                    } else {
+                        $slug = Str::slug($category->name);
+                        $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                        $img = asset("images/categories/default-{$slug}.{$ext}");
+                    }
+                @endphp
+                {{ $category->id }}: "{{ $img }}",
+            @endforeach
+        };
+
+        // Listen for category change
+        document.querySelectorAll('.categories_list .category').forEach(function(el) {
+            el.addEventListener('click', function() {
+                const catId = this.getAttribute('data-id');
+                document.getElementById('category_id').value = catId;
+                // Only update if no image is selected
+                if (!document.getElementById('image').value) {
+                    document.getElementById('output').src = categoryImages[catId] || "{{ asset('images/picture3.jpg') }}";
+                }
+            });
+        });
     </script>
 </x-admin-layout>

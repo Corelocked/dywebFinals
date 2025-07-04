@@ -13,7 +13,7 @@
         @php($lastDate = $autoSave ? $autoSave->updated_at->format('Y-m-d') : null)
         @if ($autoSave)
             <div class="date">
-                Changes from {{ \Carbon\Carbon::parse($lastDate)->translatedFormat('d F, Y') }}
+                Changes from {{ \Carbon\Carbon::parse($lastDate)->format('d F, Y') }}
                 <div class="line-v"></div>
             </div>
             <a href="{{ route('history.show', [$id, $autoSave->id]) }}">
@@ -50,12 +50,12 @@
             @if ($autoSave)
                 <div class="date">
                     <div class="line-v"></div>
-                    Changes from {{ \Carbon\Carbon::parse($lastDate)->translatedFormat('d F, Y') }}
+                    Changes from {{ \Carbon\Carbon::parse($lastDate)->format('d F, Y') }}
                     <div class="line-v"></div>
                 </div>
             @else
                 <div class="date">
-                    Changes from {{ \Carbon\Carbon::parse($currentPost->updated_at)->translatedFormat('d F, Y') }}
+                    Changes from {{ \Carbon\Carbon::parse($currentPost->updated_at)->format('d F, Y') }}
                     <div class="line-v"></div>
                 </div>
             @endif
@@ -99,7 +99,7 @@
                     @php($lastDate = $postDate)
                     <div class="date">
                         <div class="line-v"></div>
-                        Changes from {{ \Carbon\Carbon::parse($postDate)->translatedFormat('d F, Y') }}
+                        Changes from {{ \Carbon\Carbon::parse($postDate)->format('d F, Y') }}
                         <div class="line-v"></div>
                     </div>
                 @elseif($post->additional_info == 2)

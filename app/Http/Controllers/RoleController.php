@@ -81,13 +81,19 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'name' => 'required|unique:roles,name',
-            'permission' => 'required',
+            'permissions' => 'required|array',
+        ], [], [
+            'name' => 'role name',
+            'permissions' => 'permissions'
         ]);
 
         $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+
+        $permissionIds = $request->input('permissions', []);
+        $permissionNames = Permission::whereIn('id', $permissionIds)->pluck('name')->toArray();
+        $role->syncPermissions($permissionNames);
 
         return redirect()->route('roles.index');
     }
@@ -151,9 +157,12 @@ class RoleController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $this->validate($request, [
-            'name' => 'required',
-            'permission' => 'required',
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'permissions' => 'required|array',
+        ], [], [
+            'name' => 'role name',
+            'permissions' => 'permissions'
         ]);
 
         $role = Role::findOrFail($id);
@@ -172,7 +181,9 @@ class RoleController extends Controller
         $role->name = $request->input('name');
         $role->save();
 
-        $role->syncPermissions($request->input('permission'));
+        $permissionIds = $request->input('permissions', []);
+        $permissionNames = Permission::whereIn('id', $permissionIds)->pluck('name')->toArray();
+        $role->syncPermissions($permissionNames);
 
         return redirect()->route('roles.index');
     }

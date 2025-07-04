@@ -4,12 +4,14 @@
     <div class="dashboard">
         <form action="{{ route('roles.store') }}" method="POST" id="create_role">
             <div class="welcome-2">Add Role</div>
-            @if($errors->any())
-                <ul class="form-errors">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
             <div class="body_form">
                 @csrf

@@ -22,7 +22,7 @@
             'Games' => 'images/categories/default-games.jpeg',
         ];
         $categoryName = $post->category->name ?? null;
-        $defaultImage = isset($categoryImages[$categoryName]) ? asset($categoryImages[$categoryName]) : asset('images/default.jpg');
+        $defaultImage = isset($categoryImages[$categoryName]) ? asset($categoryImages[$categoryName]) : asset('images/default-post.jpg');
         $image = $post->image_path ? asset($post->image_path) : $defaultImage;
     @endphp
 

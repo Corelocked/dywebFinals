@@ -18,21 +18,23 @@ window.savePost = function(submit = false){
     const title = document.querySelector('input[name=title]').value;
     const excerpt = document.querySelector('textarea[name=excerpt]').value;
     const body = document.querySelector(".ql-editor").innerHTML;
-    let image = document.querySelector('input[name=image]');
+    const imageInput = document.querySelector('input[type="file"][name="image"]');
     const is_published = document.querySelector('input[name=is_published]').checked ? 'on' : null;
     const category = parseInt(document.querySelector('input[name=category_id]').value);
     const token = document.querySelector('input[name=_token]').value;
-
     const id = parseInt(document.querySelector('input[name=id_saved_post]').value);
 
-    if(image || title !== '' || excerpt !== '' || body !== '<p><br></p>'){
+    if(title !== '' || excerpt !== '' || body !== '<p><br></p>'){
         let form = new FormData();
         form.append('title', title);
         form.append('excerpt', excerpt);
         form.append('body', body);
-        if (image && image.length !== 0 && !submit) {
-            form.append('image', image.value);
+
+        // Only append the file if a file is selected
+        if (imageInput && imageInput.files && imageInput.files.length > 0) {
+            form.append('image', imageInput.files[0]);
         }
+
         form.append('is_published', is_published);
         form.append('category_id', category);
         form.append('_token', token);
@@ -46,35 +48,31 @@ window.savePost = function(submit = false){
             body: form,
             headers: {
                 'Accept': 'application/json',
-                'enctype': 'multipart/form-data',
                 'X-CSRF-TOKEN': token,
             },
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Saved!'
-                });
-                if (image) {
-                    document.querySelector('input[name=image]').value = null;
-                }
-                if(id === 0) {
-                    redirectToNewUrl(data);
-                }
-            })
-            .catch(error => {
-                Toast.fire({
-                    icon: 'error',
-                    title: 'Not saved!'
-                });
-                console.error('Fetch Error: ', error);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            Toast.fire({
+                icon: 'success',
+                title: 'Saved!'
             });
+            if(id === 0) {
+                redirectToNewUrl(data);
+            }
+        })
+        .catch(error => {
+            Toast.fire({
+                icon: 'error',
+                title: 'Not saved!'
+            });
+            console.error('Fetch Error: ', error);
+        });
     }
 }
 
@@ -98,3 +96,13 @@ function submitForm() {
     document.getElementById('hiddenArea').value = quill.root.innerHTML;
     document.getElementById('form').submit();
 }
+
+document.getElementById('image').addEventListener('change', function(event) {
+    if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('output').src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+});

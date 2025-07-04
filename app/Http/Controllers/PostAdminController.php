@@ -264,6 +264,30 @@ class PostAdminController extends Controller
             $imagePath = asset('images/default-post.jpg'); // Make sure this image exists in public/images/
         }
 
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('images/posts', 'public');
+            $imagePath = 'storage/' . $imagePath;
+        } else {
+            $category = \App\Models\Category::find($request->category_id);
+            if ($category) {
+                $categoryImageMap = [
+                    'Health and Fitness' => 'images/categories/default-health.jpg',
+                    'Business and Finance' => 'images/categories/default-business.jpg',
+                    // ...other exceptions if needed
+                ];
+
+                if (isset($categoryImageMap[$category->name])) {
+                    $imagePath = $categoryImageMap[$category->name];
+                } else {
+                    $slug = \Illuminate\Support\Str::slug($category->name);
+                    $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                    $imagePath = "images/categories/default-{$slug}.{$ext}";
+                }
+            } else {
+                $imagePath = 'images/default-post.jpg';
+            }
+        }
+
         $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
