@@ -320,19 +320,52 @@ header .profile .notifications_count {
     font-size: 14px;
 }
 .article .post .body .title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    margin: 8px;
+    margin: 0 0 4px 0;
     word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 .article .post .body .short_body {
-    margin: 8px;
-    border-left: 3px solid #f1c40f;
-    padding-left: 6px;
-    font-size: 16px;
-    color: #808080;
+    margin: 8px 0 0 0;
+    font-size: 15px;
+    color: var(--text-color);
+    word-break: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show up to 3 lines */
+    line-clamp: 3; /* Standard property for compatibility */
+    -webkit-box-orient: vertical;
+    max-width: 100%;
 }
-
+.article .post .body .user {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-left: 3px solid #e74c3c;
+    padding-left: 6px;
+    margin: 8px 0;
+    min-width: 0;
+}
+.article .post .body .user img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin: 0;
+    flex-shrink: 0;
+}
+.article .post .body .user p {
+    margin-left: 10px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .article .post .body .user {
     width: calc(100% - 16px);
     margin: auto;
@@ -389,6 +422,7 @@ header .profile .notifications_count {
     margin: 3px;
     background: repeating-conic-gradient(#0000 0 35deg, #f6b93b 0 90deg);
     -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 3px),#000 0);
+    mask: radial-gradient(farthest-side,#0000 calc(100% - 3px),#000 0);
     border-radius: 50%;
 }
 @keyframes l18 {
