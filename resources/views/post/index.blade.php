@@ -12,7 +12,7 @@
                     <p class="head">Posts</p>
                     <i class="fa-solid fa-caret-up button_collapse"></i>
                 </div>
-                <div class="filtr_body">
+                <div class="filtr_body" style="display: block;">
                     <div class="view">
                         <p class="name">View</p>
                         <div class="buttons view">
