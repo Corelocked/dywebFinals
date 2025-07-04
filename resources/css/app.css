@@ -162,6 +162,7 @@ header .profile .notifications_count {
     flex-direction: row;
     box-shadow: none;
     display: none;
+    overflow: hidden;
 }
 .article .highlighted .post:hover {
     box-shadow: none;
