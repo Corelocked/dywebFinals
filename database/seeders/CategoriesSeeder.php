@@ -34,11 +34,13 @@ class CategoriesSeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            Category::create([
-                'name' => $category['name'],
-                'backgroundColor' => $category['backgroundColor'],
-                'textColor' => $category['textColor'],
-            ]);
+            \App\Models\Category::updateOrCreate(
+                ['name' => $category['name']],
+                [
+                    'backgroundColor' => $category['backgroundColor'],
+                    'textColor' => $category['textColor'],
+                ]
+            );
         }
     }
 }

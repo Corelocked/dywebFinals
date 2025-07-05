@@ -6,10 +6,12 @@
             <p>{{ $comment->created_at->format('d.m.Y H:i') }}</p>
         </div>
         <div class="comment_actions">
-            @can('comment-edit')
-                <i class="fa-solid fa-circle"></i>
-                <a href="{{ route('comments.edit', $comment->id) }}" class="edit">Edit</a>
-            @endcan
+            @auth
+                @if ($comment->user_id === Auth::id())
+                    <i class="fa-solid fa-circle"></i>
+                    <a href="{{ route('comments.edit', $comment->id) }}" class="edit">Edit</a>
+                @endif
+            @endauth
             @if(Auth::Check() && ($post->user_id == Auth::id() OR Auth::User()->hasPermissionTo('comment-super-list')))
                 @can('comment-delete')
                     <i class="fa-solid fa-circle"></i>

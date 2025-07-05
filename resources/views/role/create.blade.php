@@ -4,46 +4,47 @@
     <div class="dashboard">
         <form action="{{ route('roles.store') }}" method="POST" id="create_role">
             <div class="welcome-2">Add Role</div>
-            @if(count($errors) > 0)
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
             <div class="body_form">
                 @csrf
-                <label>Name</label>
-                <input type="text" name="name" autocomplete="off">
-                @php
-                    $last_label = '';
-                @endphp
+                <label for="role_name">Name</label>
+                <input type="text" name="name" id="role_name" autocomplete="off" value="{{ old('name') }}" required>
 
+                @php $last_label = ''; @endphp
+
+                <div class="permissions-group">
                 @foreach ($permissions as $permission)
-                    @php
-                        $label = explode('-', $permission->name);
-                    @endphp
+                    @php $label = explode('-', $permission->name); @endphp
                     @if ($label[0] != $last_label)
                         @if($loop->index != 0)
-                            </p>
+                                </div>
                             </div>
                         @endif
-                        <div class="role_container">
-                        <p class="role_label">{{ $label[0] }}</p>
-
-                        <p class="permissions">
-
-                        @php
-                            $last_label = $label[0];
-                        @endphp
+                        <div class="role_container" style="margin-bottom: 18px;">
+                            <p class="role_label" style="font-weight: bold; margin-bottom: 6px;">{{ ucfirst($label[0]) }}</p>
+                            <div class="permissions" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        @php $last_label = $label[0]; @endphp
                     @endif
-                    <label class="container">{{ $label[1] }}{{ isset($label[2]) ? '-' . $label[2] : '' }}
-                    <input type="checkbox" name="permission[]" value="{{ $permission->id }}">
-                    <span class="checkmark"></span>
+                    <label class="container" style="margin-right: 12px;">
+                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}">
+                        <span class="checkmark"></span>
+                        <span>{{ $label[1] }}{{ isset($label[2]) ? '-' . $label[2] : '' }}</span>
                     </label>
+                    @if($loop->last)
+                            </div>
+                        </div>
+                    @endif
                 @endforeach
                 </div>
-                <input type="submit" value="Create">
+                <input type="submit" value="Create" class="button primary-btn" style="margin-top: 18px;">
             </div>
         </form>
     </div>

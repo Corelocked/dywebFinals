@@ -28,7 +28,7 @@
                                 <p class="title">{{ $highlighted_post->post->title }}</p>
                                 <div class="user">
                                     <img src="{{ asset($highlighted_post->post->user->image_path) }}" alt="user">
-                                    <p><span class="name">{{ $highlighted_post->post->user->firstname . ' ' . $highlighted_post->post->user->lastname }}</span><br><span class="date"> {{ \Carbon\Carbon::parse($highlighted_post->post->created_at)->translatedFormat('d F, Y') }}</span></p>
+                                    <p><span class="name">{{ $highlighted_post->post->user->firstname . ' ' . $highlighted_post->post->user->lastname }}</span><br><span class="date"> {{ \Carbon\Carbon::parse($highlighted_post->post->created_at)->format('d F, Y') }}</span></p>
                                 </div>
                                 <p class="short_body">{{ $highlighted_post->post->excerpt }}</p>
                             </div>

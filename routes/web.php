@@ -14,14 +14,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Main Routes
-Route::get('/', function () {
-    if (auth()->check()) {
-        // Show the blog homepage for logged-in users
-        return app(\App\Http\Controllers\PostController::class)->index(request());
-    }
-    // Redirect guests to login
-    return redirect()->route('login');
-})->name('home');
+Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
@@ -49,6 +42,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('posts/{id}/auto-save', [PostAdminController::class, 'autoSave'])->name('post.auto-save');
     Route::delete('posts/{id}/reject', [PostAdminController::class, 'reject'])->name('post.reject');
     Route::post('posts/highlight', [PostAdminController::class, 'highlight'])->name('post.highlight');
+    Route::get('/dashboard/posts/{id}/edit', [PostAdminController::class, 'edit'])->name('posts.edit');
 
     // CATEGORIES
     Route::resource('categories', CategoryController::class, ['except' => 'show']);

@@ -35,8 +35,8 @@
                 <div class="top">
                     <div class="image">
                         <img src="{{ asset($post->image_path) }}" id="output" alt="image">
-                        <input id="image" type="hidden" name="image">
-                        <div class="change_image"><i class="fa-solid fa-image"></i> Change</div>
+                        <input id="image" type="file" name="image" style="display:none;">
+                        <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
                     </div>
                     <div class="info">
                         <p class="info_title_length">Max 255 characters. <span class='current_title_length'>{{ Str::length($post->title) }}/255</span></p>
@@ -105,4 +105,15 @@
             detectedAutoSave();
         </script>
     @endif
+    <script>
+    document.getElementById('image').addEventListener('change', function(event) {
+        if (event.target.files && event.target.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('output').src = e.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    });
+    </script>
 </x-admin-layout>

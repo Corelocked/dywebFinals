@@ -264,6 +264,31 @@ class PostAdminController extends Controller
             $imagePath = asset('images/default-post.jpg'); // Make sure this image exists in public/images/
         }
 
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('images/posts', 'public');
+            $imagePath = 'storage/' . $imagePath;
+        } else {
+            $category = \App\Models\Category::find($request->category_id);
+            if ($category) {
+                $categoryImageMap = [
+                    'Health and Fitness' => 'images/categories/default-health.jpg',
+                    'Business and Finance' => 'images/categories/default-business.jpg',
+                    'Technology' => 'images/categories/default-tech.jpg',
+                    // ...other exceptions if needed
+                ];
+
+                if (isset($categoryImageMap[$category->name])) {
+                    $imagePath = $categoryImageMap[$category->name];
+                } else {
+                    $slug = \Illuminate\Support\Str::slug($category->name);
+                    $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                    $imagePath = "images/categories/default-{$slug}.{$ext}";
+                }
+            } else {
+                $imagePath = 'images/default-post.jpg';
+            }
+        }
+
         $post = Post::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
@@ -489,22 +514,23 @@ class PostAdminController extends Controller
      */
     public function highlight(Request $request)
     {
-        if (! Auth::User()->hasPermissionTo('post-highlight')) {
+        // Only allow users with the 'Admin' role
+        if (!Auth::user()->hasRole('Admin')) {
             abort(403);
         }
 
         $post = Post::findOrFail($request->id);
 
-        $countHighlighted = HighlightPost::all()->count();
+        $countHighlighted = HighlightPost::count();
 
-        $highlighted_post = HighlightPost::where(['post_id' => $request->id])->get();
+        $highlighted_post = HighlightPost::where('post_id', $request->id)->first();
 
-        $isHighlighted = !empty($highlighted_post[0]);
+        $isHighlighted = !empty($highlighted_post);
 
         if ($isHighlighted) {
-            $highlighted_post[0]->delete();
+            $highlighted_post->delete();
         } else {
-            if ($countHighlighted >= 3) {
+            if ($countHighlighted >= 5) {
                 abort(403);
             }
 
@@ -512,7 +538,7 @@ class PostAdminController extends Controller
                 'post_id' => $post->id,
             ]);
 
-            if (Auth::Id() !== $post->user_id) {
+            if (Auth::id() !== $post->user_id) {
                 $post->user->notify(new PostNotification('INFO', 'The post has been highlighted.', "/post/$post->slug"));
             }
         }

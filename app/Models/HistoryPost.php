@@ -35,11 +35,4 @@ class HistoryPost extends Model
 
 }
 
-// When creating a HistoryPost
-$imagePath = $input['image_path'] ?? $post->image_path ?? asset('images/default-post.jpg');
 
-HistoryPost::create([
-
-    'image_path' => $imagePath,
-
-]);

@@ -48,8 +48,8 @@ window.savePost = function(submit = false) {
     form.append('title', title);
     form.append('excerpt', excerpt);
     form.append('body', body);
-    if (image && image.length !== 0 && !submit) {
-        form.append('image', image.value);
+    if (image && image.files && image.files.length > 0 && !submit) {
+        form.append('image', image.files[0]);
     }
     form.append('is_published', is_published);
     form.append('category_id', category);

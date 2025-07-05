@@ -22,9 +22,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('category')
-            ->where('is_published', true)
             ->select('posts.*', DB::raw('(SELECT COUNT(*) FROM highlight_posts WHERE post_id = posts.id) > 0 AS is_highlighted'))
-            ->limit(20)
             ->orderBy('id', 'desc')->get();
 
         $highlighted_posts = HighlightPost::whereHas('post', function ($query) {
@@ -108,19 +106,50 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all()); // <-- Add this as the first line
-
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
         ]);
+
+        // Handle image upload if present
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Example: store the uploaded image and get its path
+            $imagePath = $request->file('image')->store('images/posts', 'public');
+            $imagePath = 'storage/' . $imagePath;
+        } else {
+            $category = \App\Models\Category::find($request->category_id);
+            if ($category) {
+                $categoryImageMap = [
+                    'Health and Fitness' => 'images/categories/default-health.jpg',
+                    'Business and Finance' => 'images/categories/default-business.jpg',
+                    'Technology' => 'images/categories/default-tech.jpg',
+                    // ...other exceptions if needed
+                ];
+
+                if (isset($categoryImageMap[$category->name])) {
+                    $imagePath = $categoryImageMap[$category->name];
+                } else {
+                    $slug = \Illuminate\Support\Str::slug($category->name);
+                    $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                    $imagePath = "images/categories/default-{$slug}.{$ext}";
+                }
+            } else {
+                $imagePath = 'images/default-post.jpg';
+            }
+        }
 
         $post = Post::create([
             'title' => $request->title,
-            'body' => $request->body, // use 'body' here
-            // other fields...
+            'body' => $request->body,
+            'excerpt' => $request->excerpt,
+            'image_path' => $imagePath,
+            'slug' => \Illuminate\Support\Str::slug($request->title),
             'user_id' => auth()->id(),
-            'is_published' => false, // or true, depending on your logic
+            'is_published' => $request->has('is_published'),
+            'category_id' => $request->category_id,
+            'read_time' => $request->read_time ?? 0,
+            // add other fields as needed
         ]);
 
         return redirect()->route('posts.show', $post->slug)
@@ -135,13 +164,51 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
             // Add other fields and rules as needed
         ]);
 
         $post = Post::findOrFail($id);
+
+        // Handle image upload if present
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $imagePath = $request->file('image')->store('images/posts', 'public');
+            $imagePath = 'storage/' . $imagePath;
+        } elseif (!$post->image_path || $request->input('remove_image')) {
+            // No image uploaded and either no image exists or user wants to remove it
+            $category = \App\Models\Category::find($request->category_id);
+            if ($category) {
+                $categoryImageMap = [
+                    'Health and Fitness' => 'images/categories/default-health.jpg',
+                    'Business and Finance' => 'images/categories/default-business.jpg',
+                    'Technology' => 'images/categories/default-tech.jpg',
+                    // ...other exceptions if needed
+                ];
+
+                if (isset($categoryImageMap[$category->name])) {
+                    $imagePath = $categoryImageMap[$category->name];
+                } else {
+                    $slug = \Illuminate\Support\Str::slug($category->name);
+                    $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                    $imagePath = "images/categories/default-{$slug}.{$ext}";
+                }
+            } else {
+                $imagePath = 'images/default-post.jpg'; // fallback
+            }
+        } else {
+            // Keep the current image
+            $imagePath = $post->image_path;
+        }
+
         $post->update([
             'title' => $request->title,
             'body' => $request->body,
+            'excerpt' => $request->excerpt,
+            'image_path' => $imagePath,
+            'slug' => \Illuminate\Support\Str::slug($request->title),
+            'is_published' => $request->has('is_published'),
+            'category_id' => $request->category_id,
+            'read_time' => $request->read_time ?? 0,
             // Add other fields as needed
         ]);
 

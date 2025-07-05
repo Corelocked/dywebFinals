@@ -15,15 +15,17 @@ class CreateWriterUserSeeder extends Seeder
      */
     public function run()
     {
-        $user = User::create([
-            'firstname' => 'Cedric Joshua',
-            'lastname' => 'Palapuz',
-            'email' => 'writer@db.com',
-            'image_path' => '/images/avatars/user.png',
-            'password' => bcrypt('writer1234'),
-        ]);
+        $user = User::updateOrCreate(
+            ['email' => 'writer@db.com'],
+            [
+                'firstname' => 'Writer',
+                'lastname' => 'Writer',
+                'image_path' => '/images/avatars/user.png',
+                'password' => bcrypt('writer1234'),
+            ]
+        );
 
-        $role = Role::create(['name' => 'Writer']);
+        $role = Role::firstOrCreate(['name' => 'Writer'], ['guard_name' => 'web']);
 
         $permissions = [
             'post-list',

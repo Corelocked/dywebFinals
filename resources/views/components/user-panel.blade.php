@@ -1,5 +1,5 @@
 <div class="modal">
-    <div class="modal-profile">
+    <div class="modal-profile hidden" style="margin-top: 72px;">
         <span>Welcome!</span>
         <i class="fa-solid fa-circle-xmark close close-modal"></i>
         <div class="notifications">{{ $unreadNotifications }} <i class="fa-solid fa-angles-right"></i></div>
@@ -33,7 +33,7 @@
         </div>
         <div class="line-1"></div>
     </div>
-    <div class="modal-notifications">
+    <div class="modal-notifications hidden" style="margin-top: 72px;">
         <div class="back"><i class="fa-solid fa-angles-left"></i> <p>Back</p></div>
         @if (count($notifications) === 0)
             <div class="notification action">

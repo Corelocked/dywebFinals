@@ -117,14 +117,22 @@ class CommentController extends Controller
         $post = Post::where('slug', $post_slug)->firstOrFail();
 
         $request->validate([
-            'name' => 'required',
             'body' => 'required',
         ]);
 
+        if (Auth::check()) {
+            $name = Auth::user()->firstname . ' ' . Auth::user()->lastname;
+            $user_id = Auth::id();
+        } else {
+            $name = 'Anonymous User';
+            $user_id = null;
+        }
+
         $comment = Comment::create([
-            'name' => $request->name,
+            'name' => $name,
             'body' => $request->body,
             'post_id' => $post->id,
+            'user_id' => $user_id,
         ]);
 
         if (Auth::check() && Auth::Id() !== $post->user_id) {
@@ -142,17 +150,12 @@ class CommentController extends Controller
      * @param int $id
      * @return Factory|View
      */
-    public function edit(int $id)
+    public function edit(Comment $comment)
     {
-        $comment = Comment::findOrFail($id);
-
-        $post = Post::findOrFail($comment->post_id);
-
-        $this->checkUserIdPost($post);
-
-        return view('comment.edit', [
-            'comment' => $comment,
-        ]);
+        if ($comment->user_id !== auth()->id()) {
+            abort(403);
+        }
+        return view('comment.edit', compact('comment'));
     }
 
     /**
@@ -162,31 +165,14 @@ class CommentController extends Controller
      * @param int $id
      * @return RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(Request $request, Comment $comment)
     {
-        $request->validate([
-            'name' => 'required',
-            'body' => 'required',
-        ]);
-
-        $input = $request->all();
-
-        $path = parse_url($request->headers->get('referer'), PHP_URL_PATH);
-        $comment_id = explode('/', $path)[3];
-
-        if ($id != $comment_id) {
+        if ($comment->user_id !== auth()->id()) {
             abort(403);
         }
-
-        $comment = Comment::findOrFail($comment_id);
-
-        $post = Post::findOrFail($comment->post_id);
-
-        $this->checkUserIdPost($post);
-
-        $comment->update($input);
-
-        return redirect()->route('comments.index');
+        $request->validate(['body' => 'required']);
+        $comment->update(['body' => $request->body]);
+        return redirect()->route('comments.index')->with('success', 'Comment updated!');
     }
 
     /**
