@@ -123,6 +123,7 @@ class PostController extends Controller
                 $categoryImageMap = [
                     'Health and Fitness' => 'images/categories/default-health.jpg',
                     'Business and Finance' => 'images/categories/default-business.jpg',
+                    'Technology' => 'images/categories/default-tech.jpg',
                     // ...other exceptions if needed
                 ];
 
@@ -179,6 +180,8 @@ class PostController extends Controller
             if ($category) {
                 $categoryImageMap = [
                     'Health and Fitness' => 'images/categories/default-health.jpg',
+                    'Business and Finance' => 'images/categories/default-business.jpg',
+                    'Technology' => 'images/categories/default-tech.jpg',
                     // ...other exceptions if needed
                 ];
 

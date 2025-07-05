@@ -113,6 +113,7 @@
                     $map = [
                         'Health and Fitness' => 'images/categories/default-health.jpg',
                         'Business and Finance' => 'images/categories/default-business.jpg',
+                        'Technology' => 'images/categories/default-tech.jpg',
                     ];
                     if (isset($map[$category->name])) {
                         $img = asset($map[$category->name]);

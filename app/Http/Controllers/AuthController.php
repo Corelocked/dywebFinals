@@ -59,7 +59,7 @@ class AuthController extends Controller
             'lastname' => $request->lastname,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'image_path' => 'https://ui-avatars.com/api/?name=' . urlencode($request->firstname . ' ' . $request->lastname) . '&background=random',
+            'image_path' => 'images/avatars/user.png', // Use default avatar
         ]);
 
         $user->assignRole('Writer');

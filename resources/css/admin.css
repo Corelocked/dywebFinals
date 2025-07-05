@@ -1587,6 +1587,7 @@ aside.post__preview {
     margin: 3px;
     background: repeating-conic-gradient(#0000 0 35deg, #f6b93b 0 90deg);
     -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 3px),#000 0);
+    mask: radial-gradient(farthest-side,#0000 calc(100% - 3px),#000 0);
     border-radius: 50%;
 }
 @keyframes l18 {
