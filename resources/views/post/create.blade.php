@@ -88,9 +88,9 @@
     </div>
 
     <script>
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
+        // var quill = new Quill('#editor', {
+        //     theme: 'snow'
+        // });
 
         quill.on('text-change', function() {
             document.getElementById('hiddenArea').value = quill.root.innerHTML;
