@@ -354,12 +354,15 @@ class UserController extends Controller
                     'data' => $data,
                 ]);
             }
+            if ($request->profile_update) {
+                return redirect()->back()->with('success', 'Profile updated successfully!');
+            }
             if ($data['toEmail'] == 'admin@db.com' || ! isset($data['toEmail'])) {
                 return redirect()->back();
             }
         } else {
             if ($request->profile_update) {
-                return redirect()->back();
+                return redirect()->back()->with('success', 'Profile updated successfully!');
             }
         }
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostAdminController;
@@ -15,9 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 // Main Routes
 Route::get('/', [PostController::class, 'index'])->name('home');
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 
 // Auth Routes
@@ -61,6 +61,11 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
 
     // ROLES
     Route::resource('roles', RoleController::class);
+
+    // CONTACTS
+    Route::get('contacts', [ContactController::class, 'adminIndex'])->name('admin.contacts.index');
+    Route::get('contacts/{contact}', [ContactController::class, 'adminShow'])->name('admin.contacts.show');
+    Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
 
     // HISTORY POSTS
     Route::get('posts/{id}/edit/history', [PostHistoryController::class, 'index'])->name('history.index');
