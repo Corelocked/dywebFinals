@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostUpdateFormRequest;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostAdminController extends Controller
 {
@@ -238,36 +239,35 @@ class PostAdminController extends Controller
                 'required',
                 'integer',
                 'min:1'
-            ]
+            ],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
 
-        if (! isset($request->image)) {
-            if (isset($SavedPost->image_path)) {
-                $request['image_path'] = $SavedPost->image_path;
-                $request->except('image');
-
-                $validation += ['image_path' => 'required|string'];
-            } else {
-                $validation += ['image' => 'nullable|string'];
-            }
-        } else {
-            $validation += ['image' => 'nullable|string'];
-        }
-
-        $request->validate(
-            $validation
-        );
+        $request->validate($validation);
 
         // Set a default image if none is provided
-        $imagePath = $request->image ?? $request->image_path;
-        if (empty($imagePath)) {
-            $imagePath = asset('images/default-post.jpg'); // Make sure this image exists in public/images/
-        }
+        $imagePath = null;
+
+        // Debug logging
+        Log::info('PostAdminController store - image handling', [
+            'has_file' => $request->hasFile('image'),
+            'file_valid' => $request->hasFile('image') ? $request->file('image')->isValid() : false,
+            'saved_post_id' => $request->id_saved_post,
+            'saved_post_exists' => $SavedPost ? true : false,
+            'saved_post_image_path' => $SavedPost ? $SavedPost->image_path : null
+        ]);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Use uploaded image file
             $imagePath = $request->file('image')->store('images/posts', 'public');
             $imagePath = 'storage/' . $imagePath;
+            Log::info('Using uploaded image file: ' . $imagePath);
+        } elseif ($SavedPost && $SavedPost->image_path) {
+            // Use image from saved post
+            $imagePath = $SavedPost->image_path;
+            Log::info('Using saved post image: ' . $imagePath);
         } else {
+            // Fall back to category default image
             $category = \App\Models\Category::find($request->category_id);
             if ($category) {
                 $categoryImageMap = [
@@ -287,6 +287,13 @@ class PostAdminController extends Controller
             } else {
                 $imagePath = 'images/default-post.jpg';
             }
+            Log::info('Using category default image: ' . $imagePath);
+        }
+
+        // Ensure we have a valid image path
+        if (empty($imagePath)) {
+            $imagePath = 'images/default-post.jpg';
+            Log::info('Fallback to default image: ' . $imagePath);
         }
 
         $post = Post::create([

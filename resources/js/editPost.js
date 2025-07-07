@@ -13,6 +13,54 @@ document.addEventListener("DOMContentLoaded", function() {
     startTimer();
 });
 
+// Image upload functionality for edit form
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('image');
+    
+    if (imageInput) {
+        imageInput.addEventListener('change', function(event) {
+            if (event.target.files && event.target.files[0]) {
+                const file = event.target.files[0];
+                const outputImg = document.getElementById('output');
+                
+                if (outputImg) {
+                    // Show a simple loading state on the image itself
+                    outputImg.style.opacity = '0.5';
+                    outputImg.style.filter = 'blur(2px)';
+                }
+                
+                // Read file for preview
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // Set the preview image
+                    if (outputImg) {
+                        outputImg.src = e.target.result;
+                        outputImg.style.opacity = '1';
+                        outputImg.style.filter = 'none';
+                        outputImg.classList.add('image-preview-loading');
+                        
+                        // Remove loading class after image loads
+                        outputImg.onload = function() {
+                            outputImg.classList.remove('image-preview-loading');
+                        };
+                    }
+                };
+                
+                reader.onerror = function() {
+                    // Reset image state on error
+                    if (outputImg) {
+                        outputImg.style.opacity = '1';
+                        outputImg.style.filter = 'none';
+                    }
+                    console.error('Failed to load image');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+
 window.detectedAutoSave = function () {
     clearInterval(myTimer);
     Swal.fire({
@@ -44,12 +92,29 @@ window.savePost = function(submit = false) {
         category = parseInt(document.querySelector('input[name=category_id]').value),
         token = document.querySelector('input[name=_token]').value;
 
+    // Check if there's a file to upload
+    const hasFile = image && image.files && image.files.length > 0;
+
+    // Show upload progress if file is being uploaded and submitting
+    if (hasFile && submit) {
+        const saveButton = document.querySelector('button[type="submit"]') || document.querySelector('.save-button');
+        if (saveButton) {
+            // Show a simple loading state on the button instead of the large overlay
+            const originalText = saveButton.textContent;
+            saveButton.textContent = 'Updating...';
+            saveButton.disabled = true;
+            
+            // Store the original text for later restoration
+            saveButton.setAttribute('data-original-text', originalText);
+        }
+    }
+
     let form = new FormData();
     form.append('title', title);
     form.append('excerpt', excerpt);
     form.append('body', body);
     // Always include image if selected, whether submitting or auto-saving
-    if (image && image.files && image.files.length > 0) {
+    if (hasFile) {
         form.append('image', image.files[0]);
     }
     form.append('is_published', is_published);
@@ -73,12 +138,28 @@ window.savePost = function(submit = false) {
             return response.json();
         })
         .then(data => {
+            // Restore button state if it was modified
+            const saveButton = document.querySelector('button[type="submit"]') || document.querySelector('.save-button');
+            if (saveButton && saveButton.hasAttribute('data-original-text')) {
+                saveButton.textContent = saveButton.getAttribute('data-original-text');
+                saveButton.disabled = false;
+                saveButton.removeAttribute('data-original-text');
+            }
+            
             if (image) {
                 document.querySelector('input[name=image]').value = null;
             }
             document.querySelector(".post__create .post_options .auto-save-info").innerHTML = '<i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Saved: ' + getCurrentTime();
         })
         .catch(error => {
+            // Restore button state if it was modified
+            const saveButton = document.querySelector('button[type="submit"]') || document.querySelector('.save-button');
+            if (saveButton && saveButton.hasAttribute('data-original-text')) {
+                saveButton.textContent = saveButton.getAttribute('data-original-text');
+                saveButton.disabled = false;
+                saveButton.removeAttribute('data-original-text');
+            }
+            
             console.error('Fetch Error: ', error.message);
         });
 }

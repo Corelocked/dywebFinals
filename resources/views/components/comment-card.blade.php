@@ -1,30 +1,42 @@
-<div class="comment">
-    <div class="head">
-        <div class="basic_info">
-            <i class="fa-solid fa-caret-right"></i>
-            <p>{{ $comment->name }}</p>
-            <p>{{ $comment->created_at->format('d.m.Y H:i') }}</p>
-        </div>
-        <div class="comment_actions">
-            @auth
-                @if ($comment->user_id === Auth::id())
-                    <i class="fa-solid fa-circle"></i>
-                    <a href="{{ route('comments.edit', $comment->id) }}" class="edit">Edit</a>
-                @endif
-            @endauth
-            @if(Auth::Check() && ($post->user_id == Auth::id() OR Auth::User()->hasPermissionTo('comment-super-list')))
-                @can('comment-delete')
-                    <i class="fa-solid fa-circle"></i>
-                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" id="comment_delete_{{ $comment->id }}">
-                        @method('DELETE')
-                        @csrf
-                        <div class="delete" onClick="document.getElementById('comment_delete_{{ $comment->id }}').submit()">Delete</div>
-                    </form>
-                @endcan
-            @endif
+<div class="comment" data-comment-id="{{ $comment->id }}">
+    <div class="comment-avatar">
+        <div class="avatar-circle" title="{{ $comment->name }}">
+            {{ strtoupper(substr($comment->name, 0, 1)) }}
         </div>
     </div>
-    <div class="body">
-        {{ $comment->body }}
+    <div class="comment-content">
+        <div class="comment-header">
+            <div class="comment-meta">
+                <h4 class="comment-author">{{ $comment->name }}</h4>
+                <time class="comment-date" datetime="{{ $comment->created_at->toISOString() }}" title="{{ $comment->created_at->format('l, F j, Y \a\t g:i A') }}">
+                    {{ $comment->created_at->diffForHumans() }}
+                </time>
+            </div>
+            @if(Auth::check() && ($comment->user_id === Auth::id() || $post->user_id == Auth::id() || Auth::user()->hasPermissionTo('comment-super-list')))
+                <div class="comment-actions">
+                    @if ($comment->user_id === Auth::id())
+                        <a href="{{ route('comments.edit', $comment->id) }}" class="action-btn edit-btn" title="Edit comment">
+                            <i class="fa-solid fa-edit"></i>
+                            <span>Edit</span>
+                        </a>
+                    @endif
+                    @if($post->user_id == Auth::id() || Auth::user()->hasPermissionTo('comment-super-list'))
+                        @can('comment-delete')
+                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" id="comment_delete_{{ $comment->id }}" class="delete-form">
+                                @method('DELETE')
+                                @csrf
+                                <button type="button" class="action-btn delete-btn" title="Delete comment" onClick="if(confirm('Are you sure you want to delete this comment?')) document.getElementById('comment_delete_{{ $comment->id }}').submit()">
+                                    <i class="fa-solid fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </form>
+                        @endcan
+                    @endif
+                </div>
+            @endif
+        </div>
+        <div class="comment-body">
+            {!! nl2br(e($comment->body)) !!}
+        </div>
     </div>
 </div>

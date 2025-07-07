@@ -1065,6 +1065,9 @@ header .profile .notifications_count {
     flex-direction: column;
     width: 150px;
     align-items: center;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
 }
 .divided_minimal .posts .post.tile .actions {
     width: 100%;
@@ -1073,7 +1076,7 @@ header .profile .notifications_count {
     margin-bottom: 10px;
 }
 .divided_minimal .posts .post .actions form {
-    display: none;
+    display: none !important;
     width: 120px;
 }
 .divided_minimal .posts .post .actions .read_more,
@@ -1092,6 +1095,9 @@ header .profile .notifications_count {
     text-align: center;
     transition: all var(--duration-200) var(--ease-out);
     border: 1px solid transparent;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
 }
 .divided_minimal .posts .post.tile .actions .read_more,
 .divided_minimal .posts .post.tile .actions .edit,
@@ -2197,7 +2203,7 @@ html[data-theme='dark'] .image_modal {
     border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
-    min-height: calc(100vh - 110px);
+    /* Removed min-height to prevent unnecessary stretching */
 }
 
 .post__create::before {
@@ -2364,8 +2370,8 @@ aside.post__preview .ql-size-huge {
 .post__edit form {
     width: 100%;
     font-family: "Inter", sans-serif;
-    min-height: calc(100vh - 110px);
-    margin-bottom: 0;
+    /* Removed min-height to prevent unnecessary stretching */
+    margin-bottom: 60px; /* Ensure there's always space at the bottom */
     padding: var(--space-8);
     background: transparent;
     display: flex;
@@ -2401,8 +2407,9 @@ aside.post__preview .ql-size-huge {
     .post__create form div.post_options,
     .post__edit form div.post_options {
         grid-area: sidebar !important;
-        position: sticky !important;
-        top: var(--space-8) !important;
+        /* Removed sticky positioning that might cause issues */
+        position: relative !important;
+        top: 0 !important;
     }
     
     /* Force grid for both forms */
@@ -2847,6 +2854,7 @@ html[data-theme='dark'] .post__edit #form {
     object-fit: cover;
     border-radius: var(--radius-xl);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: opacity var(--duration-300) ease-in-out, filter var(--duration-300) ease-in-out;
 }
 
 html[data-theme='dark'] .post_container .image img {
@@ -3031,6 +3039,7 @@ html[data-theme='dark'] .post_body .ql-toolbar button:hover .ql-fill {
 /* Post Options */
 .post_options {
     padding: var(--space-8);
+    padding-bottom: calc(var(--space-8) + 60px); /* Extra bottom padding to ensure publish button is accessible */
     background: var(--surface-primary);
 }
 
@@ -3236,6 +3245,7 @@ html[data-theme='dark'] .categories_list .category:hover {
     display: flex;
     gap: var(--space-4);
     margin-top: var(--space-6);
+    margin-bottom: var(--space-4); /* Add bottom margin to ensure it's not clipped */
 }
 
 .create_post_actions input[type="button"],
@@ -3721,6 +3731,7 @@ html[data-theme='dark'] .saved_card:hover {
     
     .create_post_actions {
         flex-direction: column;
+        margin-bottom: var(--space-8); /* Extra bottom margin on mobile */
     }
     
     .saved_posts {
