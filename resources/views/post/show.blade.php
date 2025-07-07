@@ -105,6 +105,9 @@
         </div>
     </div>
 
+    <!-- Comments Enhancement Script -->
+    @vite('resources/js/comments.js')
+    
     <script>
         document.querySelectorAll('img:not(.profile_img)').forEach(function (img) {
             img.classList.add('img-enlargable');

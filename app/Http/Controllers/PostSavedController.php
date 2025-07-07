@@ -45,12 +45,29 @@ class PostSavedController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'body' => 'nullable|string|max:65535',
+            'excerpt' => 'nullable|string|max:500',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+        ]);
+
+        // Handle image upload if present
+        $imagePath = null;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Store the uploaded image and get its path
+            $uploadedPath = $request->file('image')->store('images/posts', 'public');
+            $imagePath = 'storage/' . $uploadedPath;
+        }
+
         $post = SavedPost::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'excerpt' => $request->excerpt,
             'body' => $request->body,
-            'image_path' => $request->image ?? null,
+            'image_path' => $imagePath,
             'is_published' => $request->is_published == 'on',
             'category_id' => $request->category_id ? $request->category_id : null,
             'read_time' => $this->calculateReadTime($request->body),
@@ -87,6 +104,15 @@ class PostSavedController extends Controller
 
         $this->checkUserIdPost($SavedPost);
 
+        // Validate the request
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'body' => 'nullable|string|max:65535',
+            'excerpt' => 'nullable|string|max:500',
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+        ]);
+
         $input['title'] = $request->title;
         $input['excerpt'] = $request->excerpt;
         $input['body'] = $request->body;
@@ -94,8 +120,11 @@ class PostSavedController extends Controller
         $input['category_id'] = $request->category_id ? $request->category_id : null;
         $input['read_time'] = $this->calculateReadTime($request->body);
 
-        if (!empty($request->image)) {
-            $input['image_path'] = $request->image;
+        // Handle image upload if present
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Store the uploaded image and get its path
+            $uploadedPath = $request->file('image')->store('images/posts', 'public');
+            $input['image_path'] = 'storage/' . $uploadedPath;
         }
 
         $SavedPost->update($input);

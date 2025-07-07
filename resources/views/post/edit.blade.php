@@ -1,9 +1,8 @@
 <x-admin-layout :edit="true">
     @section('scripts')
-        <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-        <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-        @vite(['resources/js/post.js'])
-        @vite(['resources/js/editPost.js'])
+        <script src="//cdn.quilljs.com/1.3.7/quill.js"></script>
+        <link href="//cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+        @vite(['resources/js/fileUploadLoader.js', 'resources/js/post.js', 'resources/js/editPost.js'])
     @endsection
 
     <x-dashboard-navbar route="{{ route('posts.index') }}"/>
@@ -22,7 +21,7 @@
                         </ul>
                     @endif
                     <div class="top">
-                        <div class="image">
+                        <div class="image image-upload-container">
                             <img src="{{ $post->image_path ? asset($post->image_path) : asset('images/picture3.jpg') }}" id="output" alt="image">
                             <input id="image" type="file" name="image" style="display:none;">
                             <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>

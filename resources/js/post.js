@@ -45,16 +45,45 @@ var toolbarOptions = [
     [{ size: ["small", false, "large", "huge"] }],
 ];
 
-window.quill = new Quill("#editor", {
-    modules: {
-        toolbar: toolbarOptions,
-    },
-    theme: "snow",
-});
+// Wait for Quill to be available before initializing
+function initializeQuill() {
+    if (typeof Quill === 'undefined') {
+        console.log('Waiting for Quill to load...');
+        setTimeout(initializeQuill, 100);
+        return;
+    }
 
-let hiddenArea = document.getElementById('hiddenArea');
+    try {
+        window.quill = new Quill("#editor", {
+            modules: {
+                toolbar: toolbarOptions,
+            },
+            theme: "snow",
+        });
 
-quill.setContents(quill.clipboard.convert(hiddenArea.value));
+        let hiddenArea = document.getElementById('hiddenArea');
+        if (hiddenArea && hiddenArea.value) {
+            quill.setContents(quill.clipboard.convert(hiddenArea.value));
+        }
+
+        // Set up image handler
+        quill.getModule("toolbar").addHandler("image", () => {
+            range = quill.getSelection();
+            imageLoadMode = 'body';
+            showSelectImageModal();
+        });
+
+    } catch (error) {
+        console.error('Error initializing Quill:', error);
+    }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeQuill);
+} else {
+    initializeQuill();
+}
 
 const selectImageModal = document.querySelector(".select-image");
 const browseImages = document.querySelector(".browse-images");
@@ -62,12 +91,6 @@ const optionsImageModal = selectImageModal.querySelectorAll(".option");
 const imageInput = document.querySelector("input[name=image]");
 let range = null;
 let imageLoadMode = null;
-
-quill.getModule("toolbar").addHandler("image", () => {
-    range = quill.getSelection();
-    imageLoadMode = 'body';
-    showSelectImageModal();
-});
 
 window.showSelectImageModal = function () {
     document.body.style.overflow = "hidden";

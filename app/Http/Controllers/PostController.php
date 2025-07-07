@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -108,34 +109,62 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string',
+            'body' => 'required|string|max:65535', // Increased limit for longer posts
+            'excerpt' => 'nullable|string|max:500',
             'category_id' => 'required|exists:categories,id',
+            'read_time' => 'nullable|integer|min:0|max:999',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+        ]);
+
+        // Debug: Log what we're receiving
+        Log::info('Post creation request', [
+            'has_file' => $request->hasFile('image'),
+            'file_valid' => $request->hasFile('image') ? $request->file('image')->isValid() : false,
+            'category_id' => $request->category_id,
+            'saved_post_id' => $request->id_saved_post
         ]);
 
         // Handle image upload if present
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            // Example: store the uploaded image and get its path
+            // Store the uploaded image and get its path
             $imagePath = $request->file('image')->store('images/posts', 'public');
             $imagePath = 'storage/' . $imagePath;
+            Log::info('Using uploaded image: ' . $imagePath);
         } else {
-            $category = \App\Models\Category::find($request->category_id);
-            if ($category) {
-                $categoryImageMap = [
-                    'Health and Fitness' => 'images/categories/default-health.jpg',
-                    'Business and Finance' => 'images/categories/default-business.jpg',
-                    'Technology' => 'images/categories/default-tech.jpg',
-                    // ...other exceptions if needed
-                ];
-
-                if (isset($categoryImageMap[$category->name])) {
-                    $imagePath = $categoryImageMap[$category->name];
-                } else {
-                    $slug = \Illuminate\Support\Str::slug($category->name);
-                    $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
-                    $imagePath = "images/categories/default-{$slug}.{$ext}";
-                }
+            // Check if there's a saved post with an existing image
+            $savedPostId = $request->id_saved_post;
+            $savedPost = null;
+            
+            if ($savedPostId && $savedPostId != 0) {
+                $savedPost = \App\Models\SavedPost::find($savedPostId);
+            }
+            
+            if ($savedPost && $savedPost->image_path) {
+                // Use the image from the saved post
+                $imagePath = $savedPost->image_path;
+                Log::info('Using saved post image: ' . $imagePath);
             } else {
-                $imagePath = 'images/default-post.jpg';
+                // Fall back to category default image
+                $category = \App\Models\Category::find($request->category_id);
+                if ($category) {
+                    $categoryImageMap = [
+                        'Health and Fitness' => 'images/categories/default-health.jpg',
+                        'Business and Finance' => 'images/categories/default-business.jpg',
+                        'Technology' => 'images/categories/default-tech.jpg',
+                        // ...other exceptions if needed
+                    ];
+
+                    if (isset($categoryImageMap[$category->name])) {
+                        $imagePath = $categoryImageMap[$category->name];
+                    } else {
+                        $slug = \Illuminate\Support\Str::slug($category->name);
+                        $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                        $imagePath = "images/categories/default-{$slug}.{$ext}";
+                    }
+                } else {
+                    $imagePath = 'images/default-post.jpg';
+                }
+                Log::info('Using category default image: ' . $imagePath);
             }
         }
 
@@ -152,6 +181,12 @@ class PostController extends Controller
             // add other fields as needed
         ]);
 
+        // Clean up: Delete the saved post if it exists since we've now created the final post
+        if (isset($savedPost) && $savedPost) {
+            $savedPost->delete();
+            Log::info('Deleted saved post with ID: ' . $savedPost->id);
+        }
+
         return redirect()->route('posts.show', $post->slug)
             ->with('success', 'Post created successfully.');
     }
@@ -163,9 +198,11 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string',
+            'body' => 'required|string|max:65535', // Increased limit for longer posts
+            'excerpt' => 'nullable|string|max:500',
             'category_id' => 'required|exists:categories,id',
-            // Add other fields and rules as needed
+            'read_time' => 'nullable|integer|min:0|max:999',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
         ]);
 
         $post = Post::findOrFail($id);

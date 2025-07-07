@@ -1,6 +1,6 @@
 <x-admin-layout>
     @section('scripts')
-        @vite(['resources/js/filtr.js'])
+        @vite(['resources/js/filtr.js', 'resources/js/postList.js'])
     @endsection
 
     <x-dashboard-navbar route="{{ route('dashboard') }}"/>
