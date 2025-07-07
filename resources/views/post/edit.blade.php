@@ -24,43 +24,44 @@
             @csrf
             @method('PATCH')
             <div id="content" data-image-url="{{route('images.store')}}">
-            <div class="post_container">
-                @if(count($errors) > 0)
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-                <div class="top">
-                    <div class="image">
-                        <img src="{{ asset($post->image_path) }}" id="output" alt="image">
-                        <input id="image" type="file" name="image" style="display:none;">
-                        <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
-                    </div>
-                    <div class="info">
-                        <p class="info_title_length">Max 255 characters. <span class='current_title_length'>{{ Str::length($post->title) }}/255</span></p>
-                        <input type="text" name="title" class="title" autocomplete="off" value="{{ $post->title }}">
-                        <div class="reading-info">
-                            <p class="reading-text">Reading time: </p>
-                            <i class="fa-solid fa-clock"></i>
-                            <p class="reading-time">{{ $post->read_time ? $post->read_time : 0 }} min</p>
-                            <button type="button" class="calculate" onclick="calculateReadTime();">Calculate</button>
+                <div class="post_container">
+                    @if(count($errors) > 0)
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <div class="top">
+                        <div class="image">
+                            <img src="{{ asset($post->image_path) }}" id="output" alt="image">
+                            <input id="image" type="file" name="image" style="display:none;">
+                            <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
                         </div>
-                        <p class="date">{{ $post->updated_at->format('d.m.Y') }} by {{ $post->user->firstname . ' ' . $post->user->lastname }}</p>
+                        <div class="info">
+                            <p class="info_title_length">Max 255 characters. <span class='current_title_length'>{{ Str::length($post->title) }}/255</span></p>
+                            <input type="text" name="title" class="title" autocomplete="off" value="{{ $post->title }}">
+                            <div class="reading-info">
+                                <p class="reading-text">Reading time: </p>
+                                <i class="fa-solid fa-clock"></i>
+                                <p class="reading-time">{{ $post->read_time ? $post->read_time : 0 }} min</p>
+                                <button type="button" class="calculate" onclick="calculateReadTime();">Calculate</button>
+                            </div>
+                            <p class="date">{{ $post->updated_at->format('d.m.Y') }} by {{ $post->user->firstname . ' ' . $post->user->lastname }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="post_body">
-                <div id="editor">
+                <div class="post_body">
+                    <div id="editor">
 
-                </div>
+                    </div>
 
-                <textarea name="body" style="display: none" id="hiddenArea">{!!$post->body !!}</textarea>
+                    <textarea name="body" style="display: none" id="hiddenArea">{!!$post->body !!}</textarea>
 
-                <div class="actions">
-                    <a><i class="fa-solid fa-arrow-left"></i> Back to home page</a>
-                    <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
+                    <div class="actions">
+                        <a><i class="fa-solid fa-arrow-left"></i> Back to home page</a>
+                        <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="post_options">

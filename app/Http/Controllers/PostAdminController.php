@@ -364,11 +364,16 @@ class PostAdminController extends Controller
             'body' => 'required',
             'category_id' => 'required|numeric|min:1',
         ];
-        if (!empty($request->image)) {
+        
+        // Handle both file upload and string URL for image
+        if ($request->hasFile('image')) {
+            $validation += ['image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'];
+        } elseif (!empty($request->image)) {
             $validation += ['image' => 'required|string'];
         } else {
             $validation += ['image' => 'nullable'];
         }
+        
         $request->validate($validation);
 
         $post = Post::where('id', $id);
@@ -413,11 +418,19 @@ class PostAdminController extends Controller
 
         $autoSave = HistoryPost::where('post_id', $id)->where('additional_info', 2)->first();
 
-        if (!empty($request->image)) {
+        // Handle image upload (file) or image URL (string)
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            // Handle file upload
+            $imagePath = $request->file('image')->store('images/posts', 'public');
+            $input['image_path'] = 'storage/' . $imagePath;
+            $changelog[] = 'Image';
+        } elseif (!empty($request->image)) {
+            // Handle string URL from image picker
             $input['image_path'] = $request->image;
-            $changelog[] = 'Obraz';
+            $changelog[] = 'Image';
         }
-        if (!empty($autoSave) && empty($request->image) && $post->image_path !== $autoSave->image_path) {
+        
+        if (!empty($autoSave) && empty($request->image) && !$request->hasFile('image') && $post->image_path !== $autoSave->image_path) {
             $input['image_path'] = $autoSave->image_path;
             $changelog[] = 'Obraz';
         }

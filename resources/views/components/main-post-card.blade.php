@@ -40,11 +40,11 @@
         </div>
         <p class="title">{{ $post->title }}</p>
         <div class="user">
-            <img src="{{ asset($post->user->image_path) }}" alt="user">
-            <p>
-                <span class="name">{{ $post->user->firstname . ' ' . $post->user->lastname }}</span><br>
-                <span class="date"> {{ \Carbon\Carbon::parse($post->created_at)->format('d F, Y') }}</span>
-            </p>
+            <img src="{{ asset($post->user->image_path) }}" alt="{{ $post->user->firstname }}'s avatar">
+            <div class="user-info">
+                <div class="name">{{ $post->user->firstname . ' ' . $post->user->lastname }}</div>
+                <div class="date">{{ \Carbon\Carbon::parse($post->created_at)->format('d F, Y') }}</div>
+            </div>
         </div>
         <p class="short_body">{{ $post->excerpt }}</p>
     </div>

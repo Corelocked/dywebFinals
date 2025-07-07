@@ -17,7 +17,7 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->middleware('permission:comment-list', ['only' => ['index']]);
-        $this->middleware('permission:comment-edit', ['only' => ['edit', 'update']]);
+        //$this->middleware('permission:comment-edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:comment-delete', ['only' => ['destroy']]);
     }
 
@@ -152,9 +152,13 @@ class CommentController extends Controller
      */
     public function edit(Comment $comment)
     {
+        $user = Auth::user();
+        
+        // Only allow the comment owner to edit, not admins or moderators
         if ($comment->user_id !== auth()->id()) {
-            abort(403);
+            abort(403, 'You can only edit your own comments.');
         }
+        
         return view('comment.edit', compact('comment'));
     }
 
@@ -167,9 +171,13 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+        $user = Auth::user();
+        
+        // Only allow the comment owner to update, not admins or moderators
         if ($comment->user_id !== auth()->id()) {
-            abort(403);
+            abort(403, 'You can only edit your own comments.');
         }
+        
         $request->validate(['body' => 'required']);
         $comment->update(['body' => $request->body]);
         return redirect()->route('comments.index')->with('success', 'Comment updated!');
@@ -184,21 +192,21 @@ class CommentController extends Controller
     public function destroy(int $id)
     {
         $comment = Comment::findOrFail($id);
-
         $post = Post::findOrFail($comment->post_id);
-
-        $this->checkUserIdPost($post);
+        $user = Auth::user();
+        
+        // Allow deletion if:
+        // 1. User is the comment owner
+        // 2. User is the post owner
+        // 3. User has admin/moderator permissions (comment-super-list)
+        if ($comment->user_id !== Auth::id() && 
+            $post->user_id !== Auth::id() && 
+            (!$user || !$user->hasPermissionTo('comment-super-list'))) {
+            abort(403, 'You do not have permission to delete this comment.');
+        }
 
         $comment->delete();
 
         return redirect()->back();
     }
-
-    private function checkUserIdPost(Post $post): void
-{
-    $user = Auth::user();
-    if ($post->user_id != Auth::id() && (! $user || ! $user->hasPermissionTo('comment-super-list'))) {
-        abort(403);
-    }
-}
 }

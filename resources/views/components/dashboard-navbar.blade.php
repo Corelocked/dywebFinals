@@ -1,22 +1,35 @@
-<header style="position: fixed; top: 0; left: 0; width: 100%; height: 60px; z-index: 100; background: var(--bar-color); display: flex; align-items: center; overflow: hidden;">
-    <!-- Back button on the left -->
-    <div style="flex: 1; display: flex;">
-        <a href="{{ $route }}" class="back-btn" style="margin-left: 20px; display: flex; align-items: center;">
-            <i class="fa-solid fa-left-long"></i> Back
+<header class="dashboard-header">
+    <div class="header-content">
+        <!-- Back Navigation -->
+        <div class="back-navigation">
+            <a href="{{ $route }}" class="back-btn">
+                <i class="fa-solid fa-left-long"></i>
+                <span>Back</span>
+            </a>
+        </div>
+        
+        <!-- Brand/Logo -->
+        <a href="{{ route('home') }}" class="logo">
+            <i class="fas fa-feather-alt"></i>
+            BlogShark
         </a>
-    </div>
-    <!-- Centered logo -->
-    <div style="flex: 1; display: flex; justify-content: center;">
-        <a href="{{ route('home') }}" class="navbar-logo" style="display: block;">
-            <img src="{{ asset('images/banner_logo.png') }}" alt="Logo" style="height:60px; width:auto; display:block;">
-        </a>
-    </div>
-    <!-- Profile on the right -->
-    <div style="flex: 1; display: flex; justify-content: flex-end;">
-        <div class="profile open-profile-panel" style="margin-right: 20px; display: flex; align-items: center; cursor: pointer;">
-            <img src="{{ asset(Auth::user()->image_path) }}" alt="profile" class="profile_img" style="height:40px; width:40px; border-radius:50%;">
-            <i class="fa-solid fa-angles-down"></i>
-            <span class="notifications_count">{{ $unreadNotifications }}</span>
+        
+        <!-- User Section -->
+        <div class="header-actions">
+            <!-- Notifications -->
+            <button class="notification-btn open-user-panel" title="Notifications">
+                <i class="fa-regular fa-bell"></i>
+                @if($unreadNotifications > 0)
+                    <span class="notification-badge">{{ $unreadNotifications }}</span>
+                @endif
+            </button>
+            
+            <!-- Profile -->
+            <button class="profile open-profile-panel" title="Profile Menu">
+                <img src="{{ asset(Auth::user()->image_path) }}" alt="Profile" class="profile-avatar">
+                <span class="profile-name">{{ Auth::user()->firstname }}</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
         </div>
     </div>
 </header>
