@@ -3,6 +3,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap");
 
+/* Import all app.css styles first */
+@import "app.css";
+
 * {
     padding: 0;
     margin: 0;
@@ -249,19 +252,26 @@ html[data-theme='dark'] .dashboard-header::before {
     text-decoration: none;
     font-weight: 600;
     font-size: var(--text-sm);
-    transition: all 0.2s ease;
+    /* transition: all 0.2s ease; */
 }
 
 .dashboard-header .back-btn:hover {
     background: var(--surface-hover);
     border-color: var(--primary-300);
     color: var(--primary-600);
-    transform: translateY(-1px);
+    /* transform: translateY(-1px); */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 html[data-theme='dark'] .dashboard-header .back-btn:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-nav:has(.back-btn:hover) {
+  background: var(--surface-hover); /* Example: change background */
+  border-color: var(--border-hover); /* Optional: change border */
+  box-shadow: var(--shadow-md); /* Optional: add shadow */
+  transition: all var(--duration-200) var(--ease-out);
 }
 
 .dashboard-header .logo {
@@ -369,6 +379,7 @@ html[data-theme='dark'] .dashboard-header .profile:hover {
     font-weight: 700;
     border: 2px solid var(--surface-primary);
 }
+
 /* Post Edit Header */
 header.header_post_edit {
     display: flex;
@@ -463,8 +474,8 @@ header a {
     float: left;
     margin: 0;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    /* top: 50%; */
+    /* transform: translateY(-50%); */
     color: var(--text-primary);
     text-decoration: none;
     font-weight: 500;
@@ -555,11 +566,37 @@ header .profile .notifications_count {
 
 .filter {
     float: left;
-    background: var(--bar-color);
+    width: 18%;
+    margin-right: 2%;
+    background: var(--surface-primary);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-lg);
     color: var(--text-color);
-    width: 20%;
-    padding: 10px 0;
+    padding: var(--space-4);
     font-family: "Poppins", sans-serif;
+    height: fit-content;
+    overflow: visible;
+    position: relative;
+}
+
+.filter::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(var(--primary-500), 0.03) 0%,
+        transparent 50%,
+        rgba(var(--primary-500), 0.03) 100%
+    );
+    pointer-events: none;
+    z-index: -1;
 }
 .filter .filtr_body {
     overflow: hidden;
@@ -571,7 +608,7 @@ header .profile .notifications_count {
 }
 .filter .filtr_body .buttons,
 .filter .filtr_body .inputs {
-    padding: 12px 0;
+    padding: var(--space-2) 0;
 }
 .filter .filtr_body .buttons.view {
     display: flex;
@@ -588,22 +625,33 @@ header .profile .notifications_count {
     color: var(--error-500);
 }
 .filter .filtr_body input {
-    width: calc(100% - 10px);
-    padding: 8px;
-    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    margin: 0 0 var(--space-3) 0;
     display: block;
-    border: 1px solid var(--line-color);
-    background: var(--bar-color);
-    color: var(--text-color);
-    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background: var(--surface-elevated);
+    color: var(--text-primary);
+    border-radius: var(--radius-lg);
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: var(--text-sm);
     font-family: "Poppins", sans-serif;
+    transition: all var(--duration-200) var(--ease-out);
+}
+
+.filter .filtr_body input:focus {
+    outline: none;
+    border-color: var(--primary-300);
+    box-shadow: 0 0 0 3px rgba(var(--primary-500), 0.1);
+    background: var(--surface-primary);
 }
 .filter .filtr_body .name{
-    color: var(--filtr-header-color);
-    font-size: 16px;
-    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 var(--space-3) 0;
 }
 .filter .filtr_collapse {
     display: flex;
@@ -632,10 +680,23 @@ header .profile .notifications_count {
 .filter .filter-button {
     display: flex;
     align-items: center;
-    border-radius: 10px;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     cursor: pointer;
+    transition: all var(--duration-200) var(--ease-out);
+    margin-bottom: var(--space-2);
     -webkit-user-select: none;
     user-select: none;
+}
+
+.filter .filter-button:hover {
+    background: var(--surface-hover);
+    border-color: var(--primary-200);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
 }
 .filter .sort_buttons .filter-button {
     margin-bottom: 8px;
@@ -731,15 +792,11 @@ header .profile .notifications_count {
     padding: 5px;
 }
 .divided_minimal {
-    background: var(--bar-color);
-    border-radius: 10px;
-    padding: 20px;
+    background: var(--background-color);
+    padding: var(--space-6);
     width: calc(100% - 20px);
     margin: 94px 5px 10px 10px;
     min-height: calc(100vh - 80px - 30px);
-    -webkit-box-shadow: 0px -10px 40px 6px var(--shadow-color);
-    -moz-box-shadow: 0px -10px 40px 6px var(--shadow-color);
-    box-shadow: 0px -10px 40px 6px var(--shadow-color);
 }
 .dashboard {
     display: flex;
@@ -761,15 +818,11 @@ header .profile .notifications_count {
 .roles,
 .categories,
 .images{
-    background: var(--bar-color);
-    border-radius: 10px;
-    padding: 20px;
+    background: var(--background-color);
+    padding: var(--space-6);
     width: calc(100% - 20px);
     margin: 94px 10px 10px 10px;
     min-height: calc(100vh - 80px - 30px);
-    -webkit-box-shadow: 0px 0px 40px 6px var(--shadow-color);
-    -moz-box-shadow: 0px 0px 40px 6px var(--shadow-color);
-    box-shadow: 0px 0px 40px 6px var(--shadow-color);
 }
 .dashboard #dashboard__image {
     width: 352px;
@@ -857,18 +910,26 @@ header .profile .notifications_count {
     margin-bottom: 5px;
 }
 .divided_minimal .posts {
-    position: relative;
-    height: calc(100% - 50px);
-    width: 100%;
+    position: relative !important;
+    width: 100% !important;
+    min-height: 400px !important;
+    display: block !important;
 }
 .divided_minimal .posts-list {
     display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: calc(80% - 20px);
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: stretch;
+    width: 76%;
     font-family: "Poppins", sans-serif;
     float: right;
+    padding: var(--space-6);
+    background: var(--surface-primary);
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--shadow-lg);
 }
 
 /*section .container .recent_post_text {*/
@@ -893,16 +954,19 @@ header .profile .notifications_count {
     border-radius: 10px 10px 0 0;
 }
 .divided_minimal .posts .post {
-    display: flex;
+    display: flex !important;
     align-items: center;
     width: 100%;
-    -webkit-box-shadow: 0px 0px 25px -6px var(--shadow-color);
-    -moz-box-shadow: 0px 0px 25px -6px var(--shadow-color);
-    box-shadow: 0px 0px 25px -6px var(--shadow-color);
-    padding: 8px;
-    border-radius: 15px;
-    transition: 0.1s all ease;
-    margin-top: 10px;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+    transition: all var(--duration-300) var(--ease-out);
+    margin-top: 0;
+    overflow: hidden;
+    position: relative;
+    cursor: default !important;
 }
 .divided_minimal .posts .post.tile{
     width: 320px;
@@ -911,16 +975,15 @@ header .profile .notifications_count {
     padding: 0;
 }
 .divided_minimal .posts .post:hover {
-    transform: scale(1.01);
-    -webkit-box-shadow: 0px 0px 25px 5px var(--shadow-color);
-    -moz-box-shadow: 0px 0px 25px 5px var(--shadow-color);
-    box-shadow: 0px 0px 25px 5px var(--shadow-color);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-200);
 }
 .divided_minimal .posts .post .body {
     color: var(--text-color);
-    width: calc(100% - 128px - 150px);
-    padding: 5px;
-    display: flex;
+    width: calc(100% - 128px - 150px) !important;
+    padding: 5px !important;
+    display: flex !important;
     justify-content: center;
     flex-direction: column;
     margin: 5px 0;
@@ -1018,16 +1081,17 @@ header .profile .notifications_count {
 .divided_minimal .posts .post .actions .delete,
 .divided_minimal .posts .post .actions .highlight{
     margin: 4px 8px;
-    padding: 4px;
+    padding: var(--space-2) var(--space-3);
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     color: #fff;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: var(--radius-lg);
     min-width: 120px;
     text-align: center;
-    transition: 0.1s ease all;
+    transition: all var(--duration-200) var(--ease-out);
+    border: 1px solid transparent;
 }
 .divided_minimal .posts .post.tile .actions .read_more,
 .divided_minimal .posts .post.tile .actions .edit,
@@ -1043,12 +1107,16 @@ header .profile .notifications_count {
 }
 .divided_minimal .posts .post .actions .read_more:hover {
     background: var(--success-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 .divided_minimal .posts .post .actions .edit {
     background: var(--primary-500);
 }
 .divided_minimal .posts .post .actions .edit:hover {
     background: var(--primary-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 .divided_minimal .posts .post .actions .delete {
     background: var(--error-500);
@@ -1062,6 +1130,8 @@ header .profile .notifications_count {
 }
 .divided_minimal .posts .post .actions .delete:hover {
     background: var(--error-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 .divided_minimal .posts .post .actions .highlight {
     background: var(--warning-500);
@@ -1086,13 +1156,16 @@ table img {
     border-radius: 50%;
 }
 table {
-    /*border: 1px solid #dfecf0;*/
+    border: 1px solid var(--border-color);
     border-collapse: collapse;
     margin: 10px 0 0 0;
     padding: 0;
     width: 100%;
-    /* table-layout: fixed; */
     font-family: "Poppins", sans-serif;
+    background: var(--surface-elevated);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
 }
 
 table caption {
@@ -1103,8 +1176,13 @@ table caption {
 table tr {
     color: var(--text-color);
     background: var(--bar-color);
-    border-bottom: 1px solid var(--line-color);
+    border-bottom: 1px solid var(--border-color);
     padding: 0.35em;
+    transition: background var(--duration-200) var(--ease-out);
+}
+
+table tr:hover {
+    background: var(--surface-hover);
 }
 table tr .box{
     display: inline-block;
@@ -1123,6 +1201,10 @@ table th {
     font-size: 0.85em;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    color: var(--text-primary);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
 }
 
 table td {
@@ -1141,6 +1223,7 @@ table td .show {
     font-size: 14px;
     cursor: pointer;
     border-radius: 8px;
+    transition: all var(--duration-200) var(--ease-out);
 }
 table td .delete {
     padding: 8px;
@@ -1150,18 +1233,24 @@ table td .delete {
 }
 table td .delete:hover {
     background: var(--error-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 table td .edit {
     background: var(--primary-500);
 }
 table td .edit:hover {
     background: var(--primary-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 table td .show {
     background: var(--success-500);
 }
 table td .show:hover {
     background: var(--success-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 .divided_minimal .comments-list {
     width: calc(80% - 20px);
@@ -1480,8 +1569,15 @@ form.role_list {
 .users_list,
 .roles_list,
 .image_list{
-    width: calc(80% - 20px);
+    width: 76%;
     float: right;
+    background: var(--surface-primary);
+    border-radius: var(--radius-2xl);
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: var(--shadow-lg);
+    padding: var(--space-6);
 }
 .category_list .preview {
     font-weight: 600;
@@ -3070,6 +3166,11 @@ input:checked + .slider:before {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: var(--space-3);
     margin-bottom: var(--space-6);
+    background: var(--surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
 }
 
 .categories_list .category {
@@ -3078,14 +3179,33 @@ input:checked + .slider:before {
     cursor: pointer;
     font-weight: 500;
     text-align: center;
-    transition: all 0.2s ease;
-    border: 2px solid transparent;
+    transition: all var(--duration-200) var(--ease-out);
+    border: 2px solid var(--border-color);
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.categories_list .category::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left var(--duration-500) var(--ease-out);
+}
+
+.categories_list .category:hover::before {
+    left: 100%;
 }
 
 .categories_list .category:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-300);
 }
 
 html[data-theme='dark'] .categories_list .category:hover {
@@ -4200,5 +4320,484 @@ html[data-theme='dark'] .modal-notifications .date {
     .modal-profile > span {
         font-size: var(--text-xl);
         padding: var(--space-4) var(--space-4) var(--space-3);
+    }
+}
+
+/* Modern Pagination Styling */
+.pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: var(--space-2) !important;
+    margin: var(--space-8) 0 !important;
+    padding: var(--space-4) !important;
+    background: var(--surface-primary) !important;
+    border-radius: var(--radius-2xl) !important;
+    border: 1px solid var(--border-color) !important;
+    backdrop-filter: blur(12px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(180%) !important;
+    box-shadow: var(--shadow-md) !important;
+    flex-wrap: wrap !important;
+    font-family: "Poppins", sans-serif !important;
+    list-style: none !important;
+}
+
+/* Pagination wrapper for better spacing */
+.pagination-wrapper {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin: var(--space-4) 0 !important;
+    clear: both !important;
+}
+
+/* Individual pagination items */
+.pagination .page-item {
+    margin: 0;
+}
+
+.pagination .page-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 2.5rem !important;
+    height: 2.5rem !important;
+    padding: var(--space-2) var(--space-3) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--surface-elevated) !important;
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: var(--text-sm) !important;
+    transition: all var(--duration-200) var(--ease-out) !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    font-family: "Poppins", sans-serif !important;
+    box-sizing: border-box !important;
+}
+
+/* Hover effects */
+.pagination .page-link:hover {
+    background: var(--primary-50) !important;
+    color: var(--primary-700) !important;
+    border-color: var(--primary-200) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-sm) !important;
+    text-decoration: none !important;
+}
+
+html[data-theme='dark'] .pagination .page-link:hover {
+    background: var(--primary-900) !important;
+    color: var(--primary-200) !important;
+    border-color: var(--primary-700) !important;
+}
+
+/* Active page styling */
+.pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+    color: white;
+    border-color: var(--primary-500);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(var(--primary-500), 0.3);
+}
+
+.pagination .page-item.active .page-link:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--primary-500), 0.4);
+}
+
+
+.pagination .page-item.active .page-link,
+.pagination .page-item .page-link.active {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600)) !important;
+    color: white !important;
+    border-color: var(--primary-500) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3) !important;
+}
+
+.pagination .page-item.active .page-link:hover,
+.pagination .page-item .page-link.active:hover {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700)) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4) !important;
+    color: white !important;
+}
+
+/* Disabled pagination items */
+.pagination .page-item.disabled .page-link {
+    background: var(--surface-hover) !important;
+    color: var(--text-muted) !important;
+    border-color: var(--border-color) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+}
+
+
+.pagination .page-item.disabled .page-link:hover {
+    background: var(--surface-hover) !important;
+    color: var(--text-muted) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Fix previous/next button styling */
+.pagination .page-link.prev,
+.pagination .page-link.next {
+    font-weight: 600 !important;
+    gap: var(--space-2) !important;
+    padding: var(--space-2) var(--space-4) !important;
+}
+
+.pagination .page-link.prev i,
+.pagination .page-link.next i {
+    font-size: var(--text-xs) !important;
+    transition: transform var(--duration-200) var(--ease-out) !important;
+}
+
+.pagination .page-link.prev:hover i {
+    transform: translateX(-2px) !important;
+}
+
+.pagination .page-link.next:hover i {
+    transform: translateX(2px) !important;
+}
+
+/* First/Last page buttons */
+.pagination .page-link.first,
+.pagination .page-link.last {
+    font-weight: 600;
+    background: var(--surface-elevated);
+    border-color: var(--primary-200);
+}
+
+.pagination .page-link.first:hover,
+.pagination .page-link.last:hover {
+    background: var(--primary-100);
+    border-color: var(--primary-300);
+}
+
+/* Fix ellipsis styling */
+.pagination .page-item.ellipsis .page-link {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-muted) !important;
+    cursor: default !important;
+    font-weight: 700 !important;
+}
+
+.pagination .page-item.ellipsis .page-link:hover {
+    background: transparent !important;
+    transform: none !important;
+    box-shadow: none !important;
+    color: var(--text-muted) !important;
+}
+
+/* Page info styling */
+.pagination-info {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-bottom: var(--space-4) !important;
+    font-size: var(--text-sm) !important;
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+    font-family: "Poppins", sans-serif !important;
+}
+
+.pagination-info .current-range {
+    font-weight: 700 !important;
+    color: var(--primary-600) !important;
+}
+
+/* Responsive pagination for mobile */
+@media (max-width: 768px) {
+    .pagination {
+        gap: var(--space-1) !important;
+        padding: var(--space-3) !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+    }
+    
+    .pagination .page-link,
+    .pagination li a,
+    .pagination li span {
+        min-width: 2rem !important;
+        height: 2rem !important;
+        padding: var(--space-1) var(--space-2) !important;
+        font-size: var(--text-xs) !important;
+    }
+    
+    /* Hide page numbers on mobile, keep only prev/next and active */
+    .pagination .page-item:not(.active):not(:first-child):not(:last-child):not(.ellipsis) {
+        display: none !important;
+    }
+    
+    .pagination li:not(.active):not(:first-child):not(:last-child) {
+        display: none !important;
+    }
+    
+    /* Show active page and adjacent pages */
+    .pagination .page-item.active,
+    .pagination .page-item.active + .page-item,
+    .pagination li.active,
+    .pagination li.active + li {
+        display: flex !important;
+    }
+}
+
+/* Laravel pagination specific fixes */
+.pagination .page-item:first-child .page-link {
+    border-radius: var(--radius-lg) !important;
+    margin-right: var(--space-1) !important;
+}
+
+.pagination .page-item:last-child .page-link {
+    border-radius: var(--radius-lg) !important;
+    margin-left: var(--space-1) !important;
+}
+
+.pagination .page-item:only-child .page-link {
+    border-radius: var(--radius-lg) !important;
+}
+
+/* Enhanced pagination with gradient background */
+.pagination.enhanced {
+    background: linear-gradient(135deg, var(--surface-primary), var(--surface-elevated));
+    border: 2px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+html[data-theme='dark'] .pagination.enhanced {
+    background: linear-gradient(135deg, var(--neutral-900), var(--neutral-800));
+    border-color: var(--neutral-700);
+}
+
+/* Override any Bootstrap or Laravel pagination styles */
+.pagination li {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.pagination li a,
+.pagination li span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 2.5rem !important;
+    height: 2.5rem !important;
+    padding: var(--space-2) var(--space-3) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--surface-elevated) !important;
+    color: var(--text-secondary) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    font-size: var(--text-sm) !important;
+    transition: all var(--duration-200) var(--ease-out) !important;
+    cursor: pointer !important;
+    font-family: "Poppins", sans-serif !important;
+    box-sizing: border-box !important;
+}
+
+.pagination li a:hover,
+.pagination li span:hover {
+    background: var(--primary-50) !important;
+    color: var(--primary-700) !important;
+    border-color: var(--primary-200) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-sm) !important;
+    text-decoration: none !important;
+}
+
+/* Active state for Laravel pagination */
+.pagination li.active a,
+.pagination li.active span {
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600)) !important;
+    color: white !important;
+    border-color: var(--primary-500) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(14, 165, 233, 0.3) !important;
+}
+
+/* Alternative pagination style - pill format */
+.pagination.pill {
+    background: var(--surface-elevated);
+    border-radius: var(--radius-full);
+    padding: var(--space-2);
+    border: 1px solid var(--border-color);
+}
+
+.pagination.pill .page-link {
+    border-radius: var(--radius-full);
+    border: none;
+    margin: 0 var(--space-1);
+}
+
+.pagination.pill .page-item.active .page-link {
+    background: var(--primary-500);
+    color: white;
+    box-shadow: 0 2px 4px rgba(var(--primary-500), 0.3);
+}
+
+/* Results per page selector */
+.pagination-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+/* Fix any inherited list styles */
+ul.pagination {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: var(--space-8) 0 !important;
+}
+
+ul.pagination li {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.per-page-selector {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.per-page-selector select {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: all var(--duration-200) var(--ease-out);
+}
+
+.per-page-selector select:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(var(--primary-500), 0.1);
+}
+
+/* Jump to page input */
+.page-jump {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+}
+
+.page-jump input {
+    width: 4rem;
+    padding: var(--space-2);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    text-align: center;
+    font-size: var(--text-sm);
+    transition: all var(--duration-200) var(--ease-out);
+}
+
+.page-jump input:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 2px rgba(var(--primary-500), 0.1);
+}
+
+.page-jump button {
+    padding: var(--space-2) var(--space-3);
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--duration-200) var(--ease-out);
+}
+
+.page-jump button:hover {
+    background: var(--primary-600);
+    transform: translateY(-1px);
+}
+
+/* Loading state for pagination */
+.pagination.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.pagination.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Ensure pagination appears under posts list */
+.divided_minimal .posts-list + .pagination-wrapper,
+.divided_minimal .posts-list ~ .pagination-wrapper,
+.posts-list + .pagination,
+.posts-list ~ .pagination {
+    width: 76%;
+    float: right;
+    margin-top: var(--space-4);
+    clear: both;
+}
+
+.divided_minimal .posts + .pagination-wrapper,
+.divided_minimal .posts + .pagination {
+    width: 76%;
+    float: right;
+    margin-top: var(--space-4);
+    clear: right;
+}
+
+.divided_minimal .pagination {
+    width: 100% !important;
+    margin: var(--space-6) 0 !important;
+    clear: both !important;
+}
+
+.posts-list .pagination-wrapper,
+.posts-list .pagination {
+    width: 100% !important;
+    margin-top: var(--space-6) !important;
+    float: none !important;
+    clear: both !important;
+}
+
+/* Responsive pagination positioning */
+@media (max-width: 768px) {
+    .divided_minimal .posts-list + .pagination-wrapper,
+    .divided_minimal .posts-list ~ .pagination-wrapper,
+    .divided_minimal .posts + .pagination-wrapper,
+    .posts-list + .pagination,
+    .posts-list ~ .pagination {
+        width: 100% !important;
+        margin: var(--space-4) 0 !important;
+        float: none !important;
     }
 }

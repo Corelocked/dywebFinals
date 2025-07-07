@@ -1,20 +1,20 @@
-<header class="dashboard-header">
+<header class="main-header">
     <div class="header-content">
-        <!-- Back Navigation -->
-        <div class="back-navigation">
+        <!-- Back Navigation (leftmost) -->
+        <div class="dashboard-nav">
             <a href="{{ $route }}" class="back-btn">
                 <i class="fa-solid fa-left-long"></i>
                 <span>Back</span>
             </a>
         </div>
         
-        <!-- Brand/Logo -->
+        <!-- Brand/Logo (center) -->
         <a href="{{ route('home') }}" class="logo">
             <i class="fas fa-feather-alt"></i>
             BlogShark
         </a>
         
-        <!-- User Section -->
+        <!-- User Actions (rightmost) -->
         <div class="header-actions">
             <!-- Notifications -->
             <button class="notification-btn open-user-panel" title="Notifications">
