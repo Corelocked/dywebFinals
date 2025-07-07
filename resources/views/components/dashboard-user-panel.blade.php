@@ -59,13 +59,12 @@
                 <div class="notification {{ $notification->read_at ? 'read' : 'unread' }}">
                     @if($notification->type === 'App\Notifications\CommentNotification')
                         <div class="notification-content">
-                            <p><strong>{{ $notification->data['commenter_name'] }}</strong> commented on your post <strong>"{{ $notification->data['post_title'] }}"</strong></p>
-                            <p class="comment-text">"{{ Str::limit($notification->data['comment_body'], 100) }}"</p>
+                            <p>{{ $notification->data['message'] ?? 'New comment notification' }}</p>
                             <p class="notification-time">{{ $notification->created_at->diffForHumans() }}</p>
                         </div>
                     @elseif($notification->type === 'App\Notifications\PostNotification')
                         <div class="notification-content">
-                            <p><strong>{{ $notification->data['author_name'] }}</strong> published a new post: <strong>"{{ $notification->data['post_title'] }}"</strong></p>
+                            <p>{{ $notification->data['message'] ?? 'New post notification' }}</p>
                             <p class="notification-time">{{ $notification->created_at->diffForHumans() }}</p>
                         </div>
                     @elseif($notification->type === 'App\Notifications\RoleNotification')

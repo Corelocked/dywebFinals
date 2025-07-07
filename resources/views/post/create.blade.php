@@ -47,6 +47,7 @@
                     <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
+            </div>
             <div class="post_options">
                 <div class="header">Additional options:</div>
                 <label>Short description</label>
@@ -137,6 +138,17 @@
                     document.getElementById('output').src = categoryImages[catId] || "{{ asset('images/picture3.jpg') }}";
                 }
             });
+        });
+
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(event) {
+            if (event.target.files && event.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('output').src = e.target.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
         });
     </script>
 </x-admin-layout>

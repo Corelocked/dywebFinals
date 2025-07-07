@@ -10,7 +10,6 @@
         
         <!-- Brand/Logo (center) -->
         <a href="{{ route('home') }}" class="logo">
-            <i class="fas fa-feather-alt"></i>
             BlogShark
         </a>
         

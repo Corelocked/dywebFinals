@@ -35,7 +35,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-section">
-                <h3>BlogSpace</h3>
+                <h3>BlogShark</h3>
                 <p>A modern blogging platform where ideas come to life. Share your thoughts, connect with readers, and build your community.</p>
                 <div class="footer-social">
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
@@ -81,7 +81,7 @@
         <div class="footer-bottom">
             <div>
                 <div class="footer-credits">
-                    <p>&copy; 2025 BlogSpace. Created by Patrick Miguel Babala, Christian Denzon & Cedric Joshua Palapuz</p>
+                    <p>&copy; 2025 BlogShark. Created by Patrick Miguel Babala, Christian Denzon & Cedric Joshua Palapuz</p>
                 </div>
                 <div class="footer-links">
                     <a href="#">Privacy Policy</a>

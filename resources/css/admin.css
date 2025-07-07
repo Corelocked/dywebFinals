@@ -803,8 +803,8 @@ header .profile .notifications_count {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: var(--bar-color);
-    color: var(--text-color);
+    background: var(--surface-color);
+    color: var(--text-primary);
     border-radius: 10px;
     /*padding: 20px;*/
     width: calc(100% - 20px);
@@ -1162,20 +1162,22 @@ table {
     padding: 0;
     width: 100%;
     font-family: "Poppins", sans-serif;
-    background: var(--surface-elevated);
+    background: var(--surface-color);
     border-radius: var(--radius-lg);
     overflow: hidden;
     box-shadow: var(--shadow-md);
+    color: var(--text-primary);
 }
 
 table caption {
     font-size: 1.5em;
     margin: 0.5em 0 0.75em;
+    color: var(--text-primary);
 }
 
 table tr {
-    color: var(--text-color);
-    background: var(--bar-color);
+    color: var(--text-primary);
+    background: var(--surface-color);
     border-bottom: 1px solid var(--border-color);
     padding: 0.35em;
     transition: background var(--duration-200) var(--ease-out);
@@ -1184,6 +1186,7 @@ table tr {
 table tr:hover {
     background: var(--surface-hover);
 }
+
 table tr .box{
     display: inline-block;
     width: 16px;
@@ -1191,17 +1194,19 @@ table tr .box{
     background: #725197;
     margin: auto;
 }
+
 table th,
 table td {
     padding: 0.625em;
     text-align: center;
+    color: var(--text-primary);
 }
 
 table th {
     font-size: 0.85em;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    background: linear-gradient(135deg, var(--primary-50), var(--primary-100));
+    background: var(--surface-elevated);
     color: var(--text-primary);
     font-weight: 600;
     border-bottom: 2px solid var(--border-color);
@@ -1209,6 +1214,7 @@ table th {
 
 table td {
     font-size: 0.9em;
+    background: var(--surface-color);
 }
 table td form {
     display: inline;
@@ -1278,7 +1284,7 @@ table td .show:hover {
     padding: 10px;
     border-radius: 10px;
     transition: 0.1s all ease;
-    color: var(--text-color);
+    color: var(--text-primary);
 }
 .divided_minimal .comments .comment.tile {
     flex-direction: column;
@@ -2183,7 +2189,8 @@ html[data-theme='dark'] .image_modal {
     border-radius: var(--radius-2xl);
     width: 98%;
     max-width: 1800px;
-    margin: 94px auto 10px auto;
+    margin: 100px auto 10px auto;
+    padding-top: 20px;
     font-family: "Inter", sans-serif;
     background: var(--surface-primary);
     box-shadow: var(--shadow-2xl);
@@ -2353,7 +2360,8 @@ aside.post__preview .ql-size-large {
 aside.post__preview .ql-size-huge {
     font-size: 2.5em;
 }
-.post__create form {
+.post__create form,
+.post__edit form {
     width: 100%;
     font-family: "Inter", sans-serif;
     min-height: calc(100vh - 110px);
@@ -2367,7 +2375,7 @@ aside.post__preview .ql-size-huge {
     z-index: 2;
 }
 
-/* Create two column layout for larger screens */
+/* Remove flex on larger screens to allow grid */
 @media (min-width: 1024px) {
     .post__create form,
     .post__edit form {
@@ -2396,13 +2404,10 @@ aside.post__preview .ql-size-huge {
         position: sticky !important;
         top: var(--space-8) !important;
     }
-}
-
-/* Override any flex layout that might be interfering */
-@media (min-width: 1024px) {
-    .post__create form,
-    .post__edit form {
-        flex-direction: unset !important;
+    
+    /* Force grid for both forms */
+    .post__create form {
+        display: grid !important;
     }
 }
 .post__create #content {
@@ -2785,6 +2790,11 @@ font-family: "Inter", sans-serif;
     min-height: calc(100vh - 90px);
 }
 
+/* Ensure edit form has proper top margin like create form */
+.post__edit {
+    margin: 100px auto 10px auto;
+}
+
 .post__create #form,
 .post__edit #form {
     background: var(--surface-primary);
@@ -3159,11 +3169,16 @@ input:checked + .slider:before {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    transition: color 0.2s ease;
+}
+
+.categories_extend:hover {
+    color: var(--primary-700);
 }
 
 .categories_list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: var(--space-3);
     margin-bottom: var(--space-6);
     background: var(--surface-elevated);
@@ -3171,6 +3186,10 @@ input:checked + .slider:before {
     border-radius: var(--radius-xl);
     padding: var(--space-6);
     box-shadow: var(--shadow-md);
+}
+
+.categories_list.active {
+    display: none;
 }
 
 .categories_list .category {
@@ -3254,6 +3273,33 @@ html[data-theme='dark'] .categories_list .category:hover {
     background: var(--surface-hover);
     color: var(--text-primary);
     border-color: var(--primary-300);
+}
+
+/* Edit post actions section within form */
+.edit_post_actions_section {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+}
+
+.edit_post_actions_section .history {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--secondary-500);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.edit_post_actions_section .history:hover {
+    background: var(--secondary-600);
+    transform: translateY(-1px);
 }
 
 /* Auto-save info */
@@ -3671,10 +3717,6 @@ html[data-theme='dark'] .saved_card:hover {
     .post_container .reading-info {
         flex-wrap: wrap;
         gap: var(--space-2);
-    }
-    
-    .categories_list {
-        grid-template-columns: 1fr;
     }
     
     .create_post_actions {
