@@ -20,6 +20,7 @@ class ImageController extends Controller
     public function __construct()
     {
         $this->middleware('permission:image-list', ['only' => ['index']]);
+        // Remove middleware from store method to allow image uploads
         $this->middleware('permission:image-delete', ['only' => ['destroy']]);
     }
 
@@ -236,7 +237,7 @@ class ImageController extends Controller
 
     public function get(Request $request) {
         $offset = $request->input('offset', 0);
-        $directoryPath = public_path("images\posts");
+        $directoryPath = public_path('images' . DIRECTORY_SEPARATOR . 'posts');
         $files = File::allFiles($directoryPath);
         $fileList = [];
 
@@ -265,6 +266,11 @@ class ImageController extends Controller
             abort(404);
         }
 
+        // Add validation for image upload
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
         return response()->json([
             'url' => $this->storeImage($request),
         ]);
@@ -278,7 +284,7 @@ class ImageController extends Controller
      */
     public function show(string $directory, string $name)
     {
-        $basePath = public_path("images\\$directory");
+        $basePath = public_path('images' . DIRECTORY_SEPARATOR . $directory);
 
         $extension = pathinfo($name, PATHINFO_EXTENSION);
         $fileName = pathinfo($name, PATHINFO_FILENAME);
@@ -309,7 +315,7 @@ class ImageController extends Controller
      */
     public function destroy(string $directory, string $name)
     {
-        $basePath = public_path("images\\$directory");
+        $basePath = public_path('images' . DIRECTORY_SEPARATOR . $directory);
 
         $filePath = $basePath . DIRECTORY_SEPARATOR . $name;
 
@@ -492,7 +498,8 @@ class ImageController extends Controller
     {
         $imageName = str_replace(' ', '-', $request->image->getClientOriginalName());
         $newImageName = uniqid().'-'.$imageName;
-        $request->image->move(public_path('images\posts'), $newImageName);
+        // Use forward slashes and DIRECTORY_SEPARATOR for cross-platform compatibility
+        $request->image->move(public_path('images' . DIRECTORY_SEPARATOR . 'posts'), $newImageName);
 
         return '/images/posts/'.$newImageName;
     }

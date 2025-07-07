@@ -42,7 +42,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::get('posts/{id}/auto-save', [PostAdminController::class, 'autoSave'])->name('post.auto-save');
     Route::delete('posts/{id}/reject', [PostAdminController::class, 'reject'])->name('post.reject');
     Route::post('posts/highlight', [PostAdminController::class, 'highlight'])->name('post.highlight');
-    Route::get('/dashboard/posts/{id}/edit', [PostAdminController::class, 'edit'])->name('posts.edit');
 
     // CATEGORIES
     Route::resource('categories', CategoryController::class, ['except' => 'show']);

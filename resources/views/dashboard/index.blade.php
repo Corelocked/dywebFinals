@@ -101,4 +101,7 @@
             @endcan
         </div>
     </div>
+    
+    <!-- Include dashboard-specific user panels modal -->
+    <x-dashboard-user-panel />
 </x-admin-layout>

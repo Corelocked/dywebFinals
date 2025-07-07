@@ -1,6 +1,6 @@
 <x-main-layout>
     @section('scripts')
-        @vite(['resources/js/loadPosts.js'])
+        @vite(['resources/js/loadPosts.js', 'resources/js/highlight.js'])
     @endsection
     <div class="article">
         <div class="image__container{{ $highlighted_posts->isEmpty() ? '' : ' highlighted' }}">
@@ -11,9 +11,20 @@
                 <img src="{{ asset('images/picture3.jpg') }}" alt="Main">
             @else
                 <div class="highlighted_icon">Highlighted <i class="fa-solid fa-star"></i></div>
+                
+                <!-- Navigation Arrows -->
+                @if(count($highlighted_posts) > 1)
+                    <button class="highlighted-nav prev" onclick="prevSlide()" title="Previous">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="highlighted-nav next" onclick="nextSlide()" title="Next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                @endif
+                
                 @foreach($highlighted_posts as $highlighted_post)
                     <a href="{{ route('post.show', $highlighted_post->post->slug) }}">
-                        <div class="post post-highlighted fade">
+                        <div class="post post-highlighted{{ $loop->first ? ' fade' : '' }}">
                             <img src="{{ asset($highlighted_post->post->image_path) }}" alt="{{ $highlighted_post->post->title }}">
                             <div class="body">
                                 <div class="top-info">
@@ -36,11 +47,13 @@
                     </a>
                 @endforeach
             @endif
-            <div class="dots">
-                @for($i = 0; $i < count($highlighted_posts); $i++)
-                    <i class="dot fa-regular fa-circle" onclick="currentSlide({{$i+1}});"></i>
-                @endfor
-            </div>
+            @if(count($highlighted_posts) > 1)
+                <div class="dots">
+                    @for($i = 0; $i < count($highlighted_posts); $i++)
+                        <i class="dot{{ $i === 0 ? ' active' : '' }} fa-{{ $i === 0 ? 'solid' : 'regular' }} fa-circle" onclick="currentSlide({{$i+1}});"></i>
+                    @endfor
+                </div>
+            @endif
         </div>
 
         <div class="container">

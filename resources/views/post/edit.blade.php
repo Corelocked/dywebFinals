@@ -6,67 +6,57 @@
         @vite(['resources/js/editPost.js'])
     @endsection
 
-    <header class="header_post_edit">
-        <a href="{{ route('posts.index') }}"><i class="fa-solid fa-left-long"></i> Back</a>
-        <div class="edit_post_actions">
-            <a href="{{ route('history.index', $post->id) }}" class="history"><span class="text">History</span><span class="icon"><i class="fa-solid fa-timeline"></i></span></a>
-            <div class="submit" onClick="submitForm();"><span class="text">Publish</span><span class="icon"><i class="fa-solid fa-upload"></i></span></div>
-        </div>
-        <div class="profile">
-            <img src="{{ asset(Auth::user()->image_path) }}" alt="" class="profile_img">
-            <i class="fa-solid fa-angles-down"></i>
-            <span class="notifications_count">{{ $unreadNotifications }}</span>
-        </div>
-    </header>
+    <x-dashboard-navbar route="{{ route('posts.index') }}"/>
 
     <div class="post__create post__edit">
         <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data" id="form">
             @csrf
             @method('PATCH')
             <div id="content" data-image-url="{{route('images.store')}}">
-            <div class="post_container">
-                @if(count($errors) > 0)
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif
-                <div class="top">
-                    <div class="image">
-                        <img src="{{ asset($post->image_path) }}" id="output" alt="image">
-                        <input id="image" type="file" name="image" style="display:none;">
-                        <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
-                    </div>
-                    <div class="info">
-                        <p class="info_title_length">Max 255 characters. <span class='current_title_length'>{{ Str::length($post->title) }}/255</span></p>
-                        <input type="text" name="title" class="title" autocomplete="off" value="{{ $post->title }}">
-                        <div class="reading-info">
-                            <p class="reading-text">Reading time: </p>
-                            <i class="fa-solid fa-clock"></i>
-                            <p class="reading-time">{{ $post->read_time ? $post->read_time : 0 }} min</p>
-                            <button type="button" class="calculate" onclick="calculateReadTime();">Calculate</button>
+                <div class="post_container">
+                    @if(count($errors) > 0)
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <div class="top">
+                        <div class="image">
+                            <img src="{{ $post->image_path ? asset($post->image_path) : asset('images/picture3.jpg') }}" id="output" alt="image">
+                            <input id="image" type="file" name="image" style="display:none;">
+                            <div class="change_image" onclick="document.getElementById('image').click();"><i class="fa-solid fa-image"></i> Change</div>
                         </div>
-                        <p class="date">{{ $post->updated_at->format('d.m.Y') }} by {{ $post->user->firstname . ' ' . $post->user->lastname }}</p>
+                        <div class="info">
+                            <p class="info_title_length">Maximum 255 characters. <span class='current_title_length'>{{ Str::length($post->title) }}/255</span></p>
+                            <input type="text" name="title" class="title" autocomplete="off" value="{{ $post->title }}">
+                            <div class="reading-info">
+                                <p class="reading-text">Reading time: </p>
+                                <i class="fa-solid fa-clock"></i>
+                                <p class="reading-time">{{ $post->read_time ? $post->read_time : 0 }} min</p>
+                                <button type="button" class="calculate" onclick="calculateReadTime();">Calculate</button>
+                            </div>
+                            <p class="date">{{ $post->updated_at->format('d.m.Y') }} by {{ $post->user->firstname . ' ' . $post->user->lastname }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="post_body">
-                <div id="editor">
+                <div class="post_body">
+                    <div id="editor">
 
-                </div>
+                    </div>
 
-                <textarea name="body" style="display: none" id="hiddenArea">{!!$post->body !!}</textarea>
+                    <textarea name="body" style="display: none" id="hiddenArea">{!!$post->body !!}</textarea>
 
-                <div class="actions">
-                    <a><i class="fa-solid fa-arrow-left"></i> Back to home page</a>
-                    <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
+                    <div class="actions">
+                        <a href="javascript:history.back()"><i class="fa-solid fa-arrow-left"></i> Back</a>
+                        <a>Next post <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
                 </div>
             </div>
             <div class="post_options">
                 <div class="header">Additional options:</div>
                 <label>Short description</label>
-                <p class="info excerpt_length">Max 510 characters. <span class='current_excerpt_length'>{{ Str::length($post->excerpt) }}/510</span></p>
+                <p class="info excerpt_length">Maximum 510 characters. <span class='current_excerpt_length'>{{ Str::length($post->excerpt) }}/510</span></p>
                 <textarea name="excerpt">{{ $post->excerpt }}</textarea>
                 <label>Visibility</label>
                 <div class="published">
@@ -93,6 +83,15 @@
                     @endforeach
                 </div>
                 <input type="hidden" name="category_id" value="{{ isset($post) ? ($post->category ? $post->category->id : 0) : 0 }}"/>
+                <div class="edit_post_actions_section">
+                    <a href="{{ route('history.index', $post->id) }}" class="history">
+                        <i class="fa-solid fa-timeline"></i> History
+                    </a>
+                </div>
+                <div class="create_post_actions">
+                    <input type="button" onClick="submitForm();" value="Update">
+                    <div class="save" onClick="autoSave();">Save Draft</div>
+                </div>
                 <div class="auto-save-info">
 
                 </div>
@@ -106,14 +105,30 @@
         </script>
     @endif
     <script>
-    document.getElementById('image').addEventListener('change', function(event) {
-        if (event.target.files && event.target.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('output').src = e.target.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+        // Initialize Quill editor
+        quill.on('text-change', function() {
+            document.getElementById('hiddenArea').value = quill.root.innerHTML;
+        });
+
+        // Load existing content
+        @if($post->body)
+            quill.root.innerHTML = `{!! addslashes($post->body) !!}`;
+        @endif
+
+        // Image preview functionality
+        document.getElementById('image').addEventListener('change', function(event) {
+            if (event.target.files && event.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('output').src = e.target.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+
+        function submitForm() {
+            document.getElementById('hiddenArea').value = quill.root.innerHTML;
+            document.getElementById('form').submit();
         }
-    });
     </script>
 </x-admin-layout>
