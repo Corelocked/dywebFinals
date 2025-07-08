@@ -388,6 +388,19 @@ window.changeToCategory = function (event, id) {
     selectedCategory.innerHTML = event.target.innerHTML;
     selectedCategory.style.border = "none";
     categoryInput.value = event.target.dataset.id;
+    
+    // Handle category image preview (only if no image file is selected)
+    const imageInput = document.getElementById('image');
+    const outputImg = document.getElementById('output');
+    
+    if (imageInput && outputImg && !imageInput.value) {
+        // Check if category images are available globally
+        if (window.categoryImages && window.categoryImages[id]) {
+            const defaultImage = window.categoryImages[id];
+            outputImg.src = defaultImage;
+            console.log('Updated to category default image via changeToCategory:', defaultImage);
+        }
+    }
 }
 
 let visibleCategories = true

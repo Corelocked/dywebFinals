@@ -17,7 +17,11 @@
         }
     </script>
     @yield('scripts')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if(request()->routeIs('dashboard') || request()->routeIs('posts.*') || request()->routeIs('categories.*') || request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('comments.*') || request()->routeIs('admin.contacts.*'))
+        @vite(['resources/css/app.css', 'resources/css/admin.css', 'resources/js/app.js'])
+    @else
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @endif
 </head>
 <body>
     <x-header-navbar />

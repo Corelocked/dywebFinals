@@ -15,6 +15,16 @@
                 <i class="fas fa-envelope"></i>
                 Contact
             </a>
+            @auth
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->routeIs('posts.*') || request()->routeIs('categories.*') || request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('comments.*') || request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Panel
+                </a>
+                <a href="{{ route('profile') }}" class="{{ request()->routeIs('profile') ? 'active' : '' }}">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            @endauth
         </nav>
         
         <!-- User Section -->
@@ -23,7 +33,7 @@
                 <!-- Notifications -->
                 <button class="notification-btn open-user-panel" title="Notifications">
                     <i class="fa-regular fa-bell"></i>
-                    @if($unreadNotifications > 0)
+                    @if(isset($unreadNotifications) && $unreadNotifications > 0)
                         <span class="notification-badge">{{ $unreadNotifications }}</span>
                     @endif
                 </button>

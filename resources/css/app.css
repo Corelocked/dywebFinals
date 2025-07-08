@@ -178,7 +178,7 @@ body {
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeSpeed;
     scroll-behavior: smooth;
-    padding-top: 4rem; /* Account for fixed header */
+    padding-top: 6rem; /* Account for fixed header */
 }
 
 /* Global anchor reset for post cards */
@@ -207,7 +207,7 @@ a:active {
 
 /* Smooth scroll for hash links */
 html {
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 6rem;
 }
 
 /* Selection styling */
@@ -371,7 +371,7 @@ label *::after,
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1100;
     background: var(--surface-color);
     border-bottom: 1px solid var(--border-color);
     backdrop-filter: blur(24px) saturate(180%);
@@ -474,6 +474,7 @@ html[data-theme='dark'] .main-header::before {
     background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
     transition: width var(--duration-300) var(--ease-elastic);
     border-radius: var(--radius-full);
+    display: none; /* Disable the border hover effect */
 }
 
 .main-header .logo:hover {
@@ -1165,7 +1166,7 @@ html[data-theme='dark'] .notification-btn:hover {
     display: flex;
     align-items: center;
     gap: var(--space-4);
-    padding-top: var(--space-5);
+    padding-top: var(--space-6);
     border-top: 1px solid var(--border-color);
     position: relative;
 }
@@ -3165,20 +3166,21 @@ html[data-theme='dark'] .footer-bottom {
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     display: none;
     visibility: hidden;
-    align-items: flex-start;
-    justify-content: flex-end;
     z-index: 1000;
     opacity: 0;
     transition: all var(--duration-300) var(--ease-out);
-    padding: var(--space-4);
-    padding-right: var(--space-8);
     overscroll-behavior: contain;
+    pointer-events: none; /* Prevent interaction when hidden */
+}
+
+.modal.show {
+    pointer-events: auto; /* Allow interaction when shown */
 }
 
 .modal.show {
     opacity: 1;
     visibility: visible;
-    display: flex !important;
+    display: block !important;
 }
 
 /* Ensure modal panels are properly controlled */
@@ -3193,6 +3195,7 @@ html[data-theme='dark'] .footer-bottom {
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+    transform: translateX(100%) !important;
 }
 
 .modal .modal-profile:not(.hidden),
@@ -3213,11 +3216,12 @@ html[data-theme='dark'] .footer-bottom {
     box-shadow: var(--shadow-2xl);
     width: 100%;
     max-width: 420px;
-    max-height: 85vh;
+    max-height: calc(100vh - var(--space-16) - 1px - var(--space-8)); /* Full height minus header (including border) and padding */
     overflow-y: auto;
     overflow-x: hidden;
-    position: relative;
-    margin-top: var(--space-20);
+    position: fixed;
+    top: calc(var(--space-16) + 1px + var(--space-4)); /* Position below header (including border) */
+    right: var(--space-8);
     animation: slideInRight var(--duration-300) var(--ease-out);
     z-index: 1001;
     scrollbar-width: thin;
@@ -3490,11 +3494,12 @@ html[data-theme='dark'] .footer-bottom {
     box-shadow: var(--shadow-2xl);
     width: 100%;
     max-width: 480px;
-    max-height: 85vh;
+    max-height: calc(100vh - var(--space-16) - 1px - var(--space-8)); /* Full height minus header (including border) and padding */
     overflow-y: auto;
     overflow-x: hidden;
-    position: relative;
-    margin-top: var(--space-20);
+    position: fixed;
+    top: calc(var(--space-16) + 1px + var(--space-4)); /* Position below header (including border) */
+    right: var(--space-8);
     animation: slideInRight var(--duration-300) var(--ease-out);
     z-index: 1001;
     scrollbar-width: thin;
@@ -3701,9 +3706,12 @@ html[data-theme='dark'] .footer-bottom {
     
     .modal-profile,
     .modal-notifications {
-        max-width: 100%;
-        margin: var(--space-8) 0;
-        max-height: calc(100vh - var(--space-16));
+        position: fixed !important;
+        max-width: calc(100vw - 2 * var(--space-4));
+        top: calc(var(--space-16) + 1px + var(--space-4)) !important; /* Maintain header offset (including border) on mobile */
+        right: var(--space-4) !important;
+        left: var(--space-4) !important;
+        max-height: calc(100vh - var(--space-16) - 1px - var(--space-8)); /* Account for header (including border) and padding */
         border-radius: var(--radius-xl);
     }
     

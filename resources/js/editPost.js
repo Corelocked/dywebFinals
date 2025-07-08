@@ -14,50 +14,36 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Image upload functionality for edit form
-document.addEventListener('DOMContentLoaded', function() {
-    const imageInput = document.getElementById('image');
-    
-    if (imageInput) {
-        imageInput.addEventListener('change', function(event) {
-            if (event.target.files && event.target.files[0]) {
-                const file = event.target.files[0];
-                const outputImg = document.getElementById('output');
-                
-                if (outputImg) {
-                    // Show a simple loading state on the image itself
-                    outputImg.style.opacity = '0.5';
-                    outputImg.style.filter = 'blur(2px)';
-                }
-                
-                // Read file for preview
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    // Set the preview image
-                    if (outputImg) {
-                        outputImg.src = e.target.result;
-                        outputImg.style.opacity = '1';
-                        outputImg.style.filter = 'none';
-                        outputImg.classList.add('image-preview-loading');
-                        
-                        // Remove loading class after image loads
-                        outputImg.onload = function() {
-                            outputImg.classList.remove('image-preview-loading');
-                        };
-                    }
-                };
-                
-                reader.onerror = function() {
-                    // Reset image state on error
-                    if (outputImg) {
-                        outputImg.style.opacity = '1';
-                        outputImg.style.filter = 'none';
-                    }
-                    console.error('Failed to load image');
-                };
-                
-                reader.readAsDataURL(file);
+document.getElementById('image').addEventListener('change', function(event) {
+    if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        const outputImg = document.getElementById('output');
+        
+        if (outputImg) {
+            // Show a simple loading state on the image itself
+            outputImg.style.opacity = '0.7';
+        }
+        
+        // Read file for preview
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // Set the preview image
+            if (outputImg) {
+                outputImg.src = e.target.result;
+                outputImg.style.opacity = '1';
+                console.log('Edit post image preview updated:', file.name);
             }
-        });
+        };
+        
+        reader.onerror = function() {
+            // Reset image state on error
+            if (outputImg) {
+                outputImg.style.opacity = '1';
+            }
+            console.error('Failed to load image preview');
+        };
+        
+        reader.readAsDataURL(file);
     }
 });
 

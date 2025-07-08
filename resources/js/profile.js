@@ -1,6 +1,18 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Multiple DOM ready detection methods for better compatibility
+function domReady(fn) {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener('DOMContentLoaded', fn);
+    }
+}
+
+domReady(function() {
+    console.log('Profile.js: DOM ready, starting initialization...');
+    
     // Check if already initialized
     if (window.profileJsInitialized) {
+        console.log('Profile.js: Already initialized, skipping...');
         return;
     }
     window.profileJsInitialized = true;
@@ -8,10 +20,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Global variable to track notification read status
     let sentReadNotifications = false;
     
-    // Wait a bit for all elements to be rendered
-    setTimeout(() => {
-        initializeModal();
-    }, 100);
+    // Wait a bit for all elements to be rendered, with multiple retries
+    let retryCount = 0;
+    const maxRetries = 5;
+    
+    function tryInitialize() {
+        const modal = document.querySelector('.modal');
+        console.log('Profile.js: Attempt', retryCount + 1, 'to find modal element');
+        
+        if (modal || retryCount >= maxRetries) {
+            if (modal) {
+                console.log('Profile.js: Modal found, initializing...');
+            } else {
+                console.warn('Profile.js: Modal not found after', maxRetries, 'attempts. User panel and notifications will not work.');
+            }
+            initializeModal();
+        } else {
+            retryCount++;
+            setTimeout(tryInitialize, 200 * retryCount); // Exponential backoff
+        }
+    }
+    
+    tryInitialize();
     
     function initializeModal() {
         // Track modal state
@@ -21,16 +51,25 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if modal exists before proceeding
         if (!modal) {
+            console.warn('Profile.js: Modal element not found. User panel and notifications will not work.');
             return;
         }
+        
+        console.log('Profile.js: Modal element found, setting up panels...');
         
         const profilePanel = modal.querySelector('.modal-profile');
         const notificationsPanel = modal.querySelector('.modal-notifications');
         
         // Check if at least one panel exists
         if (!profilePanel && !notificationsPanel) {
+            console.warn('Profile.js: No valid panels found in modal. User panel and notifications will not work.');
             return;
         }
+        
+        console.log('Profile.js: Panels found -', {
+            profile: !!profilePanel,
+            notifications: !!notificationsPanel
+        });
 
         // Initialize panels as hidden with explicit state
         modal.style.display = 'none';
@@ -80,14 +119,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 notificationsPanel.classList.add("hidden");
                 notificationsPanel.style.display = 'none';
             }
-            
-            console.log('All panels hidden, showing modal...');
-            
-            // Force reflow to ensure the hidden state is applied
-            void modal.offsetHeight;
+                 console.log('Profile.js: All panels hidden, showing modal...');
+        
+        // Also check for the authentication state
+        const authUser = document.querySelector('meta[name="csrf-token"]');
+        console.log('Profile.js: User authenticated (CSRF token exists):', !!authUser);
+        
+        // Force reflow to ensure the hidden state is applied
+        void modal.offsetHeight;
             
             // Show the modal backdrop
-            modal.style.display = 'flex';
+            modal.style.display = 'block';
             modal.style.visibility = 'visible';
             
             // Show only the target panel after ensuring others are hidden
@@ -152,6 +194,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Find trigger elements
         const notificationTriggers = document.querySelectorAll('.open-user-panel');
         const profileTriggers = document.querySelectorAll('.open-profile-panel');
+        
+        console.log('Profile.js: Trigger elements found -', {
+            notificationTriggers: notificationTriggers.length,
+            profileTriggers: profileTriggers.length
+        });
+        
+        if (notificationTriggers.length === 0 && profileTriggers.length === 0) {
+            console.warn('Profile.js: No trigger elements found. User panel and notifications will not be accessible.');
+        }
 
         // Open notifications panel when bell is clicked
         notificationTriggers.forEach(function(el) {
@@ -261,85 +312,140 @@ document.addEventListener('DOMContentLoaded', function() {
     const date = Date.now();
 
     window.readNotifications = function () {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        if (!sentReadNotifications) {
-            fetch('/read-notifications', {
-                method: 'PATCH',
+        try {
+            const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+            if (!csrfTokenElement) {
+                console.error('Profile.js: CSRF token not found');
+                return;
+            }
+            
+            const csrfToken = csrfTokenElement.getAttribute('content');
+            if (!sentReadNotifications) {
+                fetch('/read-notifications', {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        'date': date,
+                    }),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        if (response.status === 200) {
+                            sentReadNotifications = true;
+                            
+                            // Safely update notification count elements
+                            const notificationCountElement = document.querySelector(".notification-badge");
+                            if (notificationCountElement) {
+                                notificationCountElement.innerHTML = "0";
+                            }
+                            
+                            const profileNotificationElement = document.querySelector(".modal-profile .notifications");
+                            if (profileNotificationElement) {
+                                profileNotificationElement.innerHTML = "0 <i class=\"fa-solid fa-angles-right\"></i>";
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Profile.js: Error while processing read notifications request:', error);
+                    });
+            }
+        } catch (error) {
+            console.error('Profile.js: Error in readNotifications function:', error);
+        }
+    }
+
+    window.clearNotifications = function () {
+        try {
+            const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+            if (!csrfTokenElement) {
+                console.error('Profile.js: CSRF token not found');
+                return;
+            }
+            
+            const csrfToken = csrfTokenElement.getAttribute('content');
+            const modal = document.querySelector('.modal');
+            
+            if (!modal) {
+                console.error('Profile.js: Modal not found');
+                return;
+            }
+            
+            const notificationsPanel = modal.querySelector('.modal-notifications');
+            
+            if (!notificationsPanel) {
+                console.error('Profile.js: Notifications panel not found');
+                return;
+            }
+            
+            const notifications = notificationsPanel.querySelectorAll(".notification");
+            const dateElements = notificationsPanel.querySelectorAll(".date");
+            
+            fetch('/clear-notifications', {
+                method: 'delete',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
-                body: JSON.stringify({
-                    'date': date,
-                }),
             })
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     if (response.status === 200) {
-                        sentReadNotifications = true;
-                        document.querySelector(".notifications_count").innerHTML = "0";
-                        document.querySelector(".modal-profile .notifications").innerHTML = "0 <i class=\"fa-solid fa-angles-right\"></i>";
+                        for (const notification of notifications) {
+                            notification.remove();
+                        }
+                        for (const dateElement of dateElements) {
+                            dateElement.remove();
+                        }
+                        const notificationDiv = document.createElement('div');
+                        notificationDiv.classList.add('notification', 'action');
+
+                        const paragraph = document.createElement('p');
+                        paragraph.classList.add('empty');
+                        paragraph.textContent = 'No notifications';
+                        notificationDiv.appendChild(paragraph);
+                        notificationsPanel.appendChild(notificationDiv);
                     }
                 })
                 .catch(error => {
-                    console.error('An error occurred while processing the request:', error);
+                    console.error('Profile.js: Error occurred while clearing notifications:', error);
                 });
+        } catch (error) {
+            console.error('Profile.js: Error in clearNotifications function:', error);
         }
-    }
-
-    window.clearNotifications = function () {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const modal = document.querySelector('.modal');
-        const notificationsPanel = modal.querySelector('.modal-notifications');
-        const notifications = notificationsPanel.querySelectorAll(".notification");
-        const dateElements = document.querySelectorAll(".modal-notifications .date");
-        fetch('/clear-notifications', {
-            method: 'delete',
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                if (response.status === 200) {
-                    for (const notification of notifications) {
-                        notification.remove();
-                    }
-                    for (const dateElement of dateElements) {
-                        dateElement.remove();
-                    }
-                    const notificationDiv = document.createElement('div');
-                    notificationDiv.classList.add('notification', 'action');
-
-                    const paragraph = document.createElement('p');
-                    paragraph.classList.add('empty');
-                    paragraph.textContent = 'No notifications';
-                    notificationDiv.appendChild(paragraph);
-                    notificationsPanel.appendChild(notificationDiv);
-                }
-            })
-            .catch(error => {
-                console.error('An error occurred while processing the request:', error);
-            });
     }
 
     startTime();
     function startTime() {
-        const today = new Date();
-        let h = today.getHours();
-        let m = today.getMinutes();
-        let s = today.getSeconds();
-        m = checkTime(m);
-        h = checkTime(h);
-        document.getElementById('hours').innerHTML = h;
-        document.getElementById('minutes').innerHTML = m;
-        setTimeout(startTime, 1000);
+        try {
+            const today = new Date();
+            let h = today.getHours();
+            let m = today.getMinutes();
+            let s = today.getSeconds();
+            m = checkTime(m);
+            h = checkTime(h);
+            
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            
+            if (hoursElement) {
+                hoursElement.innerHTML = h;
+            }
+            if (minutesElement) {
+                minutesElement.innerHTML = m;
+            }
+            
+            setTimeout(startTime, 1000);
+        } catch (error) {
+            console.error('Profile.js: Error in startTime function:', error);
+        }
     }
 
     function checkTime(i) {

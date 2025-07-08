@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('roles.index') }}"/>
-
+<x-main-layout>
     <div class="dashboard">
         <div class="role">
             <div class="welcome-2">Role: {{ $role->name }}</div>
@@ -33,4 +31,4 @@
         </div>
         <a href="{{ route('roles.index') }}" class="role_exit">Return</a>
     </div>
-</x-admin-layout>
+</x-main-layout>

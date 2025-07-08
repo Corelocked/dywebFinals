@@ -152,6 +152,7 @@ function submitForm() {
     document.getElementById('form').submit();
 }
 
+// Image upload functionality for create form - same as edit post
 document.getElementById('image').addEventListener('change', function(event) {
     if (event.target.files && event.target.files[0]) {
         const file = event.target.files[0];
@@ -159,8 +160,7 @@ document.getElementById('image').addEventListener('change', function(event) {
         
         if (outputImg) {
             // Show a simple loading state on the image itself
-            outputImg.style.opacity = '0.5';
-            outputImg.style.filter = 'blur(2px)';
+            outputImg.style.opacity = '0.7';
         }
         
         // Read file for preview
@@ -170,13 +170,7 @@ document.getElementById('image').addEventListener('change', function(event) {
             if (outputImg) {
                 outputImg.src = e.target.result;
                 outputImg.style.opacity = '1';
-                outputImg.style.filter = 'none';
-                outputImg.classList.add('image-preview-loading');
-                
-                // Remove loading class after image loads
-                outputImg.onload = function() {
-                    outputImg.classList.remove('image-preview-loading');
-                };
+                console.log('Create post image preview updated:', file.name);
             }
         };
         
@@ -184,9 +178,8 @@ document.getElementById('image').addEventListener('change', function(event) {
             // Reset image state on error
             if (outputImg) {
                 outputImg.style.opacity = '1';
-                outputImg.style.filter = 'none';
             }
-            console.error('Failed to load image');
+            console.error('Failed to load image preview');
         };
         
         reader.readAsDataURL(file);

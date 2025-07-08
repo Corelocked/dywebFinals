@@ -1,6 +1,7 @@
 import './bootstrap';
 import.meta.glob([ '../images/**', ]);
 import './theme';
+import './profile';
 
 window.confirmDelete = function(id, name){
     Swal.fire({

@@ -1,9 +1,7 @@
-<x-admin-layout>
+<x-main-layout>
     @section('scripts')
         @vite(['resources/js/filtr.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="roles">
         <div class="filter">
@@ -106,4 +104,4 @@
             ])->links('pagination.default') }}
         </div>
     </div>
-</x-admin-layout>
+</x-main-layout>

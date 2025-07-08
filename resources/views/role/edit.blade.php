@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('roles.index') }}"/>
-
+<x-main-layout>
     <div class="dashboard">
         <div class="role">
             <div class="welcome-2">Role: {{ $role->name }}</div>
@@ -45,4 +43,4 @@
             </form>
         </div>
     </div>
-</x-admin-layout>
+</x-main-layout>

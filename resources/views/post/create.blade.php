@@ -1,11 +1,9 @@
-<x-admin-layout>
+<x-main-layout>
     @section('scripts')
         <script src="//cdn.quilljs.com/1.3.7/quill.js"></script>
         <link href="//cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
         @vite(['resources/js/fileUploadLoader.js', 'resources/js/post.js', 'resources/js/createPost.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="post__create">
         <form action="{{ route('posts.store') }}" method="POST" id="form" enctype="multipart/form-data">
@@ -106,49 +104,30 @@
             document.getElementById('form').submit();
         }
 
-        // --- CATEGORY DEFAULT IMAGE LOGIC ---
-        // Map category IDs to default images
-        const categoryImages = {
-            @foreach($categories as $category)
-                @php
-                    $map = [
-                        'Health and Fitness' => 'images/categories/default-health.jpg',
-                        'Business and Finance' => 'images/categories/default-business.jpg',
-                        'Technology' => 'images/categories/default-tech.jpg',
-                    ];
-                    if (isset($map[$category->name])) {
-                        $img = asset($map[$category->name]);
-                    } else {
-                        $slug = Str::slug($category->name);
-                        $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
-                        $img = asset("images/categories/default-{$slug}.{$ext}");
-                    }
-                @endphp
-                {{ $category->id }}: "{{ $img }}",
-            @endforeach
-        };
+        // Wait for DOM to be fully loaded before adding event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make category images globally available for post.js changeToCategory function
+            window.categoryImages = {
+                @foreach($categories as $category)
+                    @php
+                        $map = [
+                            'Health and Fitness' => 'images/categories/default-health.jpg',
+                            'Business and Finance' => 'images/categories/default-business.jpg',
+                            'Technology' => 'images/categories/default-tech.jpg',
+                        ];
+                        if (isset($map[$category->name])) {
+                            $img = asset($map[$category->name]);
+                        } else {
+                            $slug = Str::slug($category->name);
+                            $ext = ($category->name === 'Games') ? 'jpeg' : 'jpg';
+                            $img = asset("images/categories/default-{$slug}.{$ext}");
+                        }
+                    @endphp
+                    {{ $category->id }}: "{{ $img }}",
+                @endforeach
+            };
 
-        // Listen for category change
-        document.querySelectorAll('.categories_list .category').forEach(function(el) {
-            el.addEventListener('click', function() {
-                const catId = this.getAttribute('data-id');
-                document.getElementById('category_id').value = catId;
-                // Only update if no image is selected
-                if (!document.getElementById('image').value) {
-                    document.getElementById('output').src = categoryImages[catId] || "{{ asset('images/picture3.jpg') }}";
-                }
-            });
-        });
-
-        // Image preview functionality
-        document.getElementById('image').addEventListener('change', function(event) {
-            if (event.target.files && event.target.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('output').src = e.target.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-            }
+            // Note: Image preview functionality is handled in createPost.js
         });
     </script>
-</x-admin-layout>
+</x-main-layout>

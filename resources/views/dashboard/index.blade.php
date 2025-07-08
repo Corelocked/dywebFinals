@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('home') }}"/>
-
+<x-main-layout>
     <div class="dashboard main dashboard-enhanced">
         <!-- Hero Section -->
         <div class="dashboard-hero">
@@ -745,4 +743,4 @@
             }
         }
     </style>
-</x-admin-layout>
+</x-main-layout>

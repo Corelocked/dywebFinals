@@ -1,9 +1,7 @@
-<x-admin-layout>
+<x-main-layout>
     @section('scripts')
         @vite(['resources/js/filtr.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="users">
         <div class="filter">
@@ -138,4 +136,4 @@
     <script>
 
     </script>
-</x-admin-layout>
+</x-main-layout>

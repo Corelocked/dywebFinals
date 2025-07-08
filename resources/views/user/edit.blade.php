@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('users.index') }}"/>
-
+<x-main-layout>
     <div class="dashboard">
         <form action="{{ route('users.update', $user->id) }}" method="POST" id="create_user">
             @csrf
@@ -60,4 +58,4 @@
             passwordField.value = randPassword;
         }
     </script>
-</x-admin-layout>
+</x-main-layout>
