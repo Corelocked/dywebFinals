@@ -1,23 +1,20 @@
-<div class="image" onclick="getFileInfo('{{$image['directory']}}', '{{$image['fullname']}}')" 
-     data-name="{{ $image['name'] }}" 
-     data-size="{{ $image['size'] }}" 
+<div class="image-card" onclick="getFileInfo('{{$image['directory']}}', '{{$image['fullname']}}')"
+     data-name="{{ $image['name'] }}"
+     data-size="{{ $image['size'] }}"
      data-directory="{{ $image['directory'] }}"
      data-usage="{{ $image['usage_count'] }}">
-    <div class="image-container">
-        <img loading="lazy" src="{{ asset($image['path']) }}" alt="{{ $image['name'] }}" class="thumbnail">
-        <div class="overlay">
-            <div class="image-info">
-                <div class="image-name">{{ $image['name'] }}</div>
-                <div class="image-details">
-                    <span class="image-size">{!! formatBytes($image['size']) !!}</span>
-                    <span class="image-usage">{{ $image['usage_count'] }} uses</span>
-                </div>
-            </div>
-        </div>
-        <div class="image-badge">
-            <i class="fas fa-{{ pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpg' || pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpeg' ? 'image' : (pathinfo($image['name'], PATHINFO_EXTENSION) === 'png' ? 'file-image' : 'file') }}"></i>
+    <img loading="lazy" src="{{ asset($image['path']) }}" alt="{{ $image['name'] }}" class="image-preview">
+    <div class="image-info">
+        <div class="image-name" title="{{ $image['name'] }}">{{ $image['name'] }}</div>
+        <div class="image-details">
+            <span class="image-size">{!! formatBytes($image['size']) !!}</span>
+            <span class="image-usage">{{ $image['usage_count'] }} uses</span>
         </div>
     </div>
+    <div class="image-badge">
+        <i class="fas fa-{{ pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpg' || pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpeg' ? 'image' : (pathinfo($image['name'], PATHINFO_EXTENSION) === 'png' ? 'file-image' : 'file') }}"></i>
+    </div>
+</div>
     <div class="info">
         <div class="info-header">
             <p class="directory">
