@@ -393,7 +393,10 @@ window.changeToCategory = function (event, id) {
     const imageInput = document.getElementById('image');
     const outputImg = document.getElementById('output');
     
-    if (imageInput && outputImg && !imageInput.value) {
+    // Check if user has uploaded a file (use .files.length instead of .value)
+    const hasUploadedFile = imageInput && imageInput.files && imageInput.files.length > 0;
+    
+    if (imageInput && outputImg && !hasUploadedFile) {
         // Check if category images are available globally
         if (window.categoryImages && window.categoryImages[id]) {
             const defaultImage = window.categoryImages[id];
@@ -418,5 +421,34 @@ window.categoriesToggle = function () {
 
     categories.classList.toggle('active');
 }
+
+// Image preview functionality for post creation
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('image');
+    const outputImg = document.getElementById('output');
+    
+    if (imageInput && outputImg) {
+        imageInput.addEventListener('change', function(event) {
+            const file = event.target.files && event.target.files[0];
+            
+            if (file) {
+                // Show loading state
+                outputImg.style.opacity = '0.7';
+                
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    outputImg.src = e.target.result;
+                    outputImg.style.opacity = '1';
+                    console.log('Image preview updated:', file.name);
+                };
+                reader.onerror = function() {
+                    outputImg.style.opacity = '1';
+                    console.error('Failed to load image preview');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
 
 // window.scrollTo(0, 0);

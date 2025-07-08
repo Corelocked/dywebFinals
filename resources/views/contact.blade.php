@@ -359,13 +359,15 @@
         }
 
         .alert-success {
-            background: var(--success-50);
-            border-color: var(--success-200);
+            background: var(--surface-primary);
+            border-color: var(--success-500);
+            border-left: 4px solid var(--success-500);
         }
 
         .alert-error {
-            background: var(--error-50);
-            border-color: var(--error-200);
+            background: var(--surface-primary);
+            border-color: var(--error-500);
+            border-left: 4px solid var(--error-500);
         }
 
         .alert-content {
@@ -396,6 +398,7 @@
             display: block;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
+            font-weight: 600;
         }
 
         .alert-text p {
@@ -406,6 +409,11 @@
         .alert-text ul {
             margin: 0;
             padding-left: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .alert-text li {
+            margin-bottom: 0.25rem;
             color: var(--text-secondary);
         }
 
@@ -420,7 +428,33 @@
         }
 
         .alert-close:hover {
-            background: rgba(0, 0, 0, 0.1);
+            background: var(--neutral-100);
+            color: var(--text-primary);
+        }
+
+        /* Dark mode alert adjustments */
+        [data-theme="dark"] .alert-success {
+            background: var(--surface-elevated);
+            border-color: var(--success-400);
+            border-left-color: var(--success-400);
+        }
+
+        [data-theme="dark"] .alert-error {
+            background: var(--surface-elevated);
+            border-color: var(--error-400);
+            border-left-color: var(--error-400);
+        }
+
+        [data-theme="dark"] .alert-success .alert-content i {
+            color: var(--success-400);
+        }
+
+        [data-theme="dark"] .alert-error .alert-content i {
+            color: var(--error-400);
+        }
+
+        [data-theme="dark"] .alert-close:hover {
+            background: var(--neutral-700);
         }
 
         /* Form Styles */

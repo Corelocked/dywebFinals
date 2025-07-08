@@ -2134,6 +2134,11 @@ html[data-theme='dark'] .image_modal {
     color: var(--text-primary) !important;
     line-height: 1.7 !important;
     font-family: "Inter", sans-serif !important;
+    /* Prevent horizontal expansion with long words */
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
 }
 
 .ql-editor:focus {
@@ -2998,10 +3003,15 @@ html[data-theme='dark'] .post_container .image img {
 
 .post_body #editor {
     min-height: 400px;
+    /* Remove max-height to allow natural expansion */
     border: 2px solid var(--border-color);
     border-radius: var(--radius-lg);
     background: var(--surface-primary);
     color: var(--text-primary);
+    /* Prevent horizontal expansion with long words */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .post_body #editor:focus-within {
@@ -3012,6 +3022,10 @@ html[data-theme='dark'] .post_container .image img {
 /* Quill Editor Theme Support */
 .post_body .ql-editor {
     color: var(--text-primary);
+    /* Ensure word wrapping in post body editor */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .post_body .ql-toolbar {
@@ -3823,6 +3837,11 @@ html[data-theme='dark'] .saved_card:hover {
     
     .post_body #editor {
         min-height: 300px;
+        /* Remove max-height to allow natural expansion on mobile too */
+        /* Prevent horizontal expansion with long words on mobile */
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
     
     .post_body .actions {

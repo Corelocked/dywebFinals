@@ -3696,6 +3696,92 @@ html[data-theme='dark'] .footer-bottom {
     background: linear-gradient(90deg, var(--error-50), transparent);
 }
 
+/* Dark mode notification fixes */
+[data-theme="dark"] .modal-notifications .notification {
+    background: var(--surface-elevated) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.success {
+    background: rgba(34, 197, 94, 0.1) !important;
+    border-left-color: var(--success-400) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.success .header {
+    color: var(--success-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.error {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-left-color: var(--error-400) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.error .header {
+    color: var(--error-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.warning {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-left-color: var(--warning-400) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.warning .header {
+    color: var(--warning-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.info {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-left-color: var(--primary-400) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.info .header {
+    color: var(--primary-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification .message {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification .time {
+    color: var(--text-tertiary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification .type {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification .link {
+    color: var(--primary-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification .link:hover {
+    color: var(--primary-300) !important;
+}
+
+[data-theme="dark"] .modal-notifications .date {
+    color: var(--text-primary) !important;
+    background: var(--surface-elevated) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.action {
+    background: var(--surface-elevated) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.action .clear_notifications {
+    color: var(--error-400) !important;
+}
+
+[data-theme="dark"] .modal-notifications .notification.action .empty {
+    color: var(--text-secondary) !important;
+}
+
 /* Mobile responsiveness for modals and navbars */
 @media (max-width: 768px) {
     .modal {

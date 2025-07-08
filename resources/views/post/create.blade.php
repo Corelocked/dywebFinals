@@ -104,9 +104,8 @@
             document.getElementById('form').submit();
         }
 
-        // Wait for DOM to be fully loaded before adding event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Make category images globally available for post.js changeToCategory function
+
             window.categoryImages = {
                 @foreach($categories as $category)
                     @php
@@ -127,7 +126,6 @@
                 @endforeach
             };
 
-            // Note: Image preview functionality is handled in createPost.js
         });
     </script>
 </x-main-layout>
