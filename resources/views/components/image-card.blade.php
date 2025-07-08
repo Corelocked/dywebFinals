@@ -1,12 +1,46 @@
-<div class="image" onclick="getFileInfo('{{$image['directory']}}', '{{$image['fullname']}}')">
-    <img loading="lazy" src="{{ asset($image['path']) }}" alt="{{ $image['name'] }}">
+<div class="image" onclick="getFileInfo('{{$image['directory']}}', '{{$image['fullname']}}')" 
+     data-name="{{ $image['name'] }}" 
+     data-size="{{ $image['size'] }}" 
+     data-directory="{{ $image['directory'] }}"
+     data-usage="{{ $image['usage_count'] }}">
+    <div class="image-container">
+        <img loading="lazy" src="{{ asset($image['path']) }}" alt="{{ $image['name'] }}" class="thumbnail">
+        <div class="overlay">
+            <div class="image-info">
+                <div class="image-name">{{ $image['name'] }}</div>
+                <div class="image-details">
+                    <span class="image-size">{!! formatBytes($image['size']) !!}</span>
+                    <span class="image-usage">{{ $image['usage_count'] }} uses</span>
+                </div>
+            </div>
+        </div>
+        <div class="image-badge">
+            <i class="fas fa-{{ pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpg' || pathinfo($image['name'], PATHINFO_EXTENSION) === 'jpeg' ? 'image' : (pathinfo($image['name'], PATHINFO_EXTENSION) === 'png' ? 'file-image' : 'file') }}"></i>
+        </div>
+    </div>
     <div class="info">
-        <p class="directory"><i class="fa-solid fa-folder"></i> {{ $image['directory'] }}</p>
-        <p class="filename">{{ $image['name'] }}</p>
+        <div class="info-header">
+            <p class="directory">
+                <i class="fa-solid fa-folder"></i> 
+                {{ $image['directory'] }}
+            </p>
+            <div class="usage-indicator {{ $image['usage_count'] > 0 ? 'in-use' : 'unused' }}">
+                <i class="fa-solid fa-{{ $image['usage_count'] > 0 ? 'check-circle' : 'exclamation-triangle' }}"></i>
+            </div>
+        </div>
+        <p class="filename" title="{{ $image['name'] }}">{{ $image['name'] }}</p>
         @if (!empty($image['uniqid']))
             <p class="uniqid"><i class="fa-solid fa-hashtag"></i> {{ $image['uniqid'] }}</p>
         @endif
-        <p class="size"><i class="fa-solid fa-database"></i> {!! formatBytes($image['size']) !!}</p>
-        <p class="usage_count"><i class="fa-solid fa-recycle"></i> Used: <span>{{ $image['usage_count'] }}</span></p>
+        <div class="file-stats">
+            <div class="stat-item">
+                <i class="fa-solid fa-database"></i>
+                <span>{!! formatBytes($image['size']) !!}</span>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-recycle"></i>
+                <span>{{ $image['usage_count'] }} uses</span>
+            </div>
+        </div>
     </div>
 </div>
