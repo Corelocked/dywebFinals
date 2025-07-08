@@ -12,26 +12,24 @@
                     {{ $comment->created_at->diffForHumans() }}
                 </time>
             </div>
-            @if(Auth::check() && ($comment->user_id === Auth::id() || $post->user_id == Auth::id() || Auth::user()->hasPermissionTo('comment-super-list')))
+            @if(Auth::check() && (Auth::user()->can('update', $comment) || Auth::user()->can('delete', $comment)))
                 <div class="comment-actions">
-                    @if ($comment->user_id === Auth::id())
+                    @can('update', $comment)
                         <a href="{{ route('comments.edit', $comment->id) }}" class="action-btn edit-btn" title="Edit comment">
                             <i class="fa-solid fa-edit"></i>
                             <span>Edit</span>
                         </a>
-                    @endif
-                    @if($post->user_id == Auth::id() || Auth::user()->hasPermissionTo('comment-super-list'))
-                        @can('comment-delete')
-                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" id="comment_delete_{{ $comment->id }}" class="delete-form">
-                                @method('DELETE')
-                                @csrf
-                                <button type="button" class="action-btn delete-btn" title="Delete comment" onClick="if(confirm('Are you sure you want to delete this comment?')) document.getElementById('comment_delete_{{ $comment->id }}').submit()">
-                                    <i class="fa-solid fa-trash"></i>
-                                    <span>Delete</span>
-                                </button>
-                            </form>
-                        @endcan
-                    @endif
+                    @endcan
+                    @can('delete', $comment)
+                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" id="comment_delete_{{ $comment->id }}" class="delete-form">
+                            @method('DELETE')
+                            @csrf
+                            <button type="button" class="action-btn delete-btn" title="Delete comment" onClick="if(confirm('Are you sure you want to delete this comment?')) document.getElementById('comment_delete_{{ $comment->id }}').submit()">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Delete</span>
+                            </button>
+                        </form>
+                    @endcan
                 </div>
             @endif
         </div>

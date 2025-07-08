@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
-
+<x-main-layout>
     <div class="dashboard">
         <div class="saved_posts">
             <div class="saved_card new_post">
@@ -15,4 +13,4 @@
             @endforeach
         </div>
     </div>
-</x-admin-layout>
+</x-main-layout>

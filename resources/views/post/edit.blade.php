@@ -1,11 +1,9 @@
-<x-admin-layout :edit="true">
+<x-main-layout :edit="true">
     @section('scripts')
         <script src="//cdn.quilljs.com/1.3.7/quill.js"></script>
         <link href="//cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
         @vite(['resources/js/fileUploadLoader.js', 'resources/js/post.js', 'resources/js/editPost.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('posts.index') }}"/>
 
     <div class="post__create post__edit">
         <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data" id="form">
@@ -114,20 +112,11 @@
             quill.root.innerHTML = `{!! addslashes($post->body) !!}`;
         @endif
 
-        // Image preview functionality
-        document.getElementById('image').addEventListener('change', function(event) {
-            if (event.target.files && event.target.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('output').src = e.target.result;
-                };
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        });
+        // Note: Image preview functionality is handled in editPost.js
 
         function submitForm() {
             document.getElementById('hiddenArea').value = quill.root.innerHTML;
             document.getElementById('form').submit();
         }
     </script>
-</x-admin-layout>
+</x-main-layout>

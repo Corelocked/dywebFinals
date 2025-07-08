@@ -810,7 +810,7 @@ header .profile .notifications_count {
     background: var(--background-color);
     padding: var(--space-6);
     width: calc(100% - 20px);
-    margin: 94px 5px 10px 10px;
+    margin: 40px 5px 10px 10px;
     min-height: calc(100vh - 80px - 30px);
 }
 .dashboard {
@@ -823,11 +823,22 @@ header .profile .notifications_count {
     border-radius: 10px;
     /*padding: 20px;*/
     width: calc(100% - 20px);
-    margin: 94px 10px 10px 10px;
+    margin: 40px 10px 10px 10px;
     min-height: calc(100vh - 80px - 30px);
     -webkit-box-shadow: 0px 0px 40px 6px var(--shadow-color);
     -moz-box-shadow: 0px 0px 40px 6px var(--shadow-color);
     box-shadow: 0px 0px 40px 6px var(--shadow-color);
+}
+
+/* Adjust top margin for create/form pages */
+.dashboard.create-form {
+    margin: 60px auto 2rem auto !important;
+    min-height: calc(100vh - 60px);
+}
+
+/* Additional specificity for main-layout create forms */
+body .dashboard.create-form {
+    margin: 60px auto 2rem auto !important;
 }
 .users,
 .roles,
@@ -836,7 +847,7 @@ header .profile .notifications_count {
     background: var(--background-color);
     padding: var(--space-6);
     width: calc(100% - 20px);
-    margin: 94px 10px 10px 10px;
+    margin: 40px 10px 10px 10px;
     min-height: calc(100vh - 80px - 30px);
 }
 .dashboard #dashboard__image {
@@ -938,7 +949,7 @@ header .profile .notifications_count {
     width: 76%;
     font-family: "Poppins", sans-serif;
     float: right;
-    padding: var(--space-6);
+    padding: var(--space-3);
     background: var(--surface-primary);
     border-radius: var(--radius-2xl);
     border: 1px solid var(--border-color);
@@ -2123,6 +2134,11 @@ html[data-theme='dark'] .image_modal {
     color: var(--text-primary) !important;
     line-height: 1.7 !important;
     font-family: "Inter", sans-serif !important;
+    /* Prevent horizontal expansion with long words */
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: pre-wrap !important;
 }
 
 .ql-editor:focus {
@@ -2210,8 +2226,8 @@ html[data-theme='dark'] .image_modal {
     border-radius: var(--radius-2xl);
     width: 98%;
     max-width: 1800px;
-    margin: 100px auto 10px auto;
-    padding-top: 20px;
+    margin: 60px auto 10px auto;
+    padding-top: 2rem;
     font-family: "Inter", sans-serif;
     background: var(--surface-primary);
     box-shadow: var(--shadow-2xl);
@@ -2251,8 +2267,8 @@ html[data-theme='dark'] .image_modal {
     flex-direction: row-reverse;
     border-radius: 10px;
     width: 100%;
-    margin: 94px 0 0 0;
-    min-height: calc(100vh - 94px - 10px);
+    margin: 40px 0 0 0;
+    min-height: calc(100vh - 40px - 10px);
     overflow: auto;
 }
 .post__history:has(.post__compare) {
@@ -2267,7 +2283,7 @@ aside.post__preview {
     width: calc(100% - 520px);
     margin: 0 auto;
     font-family: "Poppins", sans-serif;
-    height: calc(100vh - 94px - 10px);
+    height: calc(100vh - 40px - 10px);
     overflow: auto; /* auto */
 }
 .post__compare {
@@ -2814,7 +2830,7 @@ font-family: "Inter", sans-serif;
 
 /* Ensure edit form has proper top margin like create form */
 .post__edit {
-    margin: 100px auto 10px auto;
+    margin: 60px auto 10px auto;
 }
 
 .post__create #form,
@@ -2987,10 +3003,15 @@ html[data-theme='dark'] .post_container .image img {
 
 .post_body #editor {
     min-height: 400px;
+    /* Remove max-height to allow natural expansion */
     border: 2px solid var(--border-color);
     border-radius: var(--radius-lg);
     background: var(--surface-primary);
     color: var(--text-primary);
+    /* Prevent horizontal expansion with long words */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .post_body #editor:focus-within {
@@ -3001,6 +3022,10 @@ html[data-theme='dark'] .post_container .image img {
 /* Quill Editor Theme Support */
 .post_body .ql-editor {
     color: var(--text-primary);
+    /* Ensure word wrapping in post body editor */
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .post_body .ql-toolbar {
@@ -3445,10 +3470,10 @@ html[data-theme='dark'] .categories_list .category:hover {
     font-weight: 700;
 }
 
-/* Adjust post edit layout for fixed header */
-.post__edit {
+/* Adjust post edit layout for fixed header - Remove conflicting rule, using consistent margin from post__edit above */
+/* .post__edit {
     margin-top: 80px;
-}
+} */
 
 /* Saved Posts Specific Styles */
 .dashboard .saved_posts {
@@ -3812,6 +3837,11 @@ html[data-theme='dark'] .saved_card:hover {
     
     .post_body #editor {
         min-height: 300px;
+        /* Remove max-height to allow natural expansion on mobile too */
+        /* Prevent horizontal expansion with long words on mobile */
+        word-wrap: break-word;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
     
     .post_body .actions {
@@ -3911,61 +3941,58 @@ html[data-theme='dark'] .post_container ul li {
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     display: none;
     visibility: hidden;
-    align-items: flex-start;
-    justify-content: flex-end;
     z-index: 1000;
     opacity: 0;
     transition: all var(--duration-300) var(--ease-out);
-    padding: var(--space-4);
-    padding-right: var(--space-8);
     overscroll-behavior: contain;
+    pointer-events: none;
 }
 
 .modal.show {
+    pointer-events: auto;
     opacity: 1;
     visibility: visible;
-    display: flex !important;
+    display: block !important;
 }
-
-html[data-theme='dark'] .modal {
-    background: rgba(0, 0, 0, 0.8);
+.divided_minimal .comments .comment.tile .actions .read_more,
+.divided_minimal .comments .comment.tile .actions .edit,
+.divided_minimal .posts .post.tile .actions .delete,
+.divided_minimal .posts .post.tile .actions .highlight{
+    margin: 0 4px;
+    padding: 10px 4px;
+    flex-grow: 1;
+    min-width: auto;
 }
-
-/* Profile Modal Panel */
-.modal-profile {
-    background: var(--surface-primary);
-    backdrop-filter: blur(24px) saturate(200%);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-2xl);
-    width: 100%;
-    max-width: 420px;
-    max-height: 85vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    animation: slideInRight var(--duration-300) var(--ease-out);
-    z-index: 1001;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
+.divided_minimal .comments .comment .actions .read_more {
+    background: var(--success-500);
 }
-
-.modal-profile::-webkit-scrollbar {
-    width: 6px;
+.divided_minimal .comments .comment .actions .read_more:hover {
+    background: var(--success-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
-
-.modal-profile::-webkit-scrollbar-track {
-    background: transparent;
+.divided_minimal .comments .comment .actions .edit {
+    background: var(--primary-500);
 }
-
-.modal-profile::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: var(--radius-full);
+.divided_minimal .comments .comment .actions .edit:hover {
+    background: var(--primary-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
-
-.modal-profile::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+.divided_minimal .comments .comment .actions .delete {
+    background: var(--error-500);
+    border: none;
+    padding: 6.5px;
+    margin: 4px 0;
+}
+.divided_minimal .comments .comment.tile .actions .delete,
+.divided_minimal .comments .comment.tile .actions .highlight{
+    padding: 12.5px;
+}
+.divided_minimal .comments .comment .actions .delete:hover {
+    background: var(--error-600);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
 }
 
 html[data-theme='dark'] .modal-profile {
@@ -4184,20 +4211,7 @@ html[data-theme='dark'] .modal-profile .clock .time span {
 
 /* Notifications Modal Panel */
 .modal-notifications {
-    background: var(--surface-primary);
-    backdrop-filter: blur(24px) saturate(200%);
-    -webkit-backdrop-filter: blur(24px) saturate(200%);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-2xl);
-    width: 100%;
-    max-width: 480px;
-    max-height: 85vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    animation: slideInRight var(--duration-300) var(--ease-out);
-    z-index: 1001;
+    /* Positioning and layout controlled by app.css */
     scrollbar-width: thin;
     scrollbar-color: var(--border-color) transparent;
 }

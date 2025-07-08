@@ -1,6 +1,4 @@
-<x-admin-layout>
-
-    <x-dashboard-navbar route="{{ route('comments.index') }}"/>
+<x-main-layout>
 
     <div class="dashboard">
         <form action="{{ route('comments.update', $comment->id) }}" id="edit_comment" method="POST">
@@ -16,4 +14,4 @@
             </div>
         </form>
     </div>
-</x-admin-layout>
+</x-main-layout>

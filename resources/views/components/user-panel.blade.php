@@ -1,13 +1,13 @@
 <div class="modal">
-    <div class="modal-profile hidden" style="margin-top: 72px;">
+    <div class="modal-profile hidden">
         <span>Welcome!</span>
         <i class="fa-solid fa-circle-xmark close close-modal"></i>
-        <div class="notifications">{{ $unreadNotifications }} <i class="fa-solid fa-angles-right"></i></div>
+        <div class="notifications switch-to-notifications" style="cursor: pointer;">{{ $unreadNotifications ?? 0 }} <i class="fa-solid fa-angles-right"></i></div>
         <p class="name">{{ Auth::User() ? Auth::User()->firstname . ' ' . Auth::User()->lastname : '' }}</p>
         <p class="role_profile">{{ Auth::User() ? Auth::User()->roles[0]->name : '' }}</p>
         <p class="info">Available actions</p>
-        <a href="{{ route('dashboard') }}" class="button"><i class="fa-solid fa-wrench"></i><p>Panel</p></a>
-        <a href="{{ route('profile') }}" class="button"><i class="fa-solid fa-id-card"></i><p>Profile</p></a>
+        {{-- <a href="{{ route('dashboard') }}" class="button"><i class="fa-solid fa-wrench"></i><p>Panel</p></a> --}}
+        {{-- <a href="{{ route('profile') }}" class="button"><i class="fa-solid fa-id-card"></i><p>Profile</p></a> --}}
         <div class="button toggle-mode" onClick="toggleMode();"><i class="fa-solid fa-moon"></i><p>Dark Mode</p></div>
         <a href="{{ route('logout') }}" class="button"><i class="fa-solid fa-right-from-bracket"></i><p>Logout</p></a>
         <p class="info">Quick actions</p>
@@ -33,9 +33,9 @@
         </div>
         <div class="line-1"></div>
     </div>
-    <div class="modal-notifications hidden" style="margin-top: 72px;">
+    <div class="modal-notifications hidden">
         <div class="back"><i class="fa-solid fa-angles-left"></i> <p>Back</p></div>
-        @if (count($notifications) === 0)
+        @if (!isset($notifications) || count($notifications) === 0)
             <div class="notification action">
                 <p class="empty">No notifications</p>
             </div>
@@ -44,6 +44,7 @@
                 <div class="clear_notifications" onclick="clearNotifications();">Clear notifications</div>
             </div>
         @endif
+        @if(isset($notifications) && count($notifications) > 0)
         @php
             $groupedNotifications = $notifications->groupBy(function ($notification) {
                 return $notification->created_at->format('Y-m-d');
@@ -122,6 +123,6 @@
                 </div>
             @endforeach
         @endforeach
+        @endif
     </div>
-    @vite(['resources/js/profile.js'])
 </div>

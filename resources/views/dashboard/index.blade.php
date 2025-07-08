@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('home') }}"/>
-
+<x-main-layout>
     <div class="dashboard main dashboard-enhanced">
         <!-- Hero Section -->
         <div class="dashboard-hero">
@@ -158,12 +156,12 @@
                     @endcan
                 </div>
                 
-                @can('image-list')
+                {{-- @can('image-list')
                     <a href="{{ route('images.index') }}" class="button">
                         <i class="fa-solid fa-image"></i>
                         <p>Browse images</p>
                     </a>
-                @endcan
+                @endcan --}}
             </div>
         </div>
         @endauth
@@ -745,4 +743,4 @@
             }
         }
     </style>
-</x-admin-layout>
+</x-main-layout>

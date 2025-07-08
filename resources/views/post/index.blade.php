@@ -1,9 +1,7 @@
-<x-admin-layout>
+<x-main-layout>
     @section('scripts')
         @vite(['resources/js/filtr.js', 'resources/js/postList.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="divided_minimal">
         <div class="posts">
@@ -168,4 +166,4 @@
             changeView('tile', 'post');
         }
     </script>
-</x-admin-layout>
+</x-main-layout>

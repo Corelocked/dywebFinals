@@ -1,9 +1,7 @@
-<x-admin-layout>
+<x-main-layout>
     @section('scripts')
         @vite(['resources/js/filtr.js'])
     @endsection
-
-    <x-dashboard-navbar route="{{ route('dashboard') }}"/>
 
     <div class="divided_minimal">
         <div class="comments">
@@ -118,4 +116,4 @@
             changeView('tile', 'comment');
         }
     </script>
-</x-admin-layout>
+</x-main-layout>

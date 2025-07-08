@@ -19,12 +19,12 @@
                 <a href="{{ route('comments.edit', $comment->id) }}" class="edit">Edit</a>
             @endif
         @endauth
-        @can('comment-delete')
+        @if(Auth::check() && ($comment->user_id === Auth::id() || $comment->post->user_id == Auth::id() || Auth::user()->hasRole('Admin')))
             <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" id="comment_{{ $comment->id }}">
                 @method('DELETE')
                 @csrf
             </form>
             <button onClick="confirmDelete({{ $comment->id }}, 'comment')" class="delete">Delete <i class="fa-solid fa-trash"></i></button>
-        @endcan
+        @endif
     </div>
 </div>

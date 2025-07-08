@@ -1,6 +1,4 @@
-<x-admin-layout>
-    <x-dashboard-navbar route="{{ route('categories.index') }}"/>
-
+<x-main-layout>
     <div class="dashboard">
         <form action="{{ route('categories.update', $category->id) }}" method="POST" id="edit_category">
             @csrf
@@ -24,4 +22,4 @@
             </div>
         </form>
     </div>
-</x-admin-layout>
+</x-main-layout>
