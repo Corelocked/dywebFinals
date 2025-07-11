@@ -612,12 +612,21 @@ class PostAdminController extends Controller
     private function checkUserIdPost(Post $post = null, SavedPost $savedPost = null): void
     {
         if ($post) {
-            if ($post->user_id != Auth::id() && ! Auth::User()->hasPermissionTo('post-super-list')) {
-                abort(403);
+            // If it's a delete operation, only check for post-delete permission
+            $isDeleteOperation = request()->route()->getActionMethod() === 'destroy';
+            if ($isDeleteOperation) {
+                if ($post->user_id != Auth::id() && !Auth::User()->hasPermissionTo('post-delete')) {
+                    abort(403);
+                }
+            } else {
+                // For other operations like edit/update, require post-super-list for non-owned posts
+                if ($post->user_id != Auth::id() && !Auth::User()->hasPermissionTo('post-super-list')) {
+                    abort(403);
+                }
             }
         }
         if ($savedPost) {
-            if ($savedPost->user_id != Auth::id() && ! Auth::User()->hasPermissionTo('post-super-list')) {
+            if ($savedPost->user_id != Auth::id() && !Auth::User()->hasPermissionTo('post-super-list')) {
                 abort(403);
             }
         }

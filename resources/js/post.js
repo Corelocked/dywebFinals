@@ -93,7 +93,12 @@ let range = null;
 let imageLoadMode = null;
 
 window.showSelectImageModal = function () {
-    document.body.style.overflow = "hidden";
+    // Reset the browse images view when showing the modal
+    browseImages.style.display = "none";
+    optionsImageModal.forEach(option => {
+        option.style.display = "flex";
+    });
+    document.body.style.overflow = "auto"; // Allow scrolling by default
     selectImageModal.style.display = "flex";
 }
 
@@ -124,6 +129,7 @@ window.selectFromStorage = function () {
        option.style.display = "none";
     });
     browseImages.style.display = "block";
+    document.body.style.overflow = "auto"; // Allow scrolling when browsing images
 
     if (offset % 20 === 0) {
         checkVisibility();
@@ -207,10 +213,11 @@ window.hideBrowseImages = function () {
     optionsImageModal.forEach(option => {
         option.style.display = "flex";
     });
+    document.body.style.overflow = "auto"; // Restore scrolling
 }
 
 function hideImageModal() {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = "auto"; // Restore scrolling
     selectImageModal.style.display = "none";
     hideBrowseImages();
 }
@@ -218,6 +225,7 @@ function hideImageModal() {
 selectImageModal.addEventListener("click", function (event) {
    if (event.target.classList.contains('select-image')) {
        hideImageModal();
+       document.body.style.overflow = "auto"; // Ensure scrolling is restored
    }
 });
 

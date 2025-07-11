@@ -156,12 +156,12 @@
                     @endcan
                 </div>
                 
-                {{-- @can('image-list')
+                @can('image-list')
                     <a href="{{ route('images.index') }}" class="button">
                         <i class="fa-solid fa-image"></i>
                         <p>Browse images</p>
                     </a>
-                @endcan --}}
+                @endcan
             </div>
         </div>
         @endauth
