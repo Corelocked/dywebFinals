@@ -109,58 +109,50 @@
 
         /* Main content layout */
         .content-layout {
-            display: grid;
-            grid-template-columns: 360px 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 2rem;
             margin-top: 2rem;
         }
 
-        /* Sidebar (filters) */
-        .filter-sidebar {
+        /* Filter bar */
+        .filter-bar {
             background: var(--surface-primary);
             border-radius: 16px;
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-            overflow: hidden;
-        }
-        .filter-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             padding: 2rem;
-            border-bottom: 2px solid var(--primary-100);
-            cursor: pointer;
-            transition: all 0.3s;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
         }
-        .filter-header:hover {
-            background: var(--surface-hover);
-        }
-        .filter-header h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .filter-header h3::before {
-            content: "🔍";
-            font-size: 1.25rem;
-        }
-        .filter-toggle {
-            color: var(--primary-500);
-            font-size: 1.25rem;
-            transition: transform 0.3s;
-        }
-        .filter-body {
-            padding: 2rem;
+        .filter-section {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1rem;
+        }
+        .filter-section-title {
+            font-weight: 600;
+            color: var(--primary-500);
+            font-size: 1rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+        .filter-section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 16px;
+            background: var(--primary-500);
+            border-radius: 2px;
+        }
+        .filter-options {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
         .filter-section {
             display: flex;
@@ -191,65 +183,51 @@
         .filter-option {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 1rem;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
             border-radius: 8px;
-            background: var(--surface-primary);
-            border: 2px solid var(--border-color);
+            background: var(--surface-secondary);
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             font-size: 0.875rem;
-            text-decoration: none;
+            color: var(--text-secondary);
+            min-width: 80px;
         }
         .filter-option:hover {
-            border-color: var(--primary-300);
-            background: var(--primary-50);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.12);
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
         }
         .filter-option.active {
-            background: var(--primary-100);
+            background: var(--primary-500);
+            color: white;
             border-color: var(--primary-500);
-            color: var(--primary-700);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.18);
         }
         .filter-option .icon {
-            color: var(--neutral-400);
-            font-size: 1rem;
-            transition: color 0.3s;
-            min-width: 16px;
-        }
-        .filter-option.active .icon {
-            color: var(--primary-500);
+            font-size: 0.875rem;
         }
         .filter-option p {
             margin: 0;
-            color: var(--text-secondary);
             font-weight: 500;
-            line-height: 1.4;
-        }
-        .filter-option.active p {
-            color: var(--primary-700);
-            font-weight: 600;
         }
         .search-input {
             width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: var(--surface-primary);
+            background: var(--surface-secondary);
             color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
         .search-input:focus {
             outline: none;
             border-color: var(--primary-500);
-            box-shadow: 0 0 0 4px var(--primary-100);
-            transform: translateY(-2px);
+            background: var(--surface-primary);
         }
         .search-input::placeholder {
-            color: var(--text-tertiary);
+            color: var(--text-secondary);
         }
         .apply-filters-btn {
             background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
@@ -274,103 +252,61 @@
             box-shadow: 0 8px 24px rgba(14, 165, 233, 0.32);
         }
 
-        /* Image grid and cards (strict, modern, fixed size) */
+        /* Image grid and cards */
         .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+        
+        /* Card Layout */
+        .image-card {
             background: var(--surface-primary);
             border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            padding: 1.25rem;
-            min-height: 400px;
-        }
-        .image-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(64px, 64px));
-            gap: 0.5rem;
-            padding: 0.2rem 0.1rem 0.2rem 0.1rem;
-            width: 100%;
-            justify-content: flex-start;
-            align-items: start;
-        }
-        /* New Card Layout */
-        .image-card, .image-card * {
-            box-sizing: border-box !important;
-            min-width: 0 !important;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-        }
-        .image-card {
-            background: var(--surface-primary);
-            border-radius: 18px;
-            border: 1.5px solid var(--border-color);
-            box-shadow: 0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
-            overflow: visible;
-            transition: box-shadow 0.22s cubic-bezier(.4,2,.6,1), transform 0.22s cubic-bezier(.4,2,.6,1);
+            transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            width: 90px !important;
-            min-width: 90px !important;
-            max-width: 90px !important;
-            height: 120px !important;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0.5rem 0.3rem 0.7rem 0.3rem;
         }
+        
         .image-card:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 16px 40px 0 rgba(59,130,246,0.18), 0 4px 16px rgba(0,0,0,0.13);
-            z-index: 2;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary-200);
         }
+        
         .image-card .image-preview {
-            width: 64px;
-            height: 64px;
+            width: 100%;
+            height: 240px;
             object-fit: cover;
-            object-position: center;
-            border-radius: 12px;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--surface-secondary) 60%, var(--primary-50) 100%);
-            box-shadow: 0 2px 8px rgba(59,130,246,0.10);
-            border: 1px solid var(--border-color);
-            display: block;
+            background: var(--surface-secondary);
         }
+        
         .image-card .image-preview:empty {
-            background: repeating-linear-gradient(135deg, var(--surface-secondary), var(--primary-100) 10px, var(--surface-secondary) 20px);
+            background: linear-gradient(135deg, var(--surface-secondary), var(--primary-50));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--neutral-400);
-            font-size: 1.2rem;
+            color: var(--text-secondary);
         }
+        
         .image-card .image-info {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(2.5px) saturate(1.1);
-            border-radius: 10px;
-            margin-top: 0.2rem;
-            width: 100%;
-            padding: 0.18rem 0.18rem 0.12rem 0.18rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            min-height: 0;
-            box-shadow: 0 1px 4px rgba(59,130,246,0.06);
+            gap: 1rem;
         }
-        [data-theme="dark"] .image-card .image-info {
-            background: rgba(30,41,59,0.98);
-        }
+        
         .image-card .image-name {
-            font-weight: 700;
+            font-size: 1.125rem;
+            font-weight: 600;
             color: var(--text-primary);
-            font-size: 0.72rem;
-            margin: 0 0 0.08rem 0;
-            word-break: break-word;
-            line-height: 1.1;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            letter-spacing: 0.01em;
+            margin: 0;
+            line-height: 1.4;
         }
         .image-card .image-details {
             display: flex;
@@ -379,43 +315,45 @@
             margin-bottom: 0.08rem;
             width: 100%;
         }
+        .image-card .image-details {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
         .image-card .detail-item {
             display: flex;
             align-items: center;
-            gap: 0.11rem;
+            gap: 0.5rem;
             color: var(--text-secondary);
-            font-size: 0.54rem;
-            font-weight: 500;
+            font-size: 0.875rem;
         }
+        
         .image-card .detail-item i {
             color: var(--primary-500);
-            width: 12px;
-            text-align: center;
-            font-size: 0.7rem;
+            font-size: 1rem;
         }
+        
         .image-card .image-actions {
             display: flex;
-            gap: 0.12rem;
-            margin-top: 0.12rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
             justify-content: flex-end;
-            width: 100%;
         }
+        
         .image-card .action-btn {
-            flex: 0 0 20px;
-            width: 20px;
-            height: 20px;
-            padding: 0;
+            padding: 0.5rem;
             border: none;
-            background: transparent;
-            color: var(--text-tertiary);
-            border-radius: 50%;
+            background: var(--surface-secondary);
+            color: var(--text-secondary);
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         .image-card .action-btn:hover {
             background: var(--primary-100);
@@ -497,14 +435,13 @@
             .content-layout {
                 grid-template-columns: 1fr;
             }
-            .filter-sidebar {
-                position: static;
-                margin-bottom: 2rem;
+            .filter-bar {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
             }
-            .image-list {
-                overflow-x: auto;
-                grid-auto-flow: column;
-                grid-template-columns: repeat(auto-fit, minmax(64px, 64px));
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             }
         }
         @media (max-width: 600px) {
@@ -570,136 +507,60 @@
         </div>
 
         <div class="content-layout">
-            <div class="filter-sidebar">
-                <div class="filter-header">
-                    <h3>Filters</h3>
-                    <i class="fa-solid fa-caret-up filter-toggle"></i>
+            <div class="filter-bar">
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Sort</h4>
+                    <div class="filter-options">
+                        <div class="filter-option" onclick="filterCheck(1);" data-order="asc">
+                            <i class="fa-solid fa-arrow-down-a-z"></i>
+                            <p>Name (A-Z)</p>
+                        </div>
+                        <div class="filter-option" onclick="filterCheck(2);" data-order="desc">
+                            <i class="fa-solid fa-arrow-up-z-a"></i>
+                            <p>Name (Z-A)</p>
+                        </div>
+                        <div class="filter-option active" onclick="filterCheck(8);" data-order="descUsage">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <p>Most Used</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="filter-body">
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Sorting Options</h4>
-                        <div class="filter-options">
-                            <div class="filter-option" onclick="filterCheck(1);" data-order="asc">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Name (A-Z)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(2);" data-order="desc">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Name (Z-A)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(5);" data-order="ascSize">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Size (Small to Large)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(6);" data-order="descSize">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Size (Large to Small)</p>
-                            </div>
-                            <div class="filter-option active" onclick="filterCheck(8);" data-order="descUsage">
-                                <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
-                                <p>Usage (High to Low)</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Search Images</h4>
-                        <input type="text" class="search-input" name="term" value="{{ $terms ?? '' }}" placeholder="Search by filename...">
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Items Per Page</h4>
-                        <div class="filter-options">
-                            <div class="filter-option active" onclick="radioCheck(1);">
-                                <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                <p>20 items</p>
-                            </div>
-                            <div class="filter-option" onclick="radioCheck(2);">
-                                <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                <p>50 items</p>
-                            </div>
-                            <div class="filter-option" onclick="radioCheck(3);">
-                                <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                <p>100 items</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Folders</h4>
-                        <div class="filter-options">
-                            @foreach ($directories as $directory => $count)
-                                @if (isset($selected_directories_array) && in_array($directory, $selected_directories_array))
-                                    <div class="filter-option active" onclick="selectDirectory(event, '{{ $directory }}')" data-directory-name="{{ $directory }}">
-                                        <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                        <p>{{ $directory }} ({{ $count }})</p>
-                                    </div>
-                                @else
-                                    <div class="filter-option" onclick="selectDirectory(event, '{{ $directory }}')" data-directory-name="{{ $directory }}">
-                                        <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                        <p>{{ $directory }} ({{ $count }})</p>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">File Types</h4>
-                        <div class="filter-options">
-                            @foreach ($extensions as $extension => $count)
-                                @if (isset($selected_extensions_array) && in_array($extension, $selected_extensions_array))
-                                    <div class="filter-option active" onclick="selectExtension(event, '{{ $extension }}')" data-extension-name="{{ $extension }}">
-                                        <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                        <p>.{{ $extension }} ({{ $count }})</p>
-                                    </div>
-                                @else
-                                    <div class="filter-option" onclick="selectExtension(event, '{{ $extension }}')" data-extension-name="{{ $extension }}">
-                                        <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                        <p>.{{ $extension }} ({{ $count }})</p>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    
-                    <button class="apply-filters-btn">
-                        Apply Filters
-                    </button>
-                    
-                    <form style="display: none" id="filter_form">
-                        <input type="text" id="term" name="q" value="{{ $terms ?? '' }}">
-                        <input type="text" id="order" name="order" value="{{ $order ?? 'descUsage' }}">
-                        <input type="text" id="limit" name="limit" value="{{ $limit ?? 20 }}">
-                        <input type="text" id="directories" name="directories[]" value="{{ !empty($selected_directories[0]) ? $selected_directories[0] : null }}">
-                        <input type="text" id="extensions" name="extensions[]" value="{{ !empty($selected_extensions[0]) ? $selected_extensions[0] : null }}">
-                        <input type="text" id="duplicates" name="duplicates[]" value="{{ $duplicates ? implode(',', $duplicates) : '' }}">
-                    </form>
+
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Search</h4>
+                    <input type="text" class="search-input" name="term" value="{{ $terms ?? '' }}" placeholder="Search images...">
                 </div>
+
+                <div class="filter-section">
+                    <h4 class="filter-section-title">Show:</h4>
+                    <div class="filter-options">
+                        <div class="filter-option active" onclick="radioCheck(1);">
+                            <p>20</p>
+                        </div>
+                        <div class="filter-option" onclick="radioCheck(2);">
+                            <p>50</p>
+                        </div>
+                        <div class="filter-option" onclick="radioCheck(3);">
+                            <p>100</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form style="display: none" id="filter_form">
+                    <input type="text" id="term" name="q" value="{{ $terms ?? '' }}">
+                    <input type="text" id="order" name="order" value="{{ $order ?? 'descUsage' }}">
+                    <input type="text" id="limit" name="limit" value="{{ $limit ?? 20 }}">
+                    <input type="text" id="directories" name="directories[]" value="{{ !empty($selected_directories[0]) ? $selected_directories[0] : null }}">
+                    <input type="text" id="extensions" name="extensions[]" value="{{ !empty($selected_extensions[0]) ? $selected_extensions[0] : null }}">
+                    <input type="text" id="duplicates" name="duplicates[]" value="{{ $duplicates ? implode(',', $duplicates) : '' }}">
+                </form>
             </div>
             
             <div class="image-grid">
                 @if($files->count() > 0)
-                    <div class="image-list">
-                        @php
-                            function formatBytes($bytes, $precision = 2) {
-                                $kilobyte = 1024;
-                                $megabyte = $kilobyte * 1024;
-
-                                if ($bytes < $kilobyte) {
-                                    return $bytes . ' B';
-                                } elseif ($bytes < $megabyte) {
-                                    return number_format($bytes / $kilobyte, $precision) . ' KB';
-                                } else {
-                                    return number_format($bytes / $megabyte, $precision) . ' MB';
-                                }
-                            }
-                        @endphp
-                        
-                        @foreach($files as $file)
-                            <x-image-card :image="$file"/>
-                        @endforeach
-                    </div>
+                    @foreach($files as $file)
+                        <x-image-card :image="$file"/>
+                    @endforeach
 
                     @if ((int)$limit !== 0)
                         {{ $files->appends([
@@ -725,8 +586,8 @@
     <!-- Keep existing modal HTML at the end -->
     <img src="" class="background" alt="" style="display: none;">
     <!-- New Modal Design -->
-    <div class="image_modal" style="display: none; align-items: flex-start;">
-        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: 3vh auto;">
+    <div class="image_modal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);">
+        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: auto;">
             <div class="close" onclick="closeModal();" style="position: absolute; top: 1.2rem; right: 1.2rem; width: 44px; height: 44px; background: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); border: 2px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 10000; transition: all 0.2s;">
                 <i class="fa-solid fa-xmark"></i>
             </div>

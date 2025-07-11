@@ -161,21 +161,39 @@ function showFormMessage(message, type = 'info') {
                 font-weight: 600;
                 border: 2px solid;
                 animation: slideIn 0.3s ease-out;
+                backdrop-filter: blur(8px);
             }
             .form-message--info {
-                background: var(--primary-50);
-                color: var(--primary-700);
-                border-color: var(--primary-200);
+                background: color-mix(in srgb, var(--primary-500) 5%, transparent);
+                color: var(--primary-600);
+                border-color: var(--primary-300);
             }
             .form-message--error {
-                background: var(--error-50);
-                color: var(--error-700);
-                border-color: var(--error-200);
+                background: color-mix(in srgb, var(--error-500) 5%, transparent);
+                color: var(--error-600);
+                border-color: var(--error-300);
             }
             .form-message--success {
-                background: var(--success-50);
-                color: var(--success-700);
-                border-color: var(--success-200);
+                background: color-mix(in srgb, var(--success-500) 5%, transparent);
+                color: var(--success-600);
+                border-color: var(--success-300);
+            }
+            
+            /* Dark mode styles */
+            [data-theme="dark"] .form-message--info {
+                background: color-mix(in srgb, var(--primary-500) 15%, transparent);
+                color: var(--primary-300);
+                border-color: var(--primary-600);
+            }
+            [data-theme="dark"] .form-message--error {
+                background: color-mix(in srgb, var(--error-500) 15%, transparent);
+                color: var(--error-300);
+                border-color: var(--error-600);
+            }
+            [data-theme="dark"] .form-message--success {
+                background: color-mix(in srgb, var(--success-500) 15%, transparent);
+                color: var(--success-300);
+                border-color: var(--success-600);
             }
             @keyframes slideIn {
                 from { opacity: 0; transform: translateY(-10px); }

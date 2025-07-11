@@ -2,6 +2,9 @@ import './bootstrap';
 import.meta.glob([ '../images/**', ]);
 import './theme';
 import './profile';
+import Swal from 'sweetalert2';
+
+window.Swal = Swal; // Make Swal globally available
 
 window.confirmDelete = function(id, name){
     Swal.fire({
