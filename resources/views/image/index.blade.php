@@ -712,9 +712,9 @@
     <!-- Keep existing modal HTML at the end -->
     <img src="" class="background" alt="" style="display: none;">
     <!-- New Modal Design -->
-    <div class="image_modal" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px);">
-        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: auto;">
-            <div class="close" onclick="closeModal();" style="position: absolute; top: 1.2rem; right: 1.2rem; width: 44px; height: 44px; background: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); border: 2px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 10000; transition: all 0.2s;">
+    <div class="image_modal" style="display: none; align-items: flex-start; justify-content: center; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1050; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); padding: 4rem 1rem 2rem 1rem; overflow-y: auto;">
+        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: auto; margin-top: 4rem; max-height: calc(100vh - 8rem); overflow-y: auto;">
+            <div class="close" onclick="closeModal();" style="position: absolute; top: 1.2rem; right: 1.2rem; width: 44px; height: 44px; background: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); border: 2px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 10; transition: all 0.2s;">
                 <i class="fa-solid fa-xmark"></i>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
@@ -751,6 +751,78 @@
     <script type="module">
         // Initialize filter collapse functionality for images
         document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.querySelector('.image_modal');
+            
+            // Add simple hover effect for close button and custom scrollbar styling
+            const style = document.createElement('style');
+            style.textContent = `
+                .image_modal .close:hover {
+                    background: var(--error-500) !important;
+                    color: white !important;
+                    border-color: var(--error-500) !important;
+                    transform: scale(1.05);
+                }
+                
+                /* Custom Scrollbar Styling - Only for modal content */
+                .modal-content::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                .modal-content::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.1);
+                    border-radius: 10px;
+                }
+                
+                .modal-content::-webkit-scrollbar-thumb {
+                    background: #888;
+                    border-radius: 10px;
+                }
+                
+                .modal-content::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
+                
+                /* Firefox scrollbar styling - Only for modal */
+                .modal-content {
+                    scrollbar-width: thin;
+                    scrollbar-color: #888 rgba(0, 0, 0, 0.1);
+                }
+                
+                /* Prevent body scroll when modal is open */
+                body.modal-open {
+                    overflow: hidden !important;
+                    padding-right: 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Close modal when clicking background
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+                
+                // Observe modal display changes to prevent body scroll
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                            if (modal.style.display === 'flex') {
+                                document.body.classList.add('modal-open');
+                            } else {
+                                document.body.classList.remove('modal-open');
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(modal, {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
+            }
+            
             const collapseButton = document.querySelector('.filtr_collapse');
             const filterBody = document.querySelector('.filtr_body');
             const collapseIcon = document.querySelector('.button_collapse');
