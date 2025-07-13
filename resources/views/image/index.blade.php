@@ -107,149 +107,190 @@
             letter-spacing: 0.5px;
         }
 
-        /* Main content layout */
-        .content-layout {
-            display: grid;
-            grid-template-columns: 360px 1fr;
+        /* Main content layout - Similar to posts layout */
+        .divided_minimal {
+            display: flex;
             gap: 2rem;
             margin-top: 2rem;
         }
 
-        /* Sidebar (filters) */
-        .filter-sidebar {
+        .images {
+            display: flex;
+            width: 100%;
+            gap: 2rem;
+        }
+
+        /* Left sidebar filter - matching posts layout */
+        .filter {
+            width: 300px;
+            flex-shrink: 0;
             background: var(--surface-primary);
             border-radius: 16px;
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            padding: 0;
             height: fit-content;
             position: sticky;
             top: 2rem;
-            overflow: hidden;
         }
-        .filter-header {
+
+        .filtr_collapse {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 2rem;
-            border-bottom: 2px solid var(--primary-100);
+            align-items: center;
             cursor: pointer;
-            transition: all 0.3s;
         }
-        .filter-header:hover {
-            background: var(--surface-hover);
-        }
-        .filter-header h3 {
-            font-size: 1.5rem;
+
+        .filtr_collapse .head {
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-primary);
             margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
         }
-        .filter-header h3::before {
-            content: "🔍";
-            font-size: 1.25rem;
-        }
-        .filter-toggle {
+
+        .filtr_collapse .button_collapse {
             color: var(--primary-500);
             font-size: 1.25rem;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
-        .filter-body {
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+
+        .filtr_body {
+            padding: 1.5rem;
         }
-        .filter-section {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+
+        .filtr_body > div {
+            margin-bottom: 2rem;
         }
-        .filter-section-title {
-            font-weight: 700;
+
+        .filtr_body > div:last-child {
+            margin-bottom: 0;
+        }
+
+        .filtr_body .name {
+            font-weight: 600;
             color: var(--text-primary);
+            margin: 0 0 1rem 0;
             font-size: 1rem;
-            margin: 0 0 0.5rem 0;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .filter-section-title::before {
-            width: 4px;
-            height: 20px;
+
+        .filtr_body .name::before {
+            width: 3px;
+            height: 16px;
             background: var(--primary-500);
             content: "";
             border-radius: 2px;
         }
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .filter-option {
+
+        /* Filter buttons */
+        .filter-button {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 1rem;
+            padding: 0.75rem;
             border-radius: 8px;
-            background: var(--surface-primary);
-            border: 2px solid var(--border-color);
+            background: var(--surface-secondary);
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             font-size: 0.875rem;
-            text-decoration: none;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            width: 100%;
         }
-        .filter-option:hover {
+
+        .filter-button:hover {
+            background: var(--surface-hover);
             border-color: var(--primary-300);
-            background: var(--primary-50);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.12);
+        }
+
+        .filter-button.active {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        .filter-button .dot {
+            color: var(--primary-500);
+            font-size: 1rem;
+        }
+
+        .filter-button.active .dot {
+            color: white;
+        }
+
+        .filter-button p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Search input */
+        .inputs input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface-secondary);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .inputs input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-500);
+            background: var(--surface-primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Apply filters button */
+        .show_results {
+            background: var(--primary-500) !important;
+            color: white !important;
+            border-color: var(--primary-500) !important;
+            justify-content: center;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        .show_results:hover {
+            background: var(--primary-600) !important;
+            border-color: var(--primary-600) !important;
+        }
         }
         .filter-option.active {
-            background: var(--primary-100);
+            background: var(--primary-500);
+            color: white;
             border-color: var(--primary-500);
-            color: var(--primary-700);
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.18);
         }
         .filter-option .icon {
-            color: var(--neutral-400);
-            font-size: 1rem;
-            transition: color 0.3s;
-            min-width: 16px;
-        }
-        .filter-option.active .icon {
-            color: var(--primary-500);
+            font-size: 0.875rem;
         }
         .filter-option p {
             margin: 0;
-            color: var(--text-secondary);
             font-weight: 500;
-            line-height: 1.4;
-        }
-        .filter-option.active p {
-            color: var(--primary-700);
-            font-weight: 600;
         }
         .search-input {
             width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: var(--surface-primary);
+            background: var(--surface-secondary);
             color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
         .search-input:focus {
             outline: none;
             border-color: var(--primary-500);
-            box-shadow: 0 0 0 4px var(--primary-100);
-            transform: translateY(-2px);
+            background: var(--surface-primary);
         }
         .search-input::placeholder {
-            color: var(--text-tertiary);
+            color: var(--text-secondary);
         }
         .apply-filters-btn {
             background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
@@ -274,103 +315,72 @@
             box-shadow: 0 8px 24px rgba(14, 165, 233, 0.32);
         }
 
-        /* Image grid and cards (strict, modern, fixed size) */
+        /* Original image grid - remove conflicting styles */
+        
+        /* Image grid and cards - Updated for sidebar layout */
+        .images-list {
+            flex: 1;
+            min-width: 0;
+        }
+
         .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem;
             background: var(--surface-primary);
             border-radius: 16px;
             border: 1px solid var(--border-color);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            padding: 1.25rem;
-            min-height: 400px;
         }
-        .image-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(64px, 64px));
-            gap: 0.5rem;
-            padding: 0.2rem 0.1rem 0.2rem 0.1rem;
-            width: 100%;
-            justify-content: flex-start;
-            align-items: start;
-        }
-        /* New Card Layout */
-        .image-card, .image-card * {
-            box-sizing: border-box !important;
-            min-width: 0 !important;
-            overflow: hidden;
-        }
+        
+        /* Card Layout */
         .image-card {
             background: var(--surface-primary);
-            border-radius: 18px;
-            border: 1.5px solid var(--border-color);
-            box-shadow: 0 4px 24px 0 rgba(59,130,246,0.10), 0 1.5px 4px rgba(0,0,0,0.08);
-            overflow: visible;
-            transition: box-shadow 0.22s cubic-bezier(.4,2,.6,1), transform 0.22s cubic-bezier(.4,2,.6,1);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            width: 90px !important;
-            min-width: 90px !important;
-            max-width: 90px !important;
-            height: 120px !important;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0.5rem 0.3rem 0.7rem 0.3rem;
         }
+        
         .image-card:hover {
-            transform: scale(1.08) translateY(-4px);
-            box-shadow: 0 16px 40px 0 rgba(59,130,246,0.18), 0 4px 16px rgba(0,0,0,0.13);
-            z-index: 2;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary-200);
         }
+        
         .image-card .image-preview {
-            width: 64px;
-            height: 64px;
+            width: 100%;
+            height: 240px;
             object-fit: cover;
-            object-position: center;
-            border-radius: 12px;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--surface-secondary) 60%, var(--primary-50) 100%);
-            box-shadow: 0 2px 8px rgba(59,130,246,0.10);
-            border: 1px solid var(--border-color);
-            display: block;
+            background: var(--surface-secondary);
         }
+        
         .image-card .image-preview:empty {
-            background: repeating-linear-gradient(135deg, var(--surface-secondary), var(--primary-100) 10px, var(--surface-secondary) 20px);
+            background: linear-gradient(135deg, var(--surface-secondary), var(--primary-50));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--neutral-400);
-            font-size: 1.2rem;
+            color: var(--text-secondary);
         }
+        
         .image-card .image-info {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(2.5px) saturate(1.1);
-            border-radius: 10px;
-            margin-top: 0.2rem;
-            width: 100%;
-            padding: 0.18rem 0.18rem 0.12rem 0.18rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            min-height: 0;
-            box-shadow: 0 1px 4px rgba(59,130,246,0.06);
+            gap: 1rem;
         }
-        [data-theme="dark"] .image-card .image-info {
-            background: rgba(30,41,59,0.98);
-        }
+        
         .image-card .image-name {
-            font-weight: 700;
+            font-size: 1.125rem;
+            font-weight: 600;
             color: var(--text-primary);
-            font-size: 0.72rem;
-            margin: 0 0 0.08rem 0;
-            word-break: break-word;
-            line-height: 1.1;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            letter-spacing: 0.01em;
+            margin: 0;
+            line-height: 1.4;
         }
         .image-card .image-details {
             display: flex;
@@ -379,43 +389,45 @@
             margin-bottom: 0.08rem;
             width: 100%;
         }
+        .image-card .image-details {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        
         .image-card .detail-item {
             display: flex;
             align-items: center;
-            gap: 0.11rem;
+            gap: 0.5rem;
             color: var(--text-secondary);
-            font-size: 0.54rem;
-            font-weight: 500;
+            font-size: 0.875rem;
         }
+        
         .image-card .detail-item i {
             color: var(--primary-500);
-            width: 12px;
-            text-align: center;
-            font-size: 0.7rem;
+            font-size: 1rem;
         }
+        
         .image-card .image-actions {
             display: flex;
-            gap: 0.12rem;
-            margin-top: 0.12rem;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
             justify-content: flex-end;
-            width: 100%;
         }
+        
         .image-card .action-btn {
-            flex: 0 0 20px;
-            width: 20px;
-            height: 20px;
-            padding: 0;
+            padding: 0.5rem;
             border: none;
-            background: transparent;
-            color: var(--text-tertiary);
-            border-radius: 50%;
+            background: var(--surface-secondary);
+            color: var(--text-secondary);
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-            font-size: 0.9rem;
+            transition: all 0.2s;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
         .image-card .action-btn:hover {
             background: var(--primary-100);
@@ -497,14 +509,43 @@
             .content-layout {
                 grid-template-columns: 1fr;
             }
-            .filter-sidebar {
-                position: static;
-                margin-bottom: 2rem;
+            .filter-bar {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
             }
-            .image-list {
-                overflow-x: auto;
-                grid-auto-flow: column;
-                grid-template-columns: repeat(auto-fit, minmax(64px, 64px));
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        /* Responsive design */
+        @media (max-width: 1024px) {
+            .divided_minimal {
+                flex-direction: column;
+            }
+            .filter {
+                width: 100%;
+                position: static;
+            }
+            .images {
+                flex-direction: column;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .image-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
             }
         }
         @media (max-width: 600px) {
@@ -514,11 +555,15 @@
             .page-header {
                 padding: 1.5rem 0.5rem 1rem 0.5rem;
             }
-            .filter-header, .filter-body {
-                padding: 1rem;
+            .filter {
+                margin: 0 -0.5rem;
             }
             .image-grid {
                 padding: 0.5rem;
+                margin: 0 -0.5rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -569,139 +614,87 @@
             </div>
         </div>
 
-        <div class="content-layout">
-            <div class="filter-sidebar">
-                <div class="filter-header">
-                    <h3>Filters</h3>
-                    <i class="fa-solid fa-caret-up filter-toggle"></i>
+        <div class="divided_minimal">
+            <div class="images">
+                <div class="filter">
+                    <div class="filtr_collapse">
+                        <p class="head">Images</p>
+                        <i class="fa-solid fa-caret-up button_collapse"></i>
+                    </div>
+                    <div class="filtr_body" style="display: block;">
+                        <div class="sort">
+                            <p class="name">Sorting</p>
+                            <div class="buttons sort_buttons">
+                                <div class="filter-button" data-order="asc">
+                                    <div class="dot"><i class="fa-solid fa-arrow-down-a-z"></i></div>
+                                    <p>Name (A-Z)</p>
+                                </div>
+                                <div class="filter-button" data-order="desc">
+                                    <div class="dot"><i class="fa-solid fa-arrow-up-z-a"></i></div>
+                                    <p>Name (Z-A)</p>
+                                </div>
+                                <div class="filter-button active" data-order="descUsage">
+                                    <div class="dot"><i class="fa-solid fa-chart-line"></i></div>
+                                    <p>Most Used</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="term">
+                            <p class="name">Search</p>
+                            <div class="inputs">
+                                <input type="text" name="term" value="{{ $terms ?? '' }}" placeholder="Search images...">
+                            </div>
+                        </div>
+                        <div class="records">
+                            <p class="name">Show</p>
+                            <div class="buttons">
+                                <div class="filter-button rec_1 active" data-limit="20">
+                                    <span class="dot"><i class="fa-solid fa-square-check"></i></span>
+                                    <p>20 images</p>
+                                </div>
+                                <div class="filter-button rec_2" data-limit="50">
+                                    <span class="dot"><i class="fa-regular fa-square"></i></span>
+                                    <p>50 images</p>
+                                </div>
+                                <div class="filter-button rec_3" data-limit="100">
+                                    <span class="dot"><i class="fa-regular fa-square"></i></span>
+                                    <p>100 images</p>
+                                </div>
+                                <div class="filter-button rec_4" data-limit="0">
+                                    <span class="dot"><i class="fa-regular fa-square"></i></span>
+                                    <p>All images</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="filter-button show_results">
+                            <p>Apply filters</p>
+                        </div>
+                        <form style="display: none" id="filter_form">
+                            <input type="text" id="term" name="q" value="{{ $terms ?? '' }}">
+                            <input type="text" id="order" name="order" value="{{ $order ?? 'descUsage' }}">
+                            <input type="text" id="limit" name="limit" value="{{ $limit ?? 20 }}">
+                            <input type="text" id="directories" name="directories[]" value="{{ !empty($selected_directories[0]) ? $selected_directories[0] : null }}">
+                            <input type="text" id="extensions" name="extensions[]" value="{{ !empty($selected_extensions[0]) ? $selected_extensions[0] : null }}">
+                            <input type="text" id="duplicates" name="duplicates[]" value="{{ $duplicates ? implode(',', $duplicates) : '' }}">
+                        </form>
+                    </div>
                 </div>
-                <div class="filter-body">
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Sorting Options</h4>
-                        <div class="filter-options">
-                            <div class="filter-option" onclick="filterCheck(1);" data-order="asc">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Name (A-Z)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(2);" data-order="desc">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Name (Z-A)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(5);" data-order="ascSize">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Size (Small to Large)</p>
-                            </div>
-                            <div class="filter-option" onclick="filterCheck(6);" data-order="descSize">
-                                <span class="icon"><i class="fa-solid fa-circle-dot"></i></span>
-                                <p>Size (Large to Small)</p>
-                            </div>
-                            <div class="filter-option active" onclick="filterCheck(8);" data-order="descUsage">
-                                <span class="icon"><i class="fa-solid fa-circle-check"></i></span>
-                                <p>Usage (High to Low)</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Search Images</h4>
-                        <input type="text" class="search-input" name="term" value="{{ $terms ?? '' }}" placeholder="Search by filename...">
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Items Per Page</h4>
-                        <div class="filter-options">
-                            <div class="filter-option active" onclick="radioCheck(1);">
-                                <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                <p>20 items</p>
-                            </div>
-                            <div class="filter-option" onclick="radioCheck(2);">
-                                <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                <p>50 items</p>
-                            </div>
-                            <div class="filter-option" onclick="radioCheck(3);">
-                                <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                <p>100 items</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">Folders</h4>
-                        <div class="filter-options">
-                            @foreach ($directories as $directory => $count)
-                                @if (isset($selected_directories_array) && in_array($directory, $selected_directories_array))
-                                    <div class="filter-option active" onclick="selectDirectory(event, '{{ $directory }}')" data-directory-name="{{ $directory }}">
-                                        <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                        <p>{{ $directory }} ({{ $count }})</p>
-                                    </div>
-                                @else
-                                    <div class="filter-option" onclick="selectDirectory(event, '{{ $directory }}')" data-directory-name="{{ $directory }}">
-                                        <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                        <p>{{ $directory }} ({{ $count }})</p>
-                                    </div>
-                                @endif
+                <div class="images-list">
+                    <div class="image-grid">
+                        @if($files->count() > 0)
+                            @foreach($files as $file)
+                                <x-image-card :image="$file"/>
                             @endforeach
-                        </div>
-                    </div>
-                    
-                    <div class="filter-section">
-                        <h4 class="filter-section-title">File Types</h4>
-                        <div class="filter-options">
-                            @foreach ($extensions as $extension => $count)
-                                @if (isset($selected_extensions_array) && in_array($extension, $selected_extensions_array))
-                                    <div class="filter-option active" onclick="selectExtension(event, '{{ $extension }}')" data-extension-name="{{ $extension }}">
-                                        <span class="icon"><i class="fa-solid fa-square-check"></i></span>
-                                        <p>.{{ $extension }} ({{ $count }})</p>
-                                    </div>
-                                @else
-                                    <div class="filter-option" onclick="selectExtension(event, '{{ $extension }}')" data-extension-name="{{ $extension }}">
-                                        <span class="icon"><i class="fa-regular fa-square"></i></span>
-                                        <p>.{{ $extension }} ({{ $count }})</p>
-                                    </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-                    
-                    <button class="apply-filters-btn">
-                        Apply Filters
-                    </button>
-                    
-                    <form style="display: none" id="filter_form">
-                        <input type="text" id="term" name="q" value="{{ $terms ?? '' }}">
-                        <input type="text" id="order" name="order" value="{{ $order ?? 'descUsage' }}">
-                        <input type="text" id="limit" name="limit" value="{{ $limit ?? 20 }}">
-                        <input type="text" id="directories" name="directories[]" value="{{ !empty($selected_directories[0]) ? $selected_directories[0] : null }}">
-                        <input type="text" id="extensions" name="extensions[]" value="{{ !empty($selected_extensions[0]) ? $selected_extensions[0] : null }}">
-                        <input type="text" id="duplicates" name="duplicates[]" value="{{ $duplicates ? implode(',', $duplicates) : '' }}">
-                    </form>
-                </div>
-            </div>
-            
-            <div class="image-grid">
-                @if($files->count() > 0)
-                    <div class="image-list">
-                        @php
-                            function formatBytes($bytes, $precision = 2) {
-                                $kilobyte = 1024;
-                                $megabyte = $kilobyte * 1024;
-
-                                if ($bytes < $kilobyte) {
-                                    return $bytes . ' B';
-                                } elseif ($bytes < $megabyte) {
-                                    return number_format($bytes / $kilobyte, $precision) . ' KB';
-                                } else {
-                                    return number_format($bytes / $megabyte, $precision) . ' MB';
-                                }
-                            }
-                        @endphp
-                        
-                        @foreach($files as $file)
-                            <x-image-card :image="$file"/>
-                        @endforeach
+                        @else
+                            <div class="empty-state">
+                                <i class="fas fa-images"></i>
+                                <h3>No images found</h3>
+                                <p>Try adjusting your filters or upload some images to get started</p>
+                            </div>
+                        @endif
                     </div>
 
-                    @if ((int)$limit !== 0)
+                    @if ($files->count() > 0 && (int)$limit !== 0)
                         {{ $files->appends([
                              'q' => $terms ?? '',
                              'order' => $order ?? 'descUsage',
@@ -711,13 +704,7 @@
                              'duplicates' => $duplicates ? implode(',', $duplicates) : ''
                         ])->links('pagination.default') }}
                     @endif
-                @else
-                    <div class="empty-state">
-                        <i class="fas fa-images"></i>
-                        <h3>No images found</h3>
-                        <p>Try adjusting your filters or upload some images to get started</p>
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
     </div>
@@ -725,9 +712,9 @@
     <!-- Keep existing modal HTML at the end -->
     <img src="" class="background" alt="" style="display: none;">
     <!-- New Modal Design -->
-    <div class="image_modal" style="display: none; align-items: flex-start;">
-        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: 3vh auto;">
-            <div class="close" onclick="closeModal();" style="position: absolute; top: 1.2rem; right: 1.2rem; width: 44px; height: 44px; background: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); border: 2px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 10000; transition: all 0.2s;">
+    <div class="image_modal" style="display: none; align-items: flex-start; justify-content: center; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1050; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); padding: 4rem 1rem 2rem 1rem; overflow-y: auto;">
+        <div class="modal-content" style="background: var(--surface-primary); border-radius: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.22); padding: 2.5rem 2rem 2rem 2rem; max-width: 420px; width: 100%; position: relative; margin: auto; margin-top: 4rem; max-height: calc(100vh - 8rem); overflow-y: auto;">
+            <div class="close" onclick="closeModal();" style="position: absolute; top: 1.2rem; right: 1.2rem; width: 44px; height: 44px; background: var(--surface-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.5rem; color: var(--text-primary); border: 2px solid var(--border-color); box-shadow: 0 4px 16px rgba(0,0,0,0.10); z-index: 10; transition: all 0.2s;">
                 <i class="fa-solid fa-xmark"></i>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
@@ -760,4 +747,191 @@
             </div>
         </div>
     </div>
+
+    <script type="module">
+        // Initialize filter collapse functionality for images
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.querySelector('.image_modal');
+            
+            // Add simple hover effect for close button and custom scrollbar styling
+            const style = document.createElement('style');
+            style.textContent = `
+                .image_modal .close:hover {
+                    background: var(--error-500) !important;
+                    color: white !important;
+                    border-color: var(--error-500) !important;
+                    transform: scale(1.05);
+                }
+                
+                /* Custom Scrollbar Styling - Only for modal content */
+                .modal-content::-webkit-scrollbar {
+                    width: 8px;
+                }
+                
+                .modal-content::-webkit-scrollbar-track {
+                    background: rgba(0, 0, 0, 0.1);
+                    border-radius: 10px;
+                }
+                
+                .modal-content::-webkit-scrollbar-thumb {
+                    background: #888;
+                    border-radius: 10px;
+                }
+                
+                .modal-content::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
+                
+                /* Firefox scrollbar styling - Only for modal */
+                .modal-content {
+                    scrollbar-width: thin;
+                    scrollbar-color: #888 rgba(0, 0, 0, 0.1);
+                }
+                
+                /* Prevent body scroll when modal is open */
+                body.modal-open {
+                    overflow: hidden !important;
+                    padding-right: 0 !important;
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Close modal when clicking background
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+                
+                // Observe modal display changes to prevent body scroll
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                            if (modal.style.display === 'flex') {
+                                document.body.classList.add('modal-open');
+                            } else {
+                                document.body.classList.remove('modal-open');
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(modal, {
+                    attributes: true,
+                    attributeFilter: ['style']
+                });
+            }
+            
+            const collapseButton = document.querySelector('.filtr_collapse');
+            const filterBody = document.querySelector('.filtr_body');
+            const collapseIcon = document.querySelector('.button_collapse');
+            
+            if (collapseButton && filterBody && collapseIcon) {
+                collapseButton.addEventListener('click', function() {
+                    if (filterBody.style.display === 'none') {
+                        filterBody.style.display = 'block';
+                        collapseIcon.classList.remove('fa-caret-down');
+                        collapseIcon.classList.add('fa-caret-up');
+                    } else {
+                        filterBody.style.display = 'none';
+                        collapseIcon.classList.remove('fa-caret-up');
+                        collapseIcon.classList.add('fa-caret-down');
+                    }
+                });
+            }
+
+            // Image filter functionality
+            const filterButtons = document.querySelectorAll(".buttons.sort_buttons .filter-button");
+            const recordButtons = document.querySelectorAll(".records .filter-button");
+            const orderInput = document.querySelector('#order');
+            const limitInput = document.querySelector('#limit');
+            const searchInput = document.querySelector("input[name='term']");
+            const searchFormInput = document.querySelector("#term");
+            const showResultsButton = document.querySelector('.show_results');
+            const filterForm = document.getElementById('filter_form');
+
+            // Initialize filter based on current order
+            if (orderInput && filterButtons.length > 0) {
+                const currentOrder = orderInput.value;
+                filterButtons.forEach((button, index) => {
+                    if (button.dataset.order === currentOrder) {
+                        button.classList.add('active');
+                        button.querySelector('.dot').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                    } else {
+                        button.classList.remove('active');
+                        button.querySelector('.dot').innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+                    }
+                });
+            }
+
+            // Initialize records based on current limit
+            if (limitInput && recordButtons.length > 0) {
+                const currentLimit = limitInput.value;
+                recordButtons.forEach((button) => {
+                    if (button.dataset.limit === currentLimit) {
+                        button.classList.add('active');
+                        button.querySelector('.dot').innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                    } else {
+                        button.classList.remove('active');
+                        button.querySelector('.dot').innerHTML = '<i class="fa-regular fa-square"></i>';
+                    }
+                });
+            }
+
+            // Handle filter button clicks (sorting)
+            filterButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    // Remove active from all buttons
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.querySelector('.dot').innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+                    });
+                    
+                    // Add active to clicked button
+                    this.classList.add('active');
+                    this.querySelector('.dot').innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+                    
+                    // Update order value
+                    if (orderInput) {
+                        orderInput.value = this.dataset.order;
+                    }
+                });
+            });
+
+            // Handle record button clicks (limit)
+            recordButtons.forEach((button) => {
+                button.addEventListener('click', function() {
+                    // Remove active from all record buttons
+                    recordButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        btn.querySelector('.dot').innerHTML = '<i class="fa-regular fa-square"></i>';
+                    });
+                    
+                    // Add active to clicked button
+                    this.classList.add('active');
+                    this.querySelector('.dot').innerHTML = '<i class="fa-solid fa-square-check"></i>';
+                    
+                    // Update limit value
+                    if (limitInput) {
+                        limitInput.value = this.dataset.limit;
+                    }
+                });
+            });
+
+            // Handle search input
+            if (searchInput && searchFormInput) {
+                searchInput.addEventListener('keyup', function () {
+                    searchFormInput.value = searchInput.value;
+                });
+            }
+
+            // Handle apply filters button
+            if (showResultsButton && filterForm) {
+                showResultsButton.addEventListener('click', function () {
+                    filterForm.submit();
+                });
+            }
+        });
+    </script>
 </x-main-layout>
